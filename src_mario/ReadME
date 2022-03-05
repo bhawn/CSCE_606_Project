@@ -1,3 +1,17 @@
-1) install parcel bundler on your device after cloning
-2) install kaboom
-3) npm run start and the file runs on localhost:8000
+1) npm init
+2) get parcel bundler
+3) npm install kaboom
+
+4) Do the follwing 5) and 6) for package.json
+5) add "start": "parcel src/index.html -p 8000",
+    "build": "parcel build src/index.html",
+    to scripts
+    
+6) Add "alias": {
+    "kaboom": "./node_modules/kaboom/dist/kaboom.mjs"
+  }
+  
+  
+7) npm run start 
+8) Go to localhost: 8000
+9) Do production build using "npm run build"
