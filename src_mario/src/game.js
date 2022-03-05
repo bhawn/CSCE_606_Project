@@ -10,7 +10,7 @@ const TIME_LEFT = 50;
 const BULLET_TIME_LEFT = 4;
 let isBig = false;
 // the following is for canvas'
-
+/*
 var canvas;
 var canvasWidth;
 var ctx;
@@ -30,7 +30,7 @@ function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-
+*/
 // camvas functionality end
 kaboom({
   global: true,
@@ -96,8 +96,6 @@ loadSprite("highjump", "xfWsMOV.png");
 
 loadSprite("shoot", "mPlhKAi.png");
 
-// loadSound("./src/play.mp3");
-
 scene("game", ({ level, score }) => {
   //create layers
   //An array
@@ -116,13 +114,13 @@ scene("game", ({ level, score }) => {
       "        ==*==%==                                               ",
       "                                                         ",
       "                                                      ",
-      "           ^^                                            ",
+      "                                                      ",
       "           ============================                                             ",
       "                                                       ",
       "                                                       ",
       "     %    =*=%=                                        ",
-      "               -+         -+                    -+   ",
-      "        ^^      ()      ^  ()  ^                 ()     ",
+      "      ^^         -+         -+                    -+   ",
+      "              ()      ^  ()  ^                 ()     ",
       "===============================   ==  = ===  ============== ",
     ],
     [
@@ -449,6 +447,7 @@ scene("game", ({ level, score }) => {
     }
   });
   onCollide("dangerous", "bullet", (d, b) => {
+    shake(40);
     destroy(d);
     destroy(b);
   });

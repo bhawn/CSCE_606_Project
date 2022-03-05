@@ -533,23 +533,27 @@ const TIME_LEFT = 50;
 const BULLET_TIME_LEFT = 4;
 let isBig = false;
 // the following is for canvas'
+/*
 var canvas;
 var canvasWidth;
 var ctx;
+
 function init() {
-    canvas = document.getElementById("#mycanvas");
-    if (canvas.getContext) {
-        ctx = canvas.getContext("2d");
-        window.addEventListener("resize", resizeCanvas, false);
-        window.addEventListener("orientationchange", resizeCanvas, false);
-        resizeCanvas();
-    }
+  canvas = document.getElementById("#mycanvas");
+  if (canvas.getContext) {
+    ctx = canvas.getContext("2d");
+
+    window.addEventListener("resize", resizeCanvas, false);
+    window.addEventListener("orientationchange", resizeCanvas, false);
+    resizeCanvas();
+  }
 }
+
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
-// camvas functionality end
+*/ // camvas functionality end
 _kaboomDefault.default({
     global: true,
     // enable full screen
@@ -596,7 +600,6 @@ loadSprite("a", "agdsuPW.png");
 loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 loadSprite("shoot", "mPlhKAi.png");
-// loadSound("./src/play.mp3");
 scene("game", ({ level , score  })=>{
     //create layers
     //An array
@@ -619,13 +622,13 @@ scene("game", ({ level , score  })=>{
             "        ==*==%==                                               ",
             "                                                         ",
             "                                                      ",
-            "           ^^                                            ",
+            "                                                      ",
             "           ============================                                             ",
             "                                                       ",
             "                                                       ",
             "     %    =*=%=                                        ",
-            "               -+         -+                    -+   ",
-            "        ^^      ()      ^  ()  ^                 ()     ",
+            "      ^^         -+         -+                    -+   ",
+            "              ()      ^  ()  ^                 ()     ",
             "===============================   ==  = ===  ============== ", 
         ],
         [
@@ -996,6 +999,7 @@ scene("game", ({ level , score  })=>{
         if (bulletTimer.time <= 0) destroy(b);
     });
     onCollide("dangerous", "bullet", (d, b)=>{
+        shake(40);
         destroy(d);
         destroy(b);
     });
