@@ -1,7 +1,7 @@
 First remove node modules,  dist, .parcel-cache, package.json and package-lock.json as soon as you clone before doing the following steps
 
 1) npm init
-2) get parcel bundler
+2) npm install -g parcel-bundler   (/* use command to get parcel bundler*/) 
 3) npm install kaboom
 
 4) Do the follwing 5) and 6) for package.json
