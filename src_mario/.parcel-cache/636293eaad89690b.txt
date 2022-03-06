@@ -3,7 +3,7 @@
 62C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\package.json132909857179496769 0
 62C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\store.js132909168456829257 0
 67C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\package-lock.json132909168801419886 0
-54C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist132909857576842383 1
+54C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist132909868937982337 1
 62C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules132909168801448851 1
 53C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src132909686147814737 1
 56C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\ReadME132909168456711385 0
@@ -14,7 +14,7 @@
 82C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\src\timer.ts132909168801317503 0
 64C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\index.html132909854488348513 0
 80C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\kaboom.png132909168801157974 0
-61C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\game.js132909857573416953 0
+61C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\game.js132909868935927237 0
 62C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\play.mp3132909168456819293 0
 89C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.mjs.map132909168800943949 0
 61C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites132909705629735648 1
@@ -65,9 +65,9 @@
 89C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.cjs.map132909168800812422 0
 88C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.js.map132909168800883719 0
 70C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\bg.6f9571e5.jpg132909179068221854 0
-70C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\bg.e7777e2d.jpg132909857246332714 0
+70C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\bg.e7777e2d.jpg132909863687528593 0
 72C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\index.65329132.js132909179115631749 0
 76C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\index.65329132.js.map132909179115677761 0
-72C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\index.c3fdd8eb.js132909857576682759 0
-76C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\index.c3fdd8eb.js.map132909857576762565 0
-65C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\index.html132909857247080239 0
+72C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\index.c3fdd8eb.js132909868937942676 0
+76C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\index.c3fdd8eb.js.map132909868937962393 0
+65C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\dist\index.html132909863689593073 0

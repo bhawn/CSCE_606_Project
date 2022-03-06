@@ -559,7 +559,7 @@ _kaboomDefault.default({
     // enable full screen
     fullscreen: true,
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: window.outerHeight,
     scale: 1,
     background: [
         0.1,
@@ -836,7 +836,7 @@ scene("game", ({ level , score  })=>{
     const player = add([
         sprite("mario"),
         solid(),
-        pos(20, 0),
+        pos(0, 0),
         body(),
         big(),
         area(),
