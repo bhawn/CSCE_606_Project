@@ -1,0 +1,26 @@
+{
+  "name": "src_mario",
+  "version": "1.0.0",
+  "description": "First remove node modules,  dist, .parcel-cache, package.json and package-lock.json as soon as you clone before doing the following steps",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html -p 8000",
+    "build": "parcel build src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RedHead17/CSCE_606_Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RedHead17/CSCE_606_Project/issues"
+  },
+  "homepage": "https://github.com/RedHead17/CSCE_606_Project#readme",
+  "dependencies": {
+    "kaboom": "^2000.2.9"
+  },
+  "alias": {
+    "kaboom": "./node_modules/kaboom/dist/kaboom.mjs"
+  }
+}

@@ -600,6 +600,7 @@ loadSprite("a", "agdsuPW.png");
 loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 loadSprite("shoot", "mPlhKAi.png");
+// game scene
 scene("game", ({ level , score  })=>{
     //create layers
     //An array
@@ -627,7 +628,7 @@ scene("game", ({ level , score  })=>{
             "                                                       ",
             "                                                       ",
             "     %    =*=%=                                        ",
-            "      ^^         -+         -+                    -+   ",
+            "               -+         -+                    -+   ",
             "              ()      ^  ()  ^                 ()     ",
             "===============================   ==  = ===  ============== ", 
         ],
