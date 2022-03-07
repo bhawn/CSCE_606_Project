@@ -1,0 +1,34 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--script src="https://kaboomjs.com/legacy/lib/0.5.0/kaboom.js"></script-->
+    <!--script
+      type="module"
+      src="https://unpkg.com/kaboom@next/dist/kaboom.js"
+    ></script-->
+
+    <!-- <style>
+      canvas {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+    
+
+    <canvas id="mycanvas"></canvas> -->
+    <style>
+      body {
+        background-image: url("bg.jpg");
+        background-size: cover;
+        @media screen and (max-width: 480px) {
+          width: device-width;
+          height: device-height;
+        }
+      }
+    </style>
+    <title>Mario</title>
+  </head>
+  <body>
+    <script type="module" src="./game.js"></script>
+  </body>
+</html>
