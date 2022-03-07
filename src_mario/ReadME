@@ -1,5 +1,7 @@
+First remove node modules,  dist, .parcel-cache, package.json and package-lock.json as soon as you clone before doing the following steps
+
 1) npm init
-2) get parcel bundler
+2) npm install -g parcel-bundler   (/* use command to get parcel bundler*/) 
 3) npm install kaboom
 
 4) Do the follwing 5) and 6) for package.json
@@ -7,7 +9,7 @@
     "build": "parcel build src/index.html",
     to scripts
     
-6) Add "alias": {
+6) Add at the end "alias": {
     "kaboom": "./node_modules/kaboom/dist/kaboom.mjs"
   }
   

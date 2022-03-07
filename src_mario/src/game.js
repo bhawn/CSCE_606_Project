@@ -37,7 +37,7 @@ kaboom({
   // enable full screen
   fullscreen: true,
   width: window.innerWidth,
-  height: window.innerHeight,
+  height: window.outerHeight,
   scale: 1,
   background: [0.1, 0, 0, 0],
   // for debug mode
@@ -95,7 +95,7 @@ loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 
 loadSprite("shoot", "mPlhKAi.png");
-
+// game scene
 scene("game", ({ level, score }) => {
   //create layers
   //An array
@@ -254,7 +254,7 @@ scene("game", ({ level, score }) => {
   const player = add([
     sprite("mario"),
     solid(),
-    pos(20, 0),
+    pos(0, 0),
     body(),
     big(),
     area(),

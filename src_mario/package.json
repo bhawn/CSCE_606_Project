@@ -11,6 +11,10 @@
   },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RedHead17/CSCE_606_Project/issues"
+  },
+  "homepage": "https://github.com/RedHead17/CSCE_606_Project#readme",
   "dependencies": {
     "kaboom": "^2000.2.9"
   },
