@@ -522,6 +522,7 @@ function hmrAcceptRun(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
+var _playableMap = require("./PlayableMap");
 const MOVE_SPEED = 60;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
@@ -590,52 +591,52 @@ scene("game", ({ level , score  })=>{
         "obj",
         "ui"
     ], "obj");
-    // draw maps
-    const maps = [
-        [
-            "                                                       ",
-            "                                                       ",
-            "                                                       ",
-            "                                                       ",
-            "                                                       ",
-            "                                                       ",
-            "        ==*==%==                                               ",
-            "                                                         ",
-            "                u   v                                     ",
-            "                                                     ",
-            "           ============================                                             ",
-            "                                                       ",
-            "                                                       ",
-            "     %    =*=%=                                        ",
-            "               -+         -+                    -+   ",
-            "              ()      ^  ()  ^                 ()     ",
-            "===============================   ==  = ===  ============== ", 
-        ],
-        [
-            "£                                                       £",
-            "£     ! ! ! ! ! ! ! ! ! ! ! !                           £",
-            "£                                                       £",
-            "£                                                       £",
-            "£                                                       £",
-            "£                               x                       £",
-            "£     %    @@@@@@              xx                       £",
-            "£                             xxx                -+     £",
-            "£                 z   z      xxxx                ()     £",
-            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!", 
-        ],
-        [
-            "£                                                       £",
-            "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £",
-            "£                                                       £",
-            "£                                                       £",
-            "£                                                       £",
-            "£                               x                       £",
-            "£     %    @@@@@@              xx                       £",
-            "£                             xxx                -+     £",
-            "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £",
-            "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", 
-        ], 
-    ];
+    // draw playableMap
+    // const playableMap = [
+    //   [
+    //     "                                                       ",
+    //     "                                                       ",
+    //     "                                                       ",
+    //     "                                                       ",
+    //     "                                                       ",
+    //     "                                                       ",
+    //     "        ==*==%==                                               ",
+    //     "                                                         ",
+    //     "                u   v                                     ",
+    //     "                                                     ",
+    //     "           ============================                                             ",
+    //     "                                                       ",
+    //     "                                                       ",
+    //     "     %    =*=%=                                        ",
+    //     "               -+         -+                    -+   ",
+    //     "              ()      ^  ()  ^                 ()     ",
+    //     "===============================   ==  = ===  ============== ",
+    //   ],
+    //   [
+    //     "£                                                       £",
+    //     "£     ! ! ! ! ! ! ! ! ! ! ! !                           £",
+    //     "£                                                       £",
+    //     "£                                                       £",
+    //     "£                                                       £",
+    //     "£                               x                       £",
+    //     "£     %    @@@@@@              xx                       £",
+    //     "£                             xxx                -+     £",
+    //     "£                 z   z      xxxx                ()     £",
+    //     "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!",
+    //   ],
+    //   [
+    //     "£                                                       £",
+    //     "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £",
+    //     "£                                                       £",
+    //     "£                                                       £",
+    //     "£                                                       £",
+    //     "£                               x                       £",
+    //     "£     %    @@@@@@              xx                       £",
+    //     "£                             xxx                -+     £",
+    //     "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £",
+    //     "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+    //   ],
+    // ];
     //level configuration
     const levelCfg = {
         //every sprite has a wdith and height
@@ -797,7 +798,7 @@ scene("game", ({ level , score  })=>{
             ]
     };
     // now just create a  gamelevel(JS method) and pass the map and levelCfg
-    const gameLevel = addLevel(maps[level], levelCfg);
+    const gameLevel = addLevel(_playableMap.playableMap[level], levelCfg);
     // add some text to display score and position on UI layer
     // default layer is 'obj '
     // so change layer to 'ui' for adding score
@@ -1186,7 +1187,7 @@ go("game", {
     score: 0
 });
 
-},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"larQu":[function(require,module,exports) {
+},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu","./PlayableMap":"3MEhn"}],"larQu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>no
@@ -5209,6 +5210,57 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["khFAZ","g9e9u"], "g9e9u", "parcelRequire0c6d")
+},{}],"3MEhn":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "playableMap", ()=>playableMap
+);
+const playableMap = [
+    [
+        "                                                       ",
+        "                                                       ",
+        "                                                       ",
+        "                                                       ",
+        "                                                       ",
+        "                                                       ",
+        "        ==*==%==                                               ",
+        "                                                         ",
+        "                u   v                                     ",
+        "                                                     ",
+        "           ============================                                             ",
+        "                                                       ",
+        "                                                       ",
+        "     %    =*=%=                                        ",
+        "               -+         -+                    -+   ",
+        "              ()      ^  ()  ^                 ()     ",
+        "===============================   ==  = ===  ============== ", 
+    ],
+    [
+        "£                                                       £",
+        "£     ! ! ! ! ! ! ! ! ! ! ! !                           £",
+        "£                                                       £",
+        "£                                                       £",
+        "£                                                       £",
+        "£                               x                       £",
+        "£     %    @@@@@@              xx                       £",
+        "£                             xxx                -+     £",
+        "£                 z   z      xxxx                ()     £",
+        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!", 
+    ],
+    [
+        "£                                                       £",
+        "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £",
+        "£                                                       £",
+        "£                                                       £",
+        "£                                                       £",
+        "£                               x                       £",
+        "£     %    @@@@@@              xx                       £",
+        "£                             xxx                -+     £",
+        "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £",
+        "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", 
+    ], 
+];
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}]},["khFAZ","g9e9u"], "g9e9u", "parcelRequire0c6d")
 
 //# sourceMappingURL=index.c3fdd8eb.js.map

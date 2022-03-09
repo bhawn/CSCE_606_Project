@@ -1,4 +1,6 @@
 import kaboom from "kaboom";
+import { playableMap } from "./PlayableMap";
+
 const MOVE_SPEED = 60;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
@@ -85,52 +87,52 @@ scene("game", ({ level, score }) => {
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
-  // draw maps
-  const maps = [
-    [
-      "                                                       ",
-      "                                                       ",
-      "                                                       ",
-      "                                                       ",
-      "                                                       ",
-      "                                                       ",
-      "        ==*==%==                                               ",
-      "                                                         ",
-      "                u   v                                     ",
-      "                                                     ",
-      "           ============================                                             ",
-      "                                                       ",
-      "                                                       ",
-      "     %    =*=%=                                        ",
-      "               -+         -+                    -+   ",
-      "              ()      ^  ()  ^                 ()     ",
-      "===============================   ==  = ===  ============== ",
-    ],
-    [
-      "£                                                       £",
-      "£     ! ! ! ! ! ! ! ! ! ! ! !                           £",
-      "£                                                       £",
-      "£                                                       £",
-      "£                                                       £",
-      "£                               x                       £",
-      "£     %    @@@@@@              xx                       £",
-      "£                             xxx                -+     £",
-      "£                 z   z      xxxx                ()     £",
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!",
-    ],
-    [
-      "£                                                       £",
-      "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £",
-      "£                                                       £",
-      "£                                                       £",
-      "£                                                       £",
-      "£                               x                       £",
-      "£     %    @@@@@@              xx                       £",
-      "£                             xxx                -+     £",
-      "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £",
-      "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-    ],
-  ];
+  // draw playableMap
+  // const playableMap = [
+  //   [
+  //     "                                                       ",
+  //     "                                                       ",
+  //     "                                                       ",
+  //     "                                                       ",
+  //     "                                                       ",
+  //     "                                                       ",
+  //     "        ==*==%==                                               ",
+  //     "                                                         ",
+  //     "                u   v                                     ",
+  //     "                                                     ",
+  //     "           ============================                                             ",
+  //     "                                                       ",
+  //     "                                                       ",
+  //     "     %    =*=%=                                        ",
+  //     "               -+         -+                    -+   ",
+  //     "              ()      ^  ()  ^                 ()     ",
+  //     "===============================   ==  = ===  ============== ",
+  //   ],
+  //   [
+  //     "£                                                       £",
+  //     "£     ! ! ! ! ! ! ! ! ! ! ! !                           £",
+  //     "£                                                       £",
+  //     "£                                                       £",
+  //     "£                                                       £",
+  //     "£                               x                       £",
+  //     "£     %    @@@@@@              xx                       £",
+  //     "£                             xxx                -+     £",
+  //     "£                 z   z      xxxx                ()     £",
+  //     "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!",
+  //   ],
+  //   [
+  //     "£                                                       £",
+  //     "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £",
+  //     "£                                                       £",
+  //     "£                                                       £",
+  //     "£                                                       £",
+  //     "£                               x                       £",
+  //     "£     %    @@@@@@              xx                       £",
+  //     "£                             xxx                -+     £",
+  //     "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £",
+  //     "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+  //   ],
+  // ];
 
   //level configuration
   const levelCfg = {
@@ -215,7 +217,7 @@ scene("game", ({ level, score }) => {
     x: () => [sprite("blue-steel"), solid(), area(), scale(0.5)],
   };
   // now just create a  gamelevel(JS method) and pass the map and levelCfg
-  const gameLevel = addLevel(maps[level], levelCfg);
+  const gameLevel = addLevel(playableMap[level], levelCfg);
   // add some text to display score and position on UI layer
   // default layer is 'obj '
   // so change layer to 'ui' for adding score
