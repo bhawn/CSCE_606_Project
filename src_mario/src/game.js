@@ -10,6 +10,8 @@ const TIME_LEFT = 50;
 const BULLET_TIME_LEFT = 4;
 let isBig = false;
 
+let hasBulletAbility = false;
+
 kaboom({
   global: true,
   // enable full screen
@@ -40,6 +42,12 @@ loadSprite("block", "M6rwarW.png");
 loadSprite("mario", "Wb1qfhK.png");
 
 loadSprite("mushroom", "0wMd92p.png");
+
+//BiggerMarioShor
+loadSprite("BigVaccineMushroom", "YTC5yeT.jpg");
+
+//Mushroom for bullets
+loadSprite("BulletVaccineMushroom", "d68IJd9.jpg");
 
 loadSprite("surprise", "gesQ1KP.png");
 
@@ -88,8 +96,8 @@ scene("game", ({ level, score }) => {
       "                                                       ",
       "        ==*==%==                                               ",
       "                                                         ",
-      "                                                      ",
-      "                                                      ",
+      "                u   v                                     ",
+      "                                                     ",
       "           ============================                                             ",
       "                                                       ",
       "                                                       ",
@@ -136,6 +144,24 @@ scene("game", ({ level, score }) => {
     $: () => [sprite("coin"), "coin", area()],
     "%": () => [sprite("surprise"), solid(), "coin-surprise", area()],
     "*": () => [sprite("surprise"), solid(), "mushroom-surprise", area()],
+    //Newly added sprites begin here
+
+    u: () => [
+      sprite("surprise"),
+      solid(),
+      "BigVaccineMushroomSurprise",
+      area(),
+    ],
+
+    v: () => [
+      sprite("surprise"),
+      solid(),
+      "BulletVaccineMushroomSurprise",
+      area(),
+    ],
+
+    //Newly added Sprites end here
+
     "}": () => [sprite("unboxed"), solid(), area()],
     "(": () => [sprite("pipe-bottom-left"), solid(), scale(0.5), area()],
 
@@ -149,6 +175,24 @@ scene("game", ({ level, score }) => {
 
     //body() is used for gravity
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
+
+    o: () => [
+      sprite("BigVaccineMushroom"),
+      solid(),
+      "BigVaccineMushroom",
+      body(),
+      area(),
+
+      scale(0.1, 0.1),
+    ],
+    p: () => [
+      sprite("BulletVaccineMushroom"),
+      solid(),
+      "BulletVaccineMushroom",
+      body(),
+      area(),
+      scale(0.1, 0.1),
+    ],
 
     "!": () => [sprite("blue-block"), solid(), scale(0.5), area()],
     "£": () => [sprite("blue-brick"), solid(), scale(0.5), area(), "brick"],
@@ -270,10 +314,42 @@ scene("game", ({ level, score }) => {
     if (obj.is("brick")) {
       destroy(obj);
     }
+
+    if (obj.is("BigVaccineMushroomSurprise")) {
+      // Now spawn the mushroom and place the mushroom just above the grid 1 pos above along Y axis
+      gameLevel.spawn("o", obj.gridPos.sub(0, 1));
+      // Now destroy the old one
+      destroy(obj);
+      // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
+      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
+    }
+
+    if (obj.is("BulletVaccineMushroomSurprise")) {
+      // Now spawn the mushroom and place the mushroom just above the grid 1 pos above along Y axis
+      gameLevel.spawn("p", obj.gridPos.sub(0, 1));
+      // Now destroy the old one
+      destroy(obj);
+      // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
+      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
+    }
   });
 
   player.onCollide("mushroom", (m) => {
     // pick a mushroom and destroy the object
+    destroy(m);
+    //Now biggify for 6 seconds
+    player.biggify(6);
+  });
+
+  player.onCollide("BigVaccineMushroom", (m) => {
+    // pick a Big Vaccine mushroom and destroy the object
+    destroy(m);
+    //Now biggify for 6 seconds
+    player.biggify(6);
+  });
+
+  player.onCollide("BulletVaccineMushroom", (m) => {
+    // pick a Big Vaccine mushroom and destroy the object
     destroy(m);
     //Now biggify for 6 seconds
     player.biggify(6);
