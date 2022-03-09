@@ -561,9 +561,9 @@ loadSprite("block", "M6rwarW.png");
 loadSprite("mario", "Wb1qfhK.png");
 loadSprite("mushroom", "0wMd92p.png");
 //BiggerMarioShor
-loadSprite("BigVaccineMushroom", "YTC5yeT.jpg");
+loadSprite("BigVaccineMushroom", "CCdLQNO.jpg");
 //Mushroom for bullets
-loadSprite("BulletVaccineMushroom", "d68IJd9.jpg");
+loadSprite("BulletVaccineMushroom", "ertkPgG.jpg");
 loadSprite("surprise", "gesQ1KP.png");
 loadSprite("unboxed", "bdrLpi6.png");
 loadSprite("pipe-top-left", "ReTPiWY.png");
