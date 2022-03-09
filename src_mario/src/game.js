@@ -131,7 +131,8 @@ scene("game", ({ level, score }) => {
 
     "^": () => [
       sprite("evil-shroom"),
-      solid(),
+
+      //solid(),
       "dangerous",
       /*body(),*/ area(),
     ],
@@ -162,7 +163,7 @@ scene("game", ({ level, score }) => {
 
     z: () => [
       sprite("blue-evil-shroom"),
-      solid(),
+      // solid(),
       scale(0.5),
       // body(),
       area(),
@@ -331,24 +332,24 @@ scene("game", ({ level, score }) => {
   // Let us make evils move
 
   onUpdate("dangerous", (d) => {
-    if (d.pos.x - player.pos.x > 1) d.move(-ENEMY_SPEED * 3, 0);
-    else if (d.pos.x - player.pos.x < 1) d.move(ENEMY_SPEED * 3, 0);
-    if (d.pos.y < player.pos.y) d.move(0, ENEMY_SPEED * 3);
-    else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
+    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);
+    else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
+    if (d.pos.y < player.pos.y) d.move(-ENEMY_SPEED, ENEMY_SPEED * 3);
+    else if (d.pos.y > player.pos.y) d.move(ENEMY_SPEED, -ENEMY_SPEED * 3);
     // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
   });
   // if player onCollide with anythig with dangerous
   // big mario becomes small
   // small mario dies
 
-  player.onCollide("dangerous", (d) => {
-    if (isJumping) {
-      destroy(d);
-    } else {
-      // go to a lose scene and display the final score
-      go("lose", { score: scoreLabel.value });
-    }
-  });
+  // player.onCollide("dangerous", (d) => {
+  //   if (isJumping) {
+  //     destroy(d);
+  //   } else {
+  //     // go to a lose scene and display the final score
+  //     go("lose", { score: scoreLabel.value });
+  //   }
+  // });
 
   onUpdate(() => {
     // Make camera Position same as player position
