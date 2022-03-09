@@ -523,16 +523,17 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _playableMap = require("./PlayableMap");
-const MOVE_SPEED = 60;
+const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
 const ENEMY_SPEED = 20;
 let isJumping = true;
-const FALL_DEATH = 400;
+const FALL_DEATH = 700;
 const TIME_LEFT = 50;
 const BULLET_TIME_LEFT = 4;
 let isBig = false;
+let buttonsVisible = true;
 let hasBulletAbility = false;
 _kaboomDefault.default({
     global: true,
@@ -592,51 +593,6 @@ scene("game", ({ level , score  })=>{
         "ui"
     ], "obj");
     // draw playableMap
-    // const playableMap = [
-    //   [
-    //     "                                                       ",
-    //     "                                                       ",
-    //     "                                                       ",
-    //     "                                                       ",
-    //     "                                                       ",
-    //     "                                                       ",
-    //     "        ==*==%==                                               ",
-    //     "                                                         ",
-    //     "                u   v                                     ",
-    //     "                                                     ",
-    //     "           ============================                                             ",
-    //     "                                                       ",
-    //     "                                                       ",
-    //     "     %    =*=%=                                        ",
-    //     "               -+         -+                    -+   ",
-    //     "              ()      ^  ()  ^                 ()     ",
-    //     "===============================   ==  = ===  ============== ",
-    //   ],
-    //   [
-    //     "£                                                       £",
-    //     "£     ! ! ! ! ! ! ! ! ! ! ! !                           £",
-    //     "£                                                       £",
-    //     "£                                                       £",
-    //     "£                                                       £",
-    //     "£                               x                       £",
-    //     "£     %    @@@@@@              xx                       £",
-    //     "£                             xxx                -+     £",
-    //     "£                 z   z      xxxx                ()     £",
-    //     "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!",
-    //   ],
-    //   [
-    //     "£                                                       £",
-    //     "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £",
-    //     "£                                                       £",
-    //     "£                                                       £",
-    //     "£                                                       £",
-    //     "£                               x                       £",
-    //     "£     %    @@@@@@              xx                       £",
-    //     "£                             xxx                -+     £",
-    //     "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £",
-    //     "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-    //   ],
-    // ];
     //level configuration
     const levelCfg = {
         //every sprite has a wdith and height
@@ -727,8 +683,7 @@ scene("game", ({ level , score  })=>{
                 sprite("evil-shroom"),
                 solid(),
                 "dangerous",
-                body(),
-                area()
+                /*body(),*/ area(), 
             ]
         ,
         //body() is used for gravity
@@ -777,7 +732,7 @@ scene("game", ({ level , score  })=>{
                 sprite("blue-evil-shroom"),
                 solid(),
                 scale(0.5),
-                body(),
+                // body(),
                 area(),
                 "dangerous", 
             ]
@@ -929,10 +884,10 @@ scene("game", ({ level , score  })=>{
     });
     // Let us make evils move
     onUpdate("dangerous", (d)=>{
-        if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);
-        else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
-    // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
-    // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
+        if (d.pos.x - player.pos.x > 1) d.move(-ENEMY_SPEED * 3, 0);
+        else if (d.pos.x - player.pos.x < 1) d.move(ENEMY_SPEED * 3, 0);
+        if (d.pos.y < player.pos.y) d.move(0, ENEMY_SPEED * 3);
+        else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
     // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
     });
     // if player onCollide with anythig with dangerous
@@ -1042,13 +997,14 @@ scene("game", ({ level , score  })=>{
         if (bulletTimer.time <= 0) destroy(b);
     });
     onCollide("dangerous", "bullet", (d, b)=>{
-        shake(40);
+        //shake(40);
         destroy(d);
         destroy(b);
     });
     // The mobile version begins
     //The following is for the mobile support
     if (isTouch()) {
+        buttonsVisible = false;
         //console.log(isTouch);
         //because left and right buttons will be pressed
         //we need to keep track of them
@@ -1074,34 +1030,36 @@ scene("game", ({ level , score  })=>{
         onKeyRelease("right", ()=>{
             keyDownOnMobile.right = false;
         });
-        const leftButton = add([
-            sprite("a"),
-            pos(50, 450),
-            opacity(0.5),
-            fixed(),
-            area(), 
-        ]);
-        const rightButton = add([
-            sprite("d"),
-            pos(100, 450),
-            opacity(0.5),
-            fixed(),
-            area(), 
-        ]);
-        const actionButton = add([
-            sprite("highjump"),
-            pos(750, 450),
-            opacity(0.5),
-            fixed(),
-            area(), 
-        ]);
-        const shootButton = add([
-            sprite("shoot"),
-            pos(650, 450),
-            opacity(0.5),
-            fixed(),
-            area(), 
-        ]);
+        if (buttonsVisible) {
+            const leftButton = add([
+                sprite("a"),
+                pos(50, 450),
+                opacity(0.5),
+                fixed(),
+                area(), 
+            ]);
+            const rightButton = add([
+                sprite("d"),
+                pos(100, 450),
+                opacity(0.5),
+                fixed(),
+                area(), 
+            ]);
+            const actionButton = add([
+                sprite("highjump"),
+                pos(750, 450),
+                opacity(0.5),
+                fixed(),
+                area(), 
+            ]);
+            const shootButton = add([
+                sprite("shoot"),
+                pos(650, 450),
+                opacity(0.5),
+                fixed(),
+                area(), 
+            ]);
+        }
         // onTouchStart gets called each time a new touch event is registered
         onTouchStart((id, pos)=>{
             // we will check if the touch overlaps with the left button
@@ -5215,49 +5173,85 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "playableMap", ()=>playableMap
 );
-const playableMap = [
+let playableMap = [
     [
-        "                                                       ",
-        "                                                       ",
-        "                                                       ",
-        "                                                       ",
-        "                                                       ",
-        "                                                       ",
-        "        ==*==%==                                               ",
-        "                                                         ",
-        "                u   v                                     ",
-        "                                                     ",
-        "           ============================                                             ",
-        "                                                       ",
-        "                                                       ",
-        "     %    =*=%=                                        ",
-        "               -+         -+                    -+   ",
-        "              ()      ^  ()  ^                 ()     ",
-        "===============================   ==  = ===  ============== ", 
+        "                                                                                                                                                                                       ",
+        "      =======   =====      ======    ======                                                                                                                                         -+ ",
+        "                                                                  ^                                                                                                                 ()",
+        "                                            ================  ===     ==                                                                                                          % ",
+        "                                                                 ^^^^                                                                                                          %",
+        "                                                           $$    ===                                                                                                       %",
+        "                                                          $$$$                                                                                                         % ",
+        "        *          %                                     $$$$$$                                                                                                     %",
+        "                                                               ^^^^^^                                                                                            %",
+        "                                             ===            ====================                                                                             % ",
+        "                                                                                        *                                                                %",
+        "           ============================               $^                                                                                              %",
+        "                                                      ==   *                                                ^                                      %",
+        "                                                                           	           =                      %=   =     *                     %",
+        "     %    =*=%=                                            =             %%%%         =    =                    =                    %       %     ",
+        "    -+                                                                               =          =                           =             %          ",
+        "    ()                                                           =                                    ^^                       =             %      ",
+        "===============================   ==  = =   =  =  ========         ================         ==   =======   ========           ==    ==     ============== ", 
     ],
     [
-        "£                                                       £",
-        "£     ! ! ! ! ! ! ! ! ! ! ! !                           £",
-        "£                                                       £",
-        "£                                                       £",
-        "£                                                       £",
-        "£                               x                       £",
-        "£     %    @@@@@@              xx                       £",
-        "£                             xxx                -+     £",
-        "£                 z   z      xxxx                ()     £",
-        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!", 
+        "£                                                  @@@                                      £",
+        "£                                                                                           £",
+        "£                                                   !                                       £",
+        "£                                           **                                              £",
+        "£                                  z           $$$     !!    !!        $$$$$$$$$$$$$$$$$$$$$£",
+        "£                                  x          !!!                            £   £   £   £      £    £",
+        "£     %    @@@@@@                 xx                             xxx%%         %      %      %     £",
+        "£   -+                           xxx                  -+                                          £",
+        "£   ()              z   z       xxxx        xx        ()             xx£       !!     !!     !!",
+        "!!!!!!!!!!!!!!!!!!     !!!!!!!       !!    !!!!!!  !!!!!!     !!!!!!!!!!!!!!",
+        "                                                                           ",
+        "                                                                             ",
+        "                    *                                      -+  ",
+        "                   £                                       ()   ",
+        "                   !!!!!                    !!!!!!!!!!!!!!!!!!!!!!!", 
     ],
     [
-        "£                                                       £",
-        "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £",
-        "£                                                       £",
-        "£                                                       £",
-        "£                                                       £",
-        "£                               x                       £",
-        "£     %    @@@@@@              xx                       £",
-        "£                             xxx                -+     £",
-        "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £",
-        "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", 
+        "£                                                                                     £",
+        "£     ! ! ! ! ! ! ! ! ! ! ! !                                                          £",
+        "£                                                                                      £",
+        "£      xxxxx       xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx          £",
+        "£                                                                                        £",
+        "£                               x                                                        £",
+        "£                               x                                                        £",
+        "£                               x                                                        £",
+        "£                               x                                            £",
+        "£                               x                                                          £",
+        "£     %    @@      @@@@              xx                                                   £",
+        "£    -+     $   $$   $$$   $$$$      $$$$$$      $$$$$$$        xxx                -+     £",
+        "£    ()                                        ()                                          £",
+        "!xx!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                       x",
+        "                                                                                          x",
+        "                                                                                               ",
+        "                                                                                 $$$$$              ",
+        "-+xxx  xxxxxxxx      xxxxxxxxxxxxxxxxx    xxxxxxxxxxxxxx    xxxxxx   xxxxxx    xxxxxxxxxxx",
+        "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
+        "                $$                                                                             ",
+        "                                        $$                                                           ",
+        "()              xxxx                   xxx                                                       x", 
+    ],
+    [
+        "=======      ===   ========    ==========                                        ",
+        "      x                                        ",
+        "      x  z             ====xxx              ==",
+        "      ====             x                    =          ",
+        "      x   z      x===xxx               =",
+        "      x   x======                   =",
+        "      x                          =",
+        "      x                         =",
+        "      x                       =",
+        "      x                       =",
+        "xxxxxx                   =",
+        "                       =",
+        "     ===           =",
+        "           ==     =",
+        "-+",
+        "()", 
     ], 
 ];
 
