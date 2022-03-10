@@ -35,7 +35,7 @@ loadSprite("coin", "wbKxhcd.png");
 //enenmies
 
 loadSprite("evil-shroom", "KPO3fR9.png");
-loadSprite("covid", "covid.png");
+loadSprite("covid", "zAptywW.png"); // https://imgur.com/gallery/zAptywW
 //bricks
 loadSprite("brick", "pogC9x5.png");
 //blocks
@@ -107,7 +107,7 @@ scene("game", ({ level, score }) => {
       "                                                       ",
       "     %    =*=%=                                        ",
       "               -+         -+                    -+   ",
-      "              ()      c  ()  c                 ()     ",
+      "              ()      c  ()  ^                 ()     ",
       "===============================   ==  = ===  ============== ",
     ],
     [
@@ -176,15 +176,15 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("evil-shroom"), solid(), "dangerous", body(), area()],
+    "^": () => [sprite("covid"), solid(), "dangerous", body(), area()],
     "c": () => [sprite("covid"), solid(), "dangerous", body(), area()],
-    "^": () => [
-      sprite("evil-shroom"),
+    // "^": () => [
+    //   sprite("evil-shroom"),
 
-      //solid(),
-      "dangerous",
-      /*body(),*/ area(),
-    ],
+    //   //solid(),
+    //   "dangerous",
+    //   /*body(),*/ area(),
+    // ],
 
     //body() is used for gravity
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
