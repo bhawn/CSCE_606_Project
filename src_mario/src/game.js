@@ -35,6 +35,7 @@ loadSprite("coin", "wbKxhcd.png");
 //enenmies
 
 loadSprite("evil-shroom", "KPO3fR9.png");
+loadSprite("covid", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 //bricks
 loadSprite("brick", "pogC9x5.png");
 //blocks
@@ -88,11 +89,10 @@ scene("game", ({ level, score }) => {
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
-  // draw playableMap
 
   //level configuration
   const levelCfg = {
-    //every sprite has a wdith and height
+    //every sprite has a width and height
     width: 20,
     height: 20,
     // parameters 1: name of the sprite, 2: solid , 3: tag
@@ -129,15 +129,8 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [
-      sprite("evil-shroom"),
+    "^": () => [sprite("covid"), solid(), "dangerous", body(), area()],
 
-      solid(),
-      "dangerous",
-      /*body(),*/ area(),
-    ],
-
-    //body() is used for gravity
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
 
     o: () => [
@@ -352,14 +345,16 @@ scene("game", ({ level, score }) => {
   // big mario becomes small
   // small mario dies
 
-  // player.onCollide("dangerous", (d) => {
-  //   if (isJumping) {
-  //     destroy(d);
-  //   } else {
-  //     // go to a lose scene and display the final score
-  //     go("lose", { score: scoreLabel.value });
-  //   }
-  // });
+  player.onCollide("dangerous", (d) => {
+        console.log((d.pos.y) + " " + player.pos.y)
+        if ((player.pos.y == d.pos.y) || isJumping) {
+            console.log("detect")
+            destroy(d);
+        } else {
+        // go to a lose scene and display the final score
+        go("lose", { score: scoreLabel.value });
+        }
+  });
 
   onUpdate(() => {
     // Make camera Position same as player position
