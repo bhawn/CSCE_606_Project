@@ -35,7 +35,7 @@ loadSprite("coin", "wbKxhcd.png");
 //enenmies
 
 loadSprite("evil-shroom", "KPO3fR9.png");
-loadSprite("covid", "zAptywW.png"); // https://imgur.com/gallery/zAptywW
+loadSprite("covid", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 //bricks
 loadSprite("brick", "pogC9x5.png");
 //blocks
@@ -107,8 +107,8 @@ scene("game", ({ level, score }) => {
       "                                                       ",
       "     %    =*=%=                                        ",
       "               -+         -+                    -+   ",
-      "              ()      c  ()  ^                 ()     ",
-      "===============================   ==  = ===  ============== ",
+      "              ()      c  ()  c ()                ()     ",
+      "================================  ==  = ===  ============== ",
     ],
     [
       "£                                                       £",
@@ -177,7 +177,7 @@ scene("game", ({ level, score }) => {
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
     "^": () => [sprite("covid"), solid(), "dangerous", body(), area()],
-    "c": () => [sprite("covid"), solid(), "dangerous", body(), area()],
+    // "c": () => [sprite("covid"), solid(), "dangerous", body(), area()],
     // "^": () => [
     //   sprite("evil-shroom"),
 
@@ -391,14 +391,14 @@ scene("game", ({ level, score }) => {
   // big mario becomes small
   // small mario dies
 
-  // player.onCollide("dangerous", (d) => {
-  //   if (isJumping) {
-  //     destroy(d);
-  //   } else {
-  //     // go to a lose scene and display the final score
-  //     go("lose", { score: scoreLabel.value });
-  //   }
-  // });
+  player.onCollide("dangerous", (d) => {
+    if (isJumping || (player.pos.y > d.pos.y)) {
+      destroy(d);
+    } else {
+      // go to a lose scene and display the final score
+      go("lose", { score: scoreLabel.value });
+    }
+  });
 
   onUpdate(() => {
     // Make camera Position same as player position

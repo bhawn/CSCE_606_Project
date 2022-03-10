@@ -4850,7 +4850,7 @@ loadRoot("https://i.imgur.com/");
 loadSprite("coin", "wbKxhcd.png"); //enenmies
 
 loadSprite("evil-shroom", "KPO3fR9.png");
-loadSprite("covid", "zAptywW.png"); // https://imgur.com/gallery/zAptywW
+loadSprite("covid", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 //bricks
 
 loadSprite("brick", "pogC9x5.png"); //blocks
@@ -4888,7 +4888,7 @@ scene("game", function (_ref) {
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj"); // draw maps
 
-  var maps = [["                                                       ", "                                                       ", "                                                       ", "                                                       ", "                                                       ", "                                                       ", "        ==*==%==                                               ", "                                                         ", "                                                      ", "                                                      ", "           ============================                                             ", "                                                       ", "                                                       ", "     %    =*=%=                                        ", "               -+         -+                    -+   ", "              ()      c  ()  ^                 ()     ", "===============================   ==  = ===  ============== "], ["£                                                       £", "£     ! ! ! ! ! ! ! ! ! ! ! !                           £", "£                                                       £", "£                                                       £", "£                                                       £", "£                               x                       £", "£     %    @@@@@@              xx                       £", "£                             xxx                -+     £", "£                 z   z      xxxx                ()     £", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!"], ["£                                                       £", "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £", "£                                                       £", "£                                                       £", "£                                                       £", "£                               x                       £", "£     %    @@@@@@              xx                       £", "£                             xxx                -+     £", "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £", "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"]]; // draw playableMap
+  var maps = [["                                                       ", "                                                       ", "                                                       ", "                                                       ", "                                                       ", "                                                       ", "        ==*==%==                                               ", "                                                         ", "                                                      ", "                                                      ", "           ============================                                             ", "                                                       ", "                                                       ", "     %    =*=%=                                        ", "               -+         -+                    -+   ", "              ()      c  ()  c ()                ()     ", "================================  ==  = ===  ============== "], ["£                                                       £", "£     ! ! ! ! ! ! ! ! ! ! ! !                           £", "£                                                       £", "£                                                       £", "£                                                       £", "£                               x                       £", "£     %    @@@@@@              xx                       £", "£                             xxx                -+     £", "£                 z   z      xxxx                ()     £", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!"], ["£                                                       £", "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £", "£                                                       £", "£                                                       £", "£                                                       £", "£                               x                       £", "£     %    @@@@@@              xx                       £", "£                             xxx                -+     £", "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £", "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"]]; // draw playableMap
   //level configuration
 
   var levelCfg = {
@@ -4935,9 +4935,7 @@ scene("game", function (_ref) {
     "^": function _() {
       return [sprite("covid"), solid(), "dangerous", body(), area()];
     },
-    "c": function c() {
-      return [sprite("covid"), solid(), "dangerous", body(), area()];
-    },
+    // "c": () => [sprite("covid"), solid(), "dangerous", body(), area()],
     // "^": () => [
     //   sprite("evil-shroom"),
     //   //solid(),
@@ -5103,15 +5101,17 @@ scene("game", function (_ref) {
   }); // if player onCollide with anythig with dangerous
   // big mario becomes small
   // small mario dies
-  // player.onCollide("dangerous", (d) => {
-  //   if (isJumping) {
-  //     destroy(d);
-  //   } else {
-  //     // go to a lose scene and display the final score
-  //     go("lose", { score: scoreLabel.value });
-  //   }
-  // });
 
+  player.onCollide("dangerous", function (d) {
+    if (isJumping || player.pos.y > d.pos.y) {
+      destroy(d);
+    } else {
+      // go to a lose scene and display the final score
+      go("lose", {
+        score: scoreLabel.value
+      });
+    }
+  });
   onUpdate(function () {
     // Make camera Position same as player position
     camPos(player.pos); // So whenever the y coordinate of the player is greater than death value then go to lose scene
@@ -5372,7 +5372,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40905" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36621" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
