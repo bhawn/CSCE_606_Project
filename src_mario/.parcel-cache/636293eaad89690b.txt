@@ -1,4 +1,4 @@
-75
+76
 80C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\src\assets132913450610046913 1
 62C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\package.json132913450610255009 0
 62C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\store.js132913450611330014 0
@@ -17,7 +17,7 @@
 62C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\play.mp3132913450610750453 0
 82C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\package.json132913450609844114 0
 68C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\PlayableMap.js132913492346038490 0
-61C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites132913492346096850 1
+61C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites132914063679867286 1
 82C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\CHANGELOG.md132913450609516921 0
 67C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\a.png132913450610841742 0
 85C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.cjs132913450609599461 0
@@ -29,7 +29,6 @@
 67C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\d.png132913450611034753 0
 76C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\blue-brick.png132913450610898714 0
 82C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\blue-evil-shroom.png132913450610918663 0
-84C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.js132913450609704160 0
 76C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\blue-steel.png132913450610946554 0
 73C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\src132913450610208835 1
 86C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.d.ts132913450609674161 0
@@ -49,6 +48,7 @@
 79C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\pipe-to-right.png132913450611206047 0
 79C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\pipe-top-left.png132913450611229462 0
 71C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\shoot.png132913450611275792 0
+83C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\src\sprites\TAXRETURNS_21_KAU.pdf132914063681386660 0
 81C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\.package-lock.json132913450609479914 0
 69C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom132913450609858753 1
 92C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\src\assets\apl386o.png132913450609908603 0
@@ -64,6 +64,7 @@
 89C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\src\assets\sink.png132913450610036926 0
 89C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\src\assets\burp.mp3132913450609965362 0
 89C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.cjs.map132913450609639612 0
+84C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.js132913450609704160 0
 88C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.js.map132913450609752593 0
 85C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.mjs132913450609771769 0
 89C:\Users\kaush\Desktop\CSCE_606_Project\src_mario\node_modules\kaboom\dist\kaboom.mjs.map132913450609802544 0
