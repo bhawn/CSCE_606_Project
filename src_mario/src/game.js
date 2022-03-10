@@ -132,7 +132,7 @@ scene("game", ({ level, score }) => {
     "^": () => [
       sprite("evil-shroom"),
 
-      //solid(),
+      solid(),
       "dangerous",
       /*body(),*/ area(),
     ],
@@ -184,9 +184,14 @@ scene("game", ({ level, score }) => {
   // default layer is 'obj '
   // so change layer to 'ui' for adding score
   //define this as a method so that it can be passed to other levels
+  add([text("Score:"), scale(0.3), pos(20, 6), fixed()]);
   const scoreLabel = add([
-    text(score),
-    pos(30, 6),
+    //text(score),
+    text(parseInt(score)),
+    pos(115, 6),
+    scale(0.3),
+    ,
+    fixed(),
     layer("ui"),
     {
       value: score,
@@ -195,7 +200,12 @@ scene("game", ({ level, score }) => {
 
   // add a text to define which level we currently are in
   // parameters for add are text, position
-  add([text("level " + parseInt(level + 1)), pos(40, 6)]);
+  add([
+    text("Level: " + parseInt(level + 1)),
+    pos(20, 22),
+    scale(0.3),
+    fixed(),
+  ]);
 
   function big() {
     let timer = 0;
@@ -406,11 +416,13 @@ scene("game", ({ level, score }) => {
   onKeyPress("space", jumping);
 
   // timer functionality in game scene
+
   const timer = add([
     text("0"),
-    pos(90, 70),
-    scale(1),
+    pos(240, 38),
+    scale(0.3),
     layer("ui"),
+    fixed(),
     { time: TIME_LEFT },
   ]);
 
@@ -419,24 +431,27 @@ scene("game", ({ level, score }) => {
       time: BULLET_TIME_LEFT,
     },
   ]);
+  add([text("Time Remaining: "), pos(20, 38), scale(0.3), fixed()]);
+  onUpdate(() => {
+    (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
 
-  // onUpdate(() => {
-  //   (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
-  //   if (timer.time <= 0) {
-  //     go("lose", { score: scoreLabel.value });
-  //   }
-  // });
+    if (timer.time <= 0) {
+      go("lose", { score: scoreLabel.value });
+    }
+  });
 
   // Bullet functionality
   // positon of player as parameter
-  function spawnBullet(p) {
+  function spawnBullet(position) {
     // define a rectangular area around the player position
     // give bullet as a tag
     add([
-      rect(10, 1),
-      pos(p),
+      //rect(10, 1),
+      sprite("BulletVaccineMushroom"),
+      pos(position),
       origin("center"),
       color(1, 500, 10),
+      scale(0.1),
       "bullet",
       area(),
     ]);
