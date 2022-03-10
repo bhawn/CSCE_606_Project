@@ -129,7 +129,7 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), solid(), "dangerous", body(), area()],
+    "^": () => [sprite("covid"), "dangerous", area()],
 
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
 
@@ -335,10 +335,12 @@ scene("game", ({ level, score }) => {
   // Let us make evils move
 
   onUpdate("dangerous", (d) => {
-    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);
-    else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
-    if (d.pos.y < player.pos.y) d.move(-ENEMY_SPEED, ENEMY_SPEED * 3);
-    else if (d.pos.y > player.pos.y) d.move(ENEMY_SPEED, -ENEMY_SPEED * 3);
+    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3 * (level + 1), 0);
+    else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3 * (level + 1), 0);
+    if (d.pos.y < player.pos.y)
+      d.move(-ENEMY_SPEED * (level + 1), ENEMY_SPEED * 3 * (level + 1));
+    else if (d.pos.y > player.pos.y)
+      d.move(ENEMY_SPEED * (level + 1), -ENEMY_SPEED * 3 * (level + 1));
     // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
   });
   // if player onCollide with anythig with dangerous
@@ -346,14 +348,14 @@ scene("game", ({ level, score }) => {
   // small mario dies
 
   player.onCollide("dangerous", (d) => {
-        console.log((d.pos.y) + " " + player.pos.y)
-        if ((player.pos.y == d.pos.y) || isJumping) {
-            console.log("detect")
-            destroy(d);
-        } else {
-        // go to a lose scene and display the final score
-        go("lose", { score: scoreLabel.value });
-        }
+    console.log(d.pos.y + " " + player.pos.y);
+    if (player.pos.y == d.pos.y || isJumping) {
+      console.log("detect");
+      destroy(d);
+    } else {
+      // go to a lose scene and display the final score
+      go("lose", { score: scoreLabel.value });
+    }
   });
 
   onUpdate(() => {

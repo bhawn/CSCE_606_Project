@@ -555,6 +555,7 @@ loadRoot("https://i.imgur.com/");
 loadSprite("coin", "wbKxhcd.png");
 //enenmies
 loadSprite("evil-shroom", "KPO3fR9.png");
+loadSprite("covid", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 //bricks
 loadSprite("brick", "pogC9x5.png");
 //blocks
@@ -592,10 +593,9 @@ scene("game", ({ level , score  })=>{
         "obj",
         "ui"
     ], "obj");
-    // draw playableMap
     //level configuration
     const levelCfg = {
-        //every sprite has a wdith and height
+        //every sprite has a width and height
         width: 20,
         height: 20,
         // parameters 1: name of the sprite, 2: solid , 3: tag
@@ -680,13 +680,11 @@ scene("game", ({ level , score  })=>{
             ]
         ,
         "^": ()=>[
-                sprite("evil-shroom"),
-                solid(),
+                sprite("covid"),
                 "dangerous",
-                /*body(),*/ area(), 
+                area()
             ]
         ,
-        //body() is used for gravity
         "#": ()=>[
                 sprite("mushroom"),
                 solid(),
@@ -896,23 +894,25 @@ scene("game", ({ level , score  })=>{
     });
     // Let us make evils move
     onUpdate("dangerous", (d)=>{
-        if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);
-        else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
-        if (d.pos.y < player.pos.y) d.move(-ENEMY_SPEED, ENEMY_SPEED * 3);
-        else if (d.pos.y > player.pos.y) d.move(ENEMY_SPEED, -ENEMY_SPEED * 3);
+        if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3 * (level + 1), 0);
+        else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3 * (level + 1), 0);
+        if (d.pos.y < player.pos.y) d.move(-ENEMY_SPEED * (level + 1), ENEMY_SPEED * 3 * (level + 1));
+        else if (d.pos.y > player.pos.y) d.move(ENEMY_SPEED * (level + 1), -ENEMY_SPEED * 3 * (level + 1));
     // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
     });
     // if player onCollide with anythig with dangerous
     // big mario becomes small
     // small mario dies
-    // player.onCollide("dangerous", (d) => {
-    //   if (isJumping) {
-    //     destroy(d);
-    //   } else {
-    //     // go to a lose scene and display the final score
-    //     go("lose", { score: scoreLabel.value });
-    //   }
-    // });
+    player.onCollide("dangerous", (d)=>{
+        console.log(d.pos.y + " " + player.pos.y);
+        if (player.pos.y == d.pos.y || isJumping) {
+            console.log("detect");
+            destroy(d);
+        } else // go to a lose scene and display the final score
+        go("lose", {
+            score: scoreLabel.value
+        });
+    });
     onUpdate(()=>{
         // Make camera Position same as player position
         camPos(player.pos);
@@ -1167,7 +1167,7 @@ go("game", {
     score: 0
 });
 
-},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu","./PlayableMap":"3MEhn"}],"larQu":[function(require,module,exports) {
+},{"kaboom":"larQu","./PlayableMap":"3MEhn","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"larQu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>no
@@ -5213,7 +5213,7 @@ const playableMap = [
         "     %    =*=%=                                    ============                                    =============== ",
         "  -+                                               ===========                -+                    ====================       ",
         "  ()                         ^       ^           ===========                  ()          $$$$$$       ======================  ",
-        "===============================   ==  = ===  ===========                    =====     =========================  ", 
+        "======================================================                    =====     =========================  ", 
     ],
     [
         "£                                                                                                                                           £",
