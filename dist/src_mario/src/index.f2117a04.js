@@ -1134,7 +1134,17 @@ scene("lose", ({ score  })=>{
         origin("center"),
         pos(width() / 2, height() / 2)
     ]);
-    console.log("Want to Play Again");
+    add([
+        text('Hit "Space bar" to Play again'),
+        scale(0.5),
+        pos(width() / 2 - 240, height() / 2 + 30), 
+    ]);
+    onKeyPress("space", ()=>{
+        go("game", {
+            level: 0,
+            score: 0
+        });
+    });
 });
 //init();
 go("game", {
