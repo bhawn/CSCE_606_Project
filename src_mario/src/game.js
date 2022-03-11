@@ -1,6 +1,9 @@
 import kaboom from "kaboom";
+<<<<<<< HEAD
 import { playableMap } from "./PlayableMap";
 
+=======
+>>>>>>> 94433e1ac62608ba72573cd042f3ebc2f064eefa
 const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
@@ -481,11 +484,13 @@ scene("game", ({ level, score }) => {
 
   // The mobile version begins
   //The following is for the mobile support
+  //##############MOBILE##################
 
   // if (isTouch()) {
   buttonsVisible = false;
   //console.log(isTouch);
 
+<<<<<<< HEAD
   //because left and right buttons will be pressed
   //we need to keep track of them
   const keyDownOnMobile = {
@@ -496,11 +501,25 @@ scene("game", ({ level, score }) => {
   const moveLeft = () => {
     player.move(-MOVE_SPEED, 0);
   };
+=======
+    //because left and right buttons will be pressed
+    //we need to keep track of them
+    const keyDownOnMobile = {
+      left: false,
+      right: false,
+      // we will set them to true when these buttons are tocuhed
+    };
+    
+    const moveLeft = () => {
+      player.move(-MOVE_SPEED, 0);
+    };
+>>>>>>> 94433e1ac62608ba72573cd042f3ebc2f064eefa
 
   const moveRight = () => {
     player.move(MOVE_SPEED, 0);
   };
 
+<<<<<<< HEAD
   onKeyDown("left", () => {
     keyDownOnMobile.left = true;
   });
@@ -517,6 +536,10 @@ scene("game", ({ level, score }) => {
     keyDownOnMobile.right = false;
   });
   if (buttonsVisible) {
+=======
+    
+    //Mobile Buttons
+>>>>>>> 94433e1ac62608ba72573cd042f3ebc2f064eefa
     const leftButton = add([
       sprite("a"),
       pos(50, 450),
@@ -527,7 +550,7 @@ scene("game", ({ level, score }) => {
 
     const rightButton = add([
       sprite("d"),
-      pos(100, 450),
+      pos(125, 450),
       opacity(0.5),
       fixed(),
       area(),
@@ -564,6 +587,7 @@ scene("game", ({ level, score }) => {
     } else if (shootButton.hasPoint(pos)) {
       spawnBullet(player.pos.add(25, -10));
 
+<<<<<<< HEAD
       shootButton.opacity = 1;
     }
   });
@@ -635,6 +659,78 @@ scene("game", ({ level, score }) => {
     }
   });
   // }
+=======
+    //TouchStart acts similar to a key press
+    //Sperate starts allow for mulitple button presses
+    onTouchStart((leftPress, pos) => {
+        if (leftButton.hasPoint(pos)) {
+            keyDownOnMobile.left = true;
+            leftButton.opacity = 1;
+        }
+    });
+    
+    onTouchStart((rightPress, pos) => {
+        if (rightButton.hasPoint(pos)) {
+            keyDownOnMobile.right = true;
+            rightButton.opacity = 1;
+        }
+    });
+        
+    onTouchStart((jumpPress, pos) => {
+        if (actionButton.hasPoint(pos)) {
+            jumping();
+            actionButton.opacity = 1;
+        }
+    });
+      
+    onTouchStart((shootPress, pos) => {
+        if (shootButton.hasPoint(pos)) {
+            spawnBullet(player.pos.add(25, -10));
+            shootButton.opacity = 1;
+        }
+    });
+    
+    //Keeps movement even if screen is touched, or other button is touched
+    onTouchMove((id, pos) => {
+        if (leftButton.hasPoint(pos)) {
+            keyDownOnMobile.left = true;
+            leftButton.opacity = 1;
+        }
+        if (rightButton.hasPoint(pos)) {
+            keyDownOnMobile.right = true;
+            rightButton.opacity = 1;
+        }
+    });
+    
+    //Ends individual presses
+    onTouchEnd((leftPress, pos) => {
+        keyDownOnMobile.left = false;
+        leftButton.opacity = 0.5
+    });
+        
+    onTouchEnd((rightPress, pos) => {
+        keyDownOnMobile.right = false;
+        rightButton.opacity = 0.5;
+    });
+        
+    onTouchEnd((actionPress, pos) => {
+        actionButton.opacity = 0.5;
+    });
+      
+    onTouchEnd((shootPress, pos) => {
+        shootButton.opacity = 0.5;
+    });
+    
+
+    onUpdate(() => {
+      if (keyDownOnMobile.left) {
+        moveLeft();
+      } else if (keyDownOnMobile.right) {
+        moveRight();
+      }
+    });
+  }
+>>>>>>> 94433e1ac62608ba72573cd042f3ebc2f064eefa
 
   //The mobile version ends
 });
