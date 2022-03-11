@@ -1,4 +1,5 @@
 import kaboom from "kaboom";
+import { playableMap } from "./PlayableMap";
 const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
