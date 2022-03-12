@@ -535,7 +535,7 @@ const BULLET_TIME_LEFT = 4;
 let isBig = false;
 let buttonsVisible = true;
 let hasBulletAbility = false;
-_kaboomDefault.default({
+const k = _kaboomDefault.default({
     global: true,
     // enable full screen
     fullscreen: true,
@@ -549,6 +549,22 @@ _kaboomDefault.default({
     // for debug mode
     debug: true
 });
+window.addEventListener("resize", resize, false);
+function resize() {
+    // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
+    var canvas = document.querySelector("canvas");
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+    var windowRatio = windowWidth / windowHeight;
+    var gameRatio = k.width / k.height;
+    if (windowRatio < gameRatio) {
+        canvas.style.width = windowWidth + "px";
+        canvas.style.height = windowWidth / gameRatio + "px";
+    } else {
+        canvas.style.width = windowHeight * gameRatio + "px";
+        canvas.style.height = windowHeight + "px";
+    }
+}
 //add scenes
 //coins
 loadRoot("https://i.imgur.com/");
