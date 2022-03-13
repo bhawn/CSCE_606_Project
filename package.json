@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html -p 8000",
-    "build": "parcel build index.html --no-scope-hoist"
+    "build": "parcel build index.html --no-scope-hoist",
+	"heroku-postbuild": "parcel build index.html"
   },
   "author": "",
   "license": "ISC",
@@ -19,5 +20,11 @@
   },
   "alias": {
     "kaboom": "./node_modules/kaboom/dist/kaboom.mjs"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RedHead17/CSCE_606_Project.git"
+  },
+  "keywords": []
 }
