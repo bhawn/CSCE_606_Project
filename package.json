@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel index.html -p 8000",
-    "build": "parcel build index.html --no-scope-hoist",
+    "start": "parcel index.html -open",
+    "build": "parcel build index.html",
 	"heroku-postbuild": "parcel build index.html"
   },
   "author": "",
