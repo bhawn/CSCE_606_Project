@@ -4805,58 +4805,43 @@ var no = a((i = {}) => {
   return ye;
 }, "default");
 exports.default = no;
+},{}],"src_mario/src/PlayableMap.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.playableMap = void 0;
+var playableMap = [["                                                                          ===========                        ", "                                                                         ===========                         ", "                                                                       ===========  ===========                      ", "                                                                      ===========             ===========                ", "                                                                    ===========                           =========== ", "                                                                   ===========                                            ===========   ", "                                                                 ===========                                      =========== ", "                                                               ===========                                             =========== ", "         ============================                        ===========                                                               ", "                                                           ===========                                        =========== ", "                                                         ===========                                  =========== ", "                                                       ===========                                =========== ", "                                                     ===========                            ===========   ", "     %    =*=%=                                    ============                                    =============== ", "  -+                                               ===========                -+                    ====================       ", "  ()                         ^       ^           ===========                  ()          $$$$$$       ======================  ", "======================================================                    =====     =========================  "], ["£                                                                                                                                           £", "£     ! ! ! ! ! ! ! ! ! ! ! !                                            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!             £", "£              $$$$$$                                                 !!!!!!!!!!!!!!!!!!!!!!!!!!         !!!!!!!!!!!!!!!!!!!!!!!!!!       £", "£             $$$$$$$                $$$$$          $$$$$$          !!!!!!!!!!!!!!!!!!!!!!!!!!                 !!!!!!!!!!!!!!!!!!!!!!!!!!                                         £", "£           $$$$$$$$$$                                            !!!!!!!!!!!!!!!!!!!!!!!!!!                      !!!!!!!!!!!!!!!!!!!!!!!!!!                                   -+£", "£                               x      $$$$$$     $$$$$$       !!!!!!!!!!!!!!!!!!!!!!!!!!                            !!!!!!!!!!!!!!!!!!!!!!!!!!                              !!()£", "£     %    @@@@@@              xx                            !!!!!!!!!!!!!!!!!!!!!!!!!!                                 !!!!!!!!!!!!!!!!!!!!!!!!!!                        !!£", "£ -+                            xxx           $$$$$          !!!!!!!!!!!!!!!!!!!!!!!!!!                                     !!!!!!!!!!!!!!!!!!!!!!!!!!      !!       !!£", "£ ()                z   z      xxxx                        !!!!!!!!!!!!!!!!!!!!!!!!!!                                          !!!!!!!!!!!!!!!!!!!!!!!!!!       !!     £", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!"], ["==   -+   $$$$                                  $$                                                        ", "     ()                                         ==                                                   ", "     ==                                                                                            ", "                 $$$                     ==      ==                                                     ", "          ==                          ^^                                                           ", "                ^^                   ==              ==                                              ", "               ==       $$$      ^^                                                                 ", "                                ==                      ==                                                ", "                     ^^                                                                                                                        ", "                    ==    *   ==                            ==                                           ", "                                                                                                         ", "                         ==                                    ==                                          ", "                                                                                                              ", "                                                                  ==                                           ", "                                                              ==                                          ", "                                                                                                       ", "                   ^^^^^^^^^^                                       ==                                          ", "                                                                                                                       ", "                                                      ==", "                                                  ==", "                                         ", "                    ^^                                                                                                     ", "                                              ==                                                     -+                    ", "                ^^                                   ==                                $$            ()                                        ", "                                                                                                   ====                                       ", "                                                       ===                                          ", "                                                                          ==     =  =      ====                                           ", "                  ^^^^                                         ===                                          ", "                                                                   ===                                          ", "                                                                                                                  ", "                                                                                                                      "], ["£                                                             !                            £", "£     ! ! ! ! ! ! ! ! ! ! ! !                           !!!                            -+   £", "£                                        *           !!!                           xxxx()  £", "£             $$$           $$$      x             !!!                          xxxx         £", "£             !!             zz          *        !!!                        xxxx     £", "£        !!!        !!1               x          !!!                     xxxx    £", "£     %    @@@@@@     zzzz     !!!    xx        !!!                  xxxx     £", "£ -+                            xxx       !!!      x                xxxx      £", "£ ()    zzzzzzzzz       zzzzzz          zzzzzzzzzzzx zzzz      xxxx         £", "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"], ["=======      ===   ========    ==========                                                                    ", "      x                                                                                                ", "      x  z             ====xxx              ==                                                        ", "      ====   -+          x                    =                                                                  ", "      x   z  ()    x===xxx               =                                                        ", "      x   x======                   =                                                        ", "      x                          =                                                        ", "      x                         =                                                        ", "      x                       =                                                        ", "      x                       =                                                        ", "xxxxxx                   =                                                        ", "                       =                            ", "     ===             =                      ", "        xxx==     =                           ", "              x                                                                                           ", "              x     ========                                                                                     ", "              xxxxxx        =======                                                                              ", "                                 =======                                                                       ", "                                         =======                                                                ", "               ===                                                                                          ", "          ===      ===                                                                                    ", "-+    ===                                     =======", "()                     =======     ===                 ", "()    ===                   ===    =======     ===                 ", "()       ====                                                     ", "()            ====     ===    =======     ===                 "], ["                                                                                                                                                                                                                     ", "       =                  %                                                                                                                                                                                            ", "                                                                                                                                                                                                                     ", "   *                  $          ==     ====                                         %                                                                                                                                             ", "                      $    =                                                                                                                                                                                           ", "       =                                %       x                                       ==    x  xxx                                                                                                                          ", "                      *                                                                            x                                                                                                                     ", "   *                                 x               x                              ==             x                                                                                                                      ", "       ^^                   =                                                                      x                                                                                                                   ", "       =                                x                    x                   %                 x                                                                                                         ", "                       %                                      x                                    x                                                                                                       ", "   %        =              =                                   x                ==                 x                                                                                                            ", "     ^^                                                         x                                  x                                                                                                        ", "       x           =    =                                         x            x                    x                                                                                                       ", "           x                                                       x         x                      x                                                                                                             ", "             ^^                                                    x     x         x               x                                                                                                                      ", "   *                                                                x                              x                                                                                                       ", "        x                                                                  x      x                x                                                                                                        ", "                                                                               x                   xxx                                                                                                      ", "   %                                                                                                    x                                                                                                 ", "                                                                                                                                                                                                        ", "      ^^                                                                                              x                                                                                                    ", "       =                                                                                           ==                                                                                                      ", "                                                                                x              x                                                                                                            ", "                                                                                                                                                                                                           ", "   *                                                                     =          =   =                                                                                                                   ", "-+       x                                                                                                                                                                                                    ", "()  = =                                                                                                                                                                                                    ", "=                                                                                                                                                                                                    ", "                                                                                                                                                                                                   ", "     =                                                                                                                                                                                                   ", "     =                                                                   -+                                                                                                                                ", "     =                                                                   ()                                                                                                                                ", "     =                                                                   ()                                                                                                                                "], ["                                                       £", "                                      $$             £", "                                     %%                                   ", "                                                                       ", "                                   x  x                 £", "                                                   $$$$$$$$                    ", "                                      $                                 ", "                    x                x     x       x x         £", "                                    $                                   ", "              x           x        x           x        x                 £", "                                                                       ", "           x x             x   x         x           x             £", "                                                                       ", "        x   x              x x       x              x        £", "-+                                                                       ", "()     x      x       x        x     x                  x         £", "                                                                       ", " x         x      x          x   x                      x        ", "                  x                                                     ", "x           xxxxx x       xxxxxxx                       x     xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "                  x                                       x", "                  xxxx    xxx                                     x            ", "                x                                         x                       ", "            x x x           x                                              ", "                x                                                                      ", "            x                                                                     ", "                                         x                       x                         ", "            x                       x        x                                        ", "                x                  x             x             x                         ", "                   x                                                                ", "                     x           x                  x         x                 ", "                                                       x   x                           ", "                             x                                                    ", "                x                                                               ", "                     -+   x                                                         ", "                     ()                                                             ", "                     ()                                                           ", "                     x                                                           "], ["                                                                                                                                                                                           ", "   =======   =====      ======    ======                                                                                                                                               -+ ", "                                                     ^  ^^^             ^                                                                                                                 ()", "                  ^^^^^^                          ================  ===     ==                                                                                                    ==    % ", "                                                                 ^^^^                                                                                                        %", "                                                            $$    ===                                                                                                     %", "                                           ^^^               $$$$                                                                                                      % ", "        *          %                                     $$$$$$                                                                                                     %", "                                                               ^^^^^^                                                                                            %", "                                             ===            ====================                                                                             % ", "             ^                                                                           *                                                                %", "           ===========================               $^                                                                                                %", "             ^                                         ==   *                                                ^                                      %", "                                                                           	           =                      %=   =     *                     %", "     %    =*=%=                                            =             %%%%         =    =                    =                    %       %     ", "    -+                                  ^^^^                                             =          =                           =             %          ", "    ()     ^^      ^^^^^^                                                      =                                    ^^                       =             %      ", "===============================   ==  = =   =  =  ========         ================         ==   =======   ========           ==    ==     ============== "], ["£                                                  @@@                                                     £", "£                                                                                                          £", "£                                                   !                                                      £", "£                                           **                                                      £", "£                                  z           $$$     !!    !!        $$$$$$$$$$$$$$$$$$$$$£", "£                                  x          !!!                            £   £   £   £      £    £", "£     %    @@@@@@                 xx                             xxx%%         %      %      %     £", "£   -+                           xxx                                                               £", "£   ()              z   z       xxxx        xx                     xx£       !!     !!     !!               ", "!!!!!!!!!!!!!!!!!!     !!!!!!!       !!    !!!!!!  !!!!!!xxxxxx!!!!!!!!!!!                                  ", "                                                                                                             ", "                                                                              %             %           ", "                    *                                      -+                        xx           xx     ", "                   £                                       ()                                       ", "                   !!!!!                    !!!!!!!!!!!!!!!!!!!!!!!   x x      xx         xx           "], ["£                                                                                                          £", "£     ! ! ! ! ! ! ! ! ! ! ! !                                                                                £", "£                                                                                                            £", "£      xxxxx       xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                               £", "£                                                                                                              £", "£                               x                                                                              £", "£                               x                                                                              £", "£                               x                                                                              £", "£                               x                                                                            £", "£                               x                                                                            £", "£     %    @@      @@@@              xx                                                                       £", "£    -+     $   $$   $$$   $$$$      $$$$$$      $$$$$$$        xxx                                            £", "£    ()                                        ()                                                               £", "!xx!!!!!!!!!!!!!         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                            x", "                                                                                                                x", "                                                                                                                  ", "                                                                                 $$$$$                             ", "-+xxx  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx    xxxxxxxxxxxxxx    xxxxxx   xxxxxx    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx      ", "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$                ", "                $$     xxxxx                                                                                 xxxxxxx", "-+                                      $$                                                               xxxxxxx", "()   x          xxxx                   xxxxxxxxxxxxxxxxx                          xx     xx   x    xxxxxxxx                        x", "()          x   xxxx    %              xxx            xx         x               xx  x     x            x", "()              xxxx                   xxx            xx                      xx    x        x           x", "()       x      xxxx        x          xxx            xx      xx            xx      x          x          x", "()                                     xxx            xx                  xx        x            x        x", "()                    xxx              xxx            xx   %            xx          x              x        x", "()                     xxx             xxx            xx         xx   xx            x                x       x", "()               x       xxx           xxx            xx            xx              x                 x", "()    xxxxxx           xxxxxxxxxxxxxxxxxxx                 xxxxxxxxxxxxxx              xxxxxxxxxxxxxxxxxxx                                        x"]];
+exports.playableMap = playableMap;
 },{}],"src_mario/src/game.js":[function(require,module,exports) {
 "use strict";
 
 var _kaboom = _interopRequireDefault(require("kaboom"));
 
+var _PlayableMap = require("./PlayableMap");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var MOVE_SPEED = 60;
+var MOVE_SPEED = 150;
 var JUMP_FORCE = 560;
 var BIG_JUMP_FORCE = 750;
 var CURRENT_JUMP_FORCE = JUMP_FORCE;
 var ENEMY_SPEED = 20;
 var isJumping = true;
-var FALL_DEATH = 400;
+var FALL_DEATH = 700;
 var TIME_LEFT = 50;
 var BULLET_TIME_LEFT = 4;
-var _isBig = false; // the following is for canvas'
-
-/*
-var canvas;
-var canvasWidth;
-var ctx;
-
-function init() {
-  canvas = document.getElementById("#mycanvas");
-  if (canvas.getContext) {
-    ctx = canvas.getContext("2d");
-
-    window.addEventListener("resize", resizeCanvas, false);
-    window.addEventListener("orientationchange", resizeCanvas, false);
-    resizeCanvas();
-  }
-}
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-*/
-// camvas functionality end
-
+var _isBig = false;
+var buttonsVisible = true;
+var hasBulletAbility = false;
 (0, _kaboom.default)({
   global: true,
   // enable full screen
   fullscreen: true,
-  width: window.innerWidth,
-  height: window.outerHeight,
   scale: 1,
   background: [0.1, 0, 0, 0],
   // for debug mode
-  //isTouch= false,
-  //canvas: document.querySelector("#mycanvas"),
   debug: true
 }); //add scenes
 //coins
@@ -4864,14 +4849,20 @@ function resizeCanvas() {
 loadRoot("https://i.imgur.com/");
 loadSprite("coin", "wbKxhcd.png"); //enenmies
 
-loadSprite("evil-shroom", "KPO3fR9.png"); //bricks
+loadSprite("evil-shroom", "KPO3fR9.png");
+loadSprite("covid", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
+//bricks
 
 loadSprite("brick", "pogC9x5.png"); //blocks
 
 loadSprite("block", "M6rwarW.png"); //mario
 
 loadSprite("mario", "Wb1qfhK.png");
-loadSprite("mushroom", "0wMd92p.png");
+loadSprite("mushroom", "0wMd92p.png"); //BiggerMarioShor
+
+loadSprite("BigVaccineMushroom", "CCdLQNO.jpg"); //Mushroom for bullets
+
+loadSprite("BulletVaccineMushroom", "ertkPgG.jpg");
 loadSprite("surprise", "gesQ1KP.png");
 loadSprite("unboxed", "bdrLpi6.png");
 loadSprite("pipe-top-left", "ReTPiWY.png");
@@ -4895,12 +4886,10 @@ scene("game", function (_ref) {
   //An array
   // background layer, object layer as default, UI layer
   // initialise with obj as default
-  layers(["bg", "obj", "ui"], "obj"); // draw maps
-
-  var maps = [["                                                       ", "                                                       ", "                                                       ", "                                                       ", "                                                       ", "                                                       ", "        ==*==%==                                               ", "                                                         ", "                                                      ", "                                                      ", "           ============================                                             ", "                                                       ", "                                                       ", "     %    =*=%=                                        ", "               -+         -+                    -+   ", "              ()      ^  ()  ^                 ()     ", "===============================   ==  = ===  ============== "], ["£                                                       £", "£     ! ! ! ! ! ! ! ! ! ! ! !                           £", "£                                                       £", "£                                                       £", "£                                                       £", "£                               x                       £", "£     %    @@@@@@              xx                       £", "£                             xxx                -+     £", "£                 z   z      xxxx                ()     £", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!"], ["£                                                       £", "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £", "£                                                       £", "£                                                       £", "£                                                       £", "£                               x                       £", "£     %    @@@@@@              xx                       £", "£                             xxx                -+     £", "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £", "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"]]; //level configuration
+  layers(["bg", "obj", "ui"], "obj"); //level configuration
 
   var levelCfg = {
-    //every sprite has a wdith and height
+    //every sprite has a width and height
     width: 20,
     height: 20,
     // parameters 1: name of the sprite, 2: solid , 3: tag
@@ -4917,6 +4906,14 @@ scene("game", function (_ref) {
     "*": function _() {
       return [sprite("surprise"), solid(), "mushroom-surprise", area()];
     },
+    //Newly added sprites begin here
+    u: function u() {
+      return [sprite("surprise"), solid(), "BigVaccineMushroomSurprise", area()];
+    },
+    v: function v() {
+      return [sprite("surprise"), solid(), "BulletVaccineMushroomSurprise", area()];
+    },
+    //Newly added Sprites end here
     "}": function _() {
       return [sprite("unboxed"), solid(), area()];
     },
@@ -4933,11 +4930,16 @@ scene("game", function (_ref) {
       return [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()];
     },
     "^": function _() {
-      return [sprite("evil-shroom"), solid(), "dangerous", body(), area()];
+      return [sprite("covid"), "dangerous", area()];
     },
-    //body() is used for gravity
     "#": function _() {
       return [sprite("mushroom"), solid(), "mushroom", body(), area()];
+    },
+    o: function o() {
+      return [sprite("BigVaccineMushroom"), solid(), "BigVaccineMushroom", body(), area(), scale(0.1, 0.1)];
+    },
+    p: function p() {
+      return [sprite("BulletVaccineMushroom"), solid(), "BulletVaccineMushroom", body(), area(), scale(0.1, 0.1)];
     },
     "!": function _() {
       return [sprite("blue-block"), solid(), scale(0.5), area()];
@@ -4946,7 +4948,9 @@ scene("game", function (_ref) {
       return [sprite("blue-brick"), solid(), scale(0.5), area(), "brick"];
     },
     z: function z() {
-      return [sprite("blue-evil-shroom"), solid(), scale(0.5), body(), area(), "dangerous"];
+      return [sprite("blue-evil-shroom"), // solid(),
+      scale(0.5), // body(),
+      area(), "dangerous"];
     },
     "@": function _() {
       return [sprite("blue-surprise"), solid(), area(), scale(0.5), "coin-surprise"];
@@ -4956,17 +4960,19 @@ scene("game", function (_ref) {
     }
   }; // now just create a  gamelevel(JS method) and pass the map and levelCfg
 
-  var gameLevel = addLevel(maps[level], levelCfg); // add some text to display score and position on UI layer
+  var gameLevel = addLevel(_PlayableMap.playableMap[level], levelCfg); // add some text to display score and position on UI layer
   // default layer is 'obj '
   // so change layer to 'ui' for adding score
   //define this as a method so that it can be passed to other levels
 
-  var scoreLabel = add([text(score), pos(30, 6), layer("ui"), {
+  add([text("Score:"), scale(0.3), pos(20, 6), fixed()]);
+  var scoreLabel = add([//text(score),
+  text(parseInt(score)), pos(115, 6), scale(0.3),, fixed(), layer("ui"), {
     value: score
   }]); // add a text to define which level we currently are in
   // parameters for add are text, position
 
-  add([text("level " + parseInt(level + 1)), pos(40, 6)]);
+  add([text("Level: " + parseInt(level + 1)), pos(20, 22), scale(0.3), fixed()]);
 
   function big() {
     var timer = 0; // let isBig = false;
@@ -5035,14 +5041,44 @@ scene("game", function (_ref) {
     if (obj.is("brick")) {
       destroy(obj);
     }
+
+    if (obj.is("BigVaccineMushroomSurprise")) {
+      // Now spawn the mushroom and place the mushroom just above the grid 1 pos above along Y axis
+      gameLevel.spawn("o", obj.gridPos.sub(0, 1)); // Now destroy the old one
+
+      destroy(obj); // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
+
+      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
+    }
+
+    if (obj.is("BulletVaccineMushroomSurprise")) {
+      // Now spawn the mushroom and place the mushroom just above the grid 1 pos above along Y axis
+      gameLevel.spawn("p", obj.gridPos.sub(0, 1)); // Now destroy the old one
+
+      destroy(obj); // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
+
+      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
+    }
   });
-  player.collides("mushroom", function (m) {
+  player.onCollide("mushroom", function (m) {
     // pick a mushroom and destroy the object
     destroy(m); //Now biggify for 6 seconds
 
     player.biggify(6);
   });
-  player.collides("coin", function (c) {
+  player.onCollide("BigVaccineMushroom", function (m) {
+    // pick a Big Vaccine mushroom and destroy the object
+    destroy(m); //Now biggify for 6 seconds
+
+    player.biggify(6);
+  });
+  player.onCollide("BulletVaccineMushroom", function (m) {
+    // pick a Big Vaccine mushroom and destroy the object
+    destroy(m); //Now biggify for 6 seconds
+
+    player.biggify(6);
+  });
+  player.onCollide("coin", function (c) {
     destroy(c); // increase the value of the score
 
     scoreLabel.value++; // then display the score
@@ -5051,15 +5087,17 @@ scene("game", function (_ref) {
   }); // Let us make evils move
 
   onUpdate("dangerous", function (d) {
-    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0); // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
-    // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
-    // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
-  }); // if player collides with anythig with dangerous
+    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3 * (level + 1), 0);else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3 * (level + 1), 0);
+    if (d.pos.y < player.pos.y) d.move(-ENEMY_SPEED * (level + 1), ENEMY_SPEED * 3 * (level + 1));else if (d.pos.y > player.pos.y) d.move(ENEMY_SPEED * (level + 1), -ENEMY_SPEED * 3 * (level + 1)); // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
+  }); // if player onCollide with anythig with dangerous
   // big mario becomes small
   // small mario dies
 
-  player.collides("dangerous", function (d) {
-    if (isJumping) {
+  player.onCollide("dangerous", function (d) {
+    console.log(d.pos.y + " " + player.pos.y);
+
+    if (player.pos.y == d.pos.y || isJumping) {
+      console.log("detect");
       destroy(d);
     } else {
       // go to a lose scene and display the final score
@@ -5094,11 +5132,11 @@ scene("game", function (_ref) {
     if (player.grounded()) {
       isJumping = false;
     }
-  }); // if the player collides with any tag name pipe and presses KeyDown (for that case anykey you wish)
+  }); // if the player onCollide with any tag name pipe and presses KeyDown (for that case anykey you wish)
   //then he has to go to Next Level
   // or create a house and then use the key desired
 
-  player.collides("pipe", function () {
+  player.onCollide("pipe", function () {
     onKeyPress("down", function () {
       go("game", {
         level: level + 1,
@@ -5120,24 +5158,29 @@ scene("game", function (_ref) {
 
   onKeyPress("space", jumping); // timer functionality in game scene
 
-  var timer = add([text("0"), pos(90, 70), scale(1), layer("ui"), {
+  var timer = add([text("0"), pos(240, 38), scale(0.3), layer("ui"), fixed(), {
     time: TIME_LEFT
   }]);
   var bulletTimer = add([{
     time: BULLET_TIME_LEFT
-  }]); // onUpdate(() => {
-  //   (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
-  //   if (timer.time <= 0) {
-  //     go("lose", { score: scoreLabel.value });
-  //   }
-  // });
-  // Bullet functionality
+  }]);
+  add([text("Time Remaining: "), pos(20, 38), scale(0.3), fixed()]);
+  onUpdate(function () {
+    timer.time -= dt(), timer.text = timer.time.toFixed(2);
+
+    if (timer.time <= 0) {
+      go("lose", {
+        score: scoreLabel.value
+      });
+    }
+  }); // Bullet functionality
   // positon of player as parameter
 
-  function spawnBullet(p) {
+  function spawnBullet(position) {
     // define a rectangular area around the player position
     // give bullet as a tag
-    add([rect(10, 1), pos(p), origin("center"), color(1, 500, 10), "bullet", area()]);
+    add([//rect(10, 1),
+    sprite("BulletVaccineMushroom"), pos(position), origin("center"), color(1, 500, 10), scale(0.1), "bullet", area()]);
   } // Releasing bullet functionality
 
 
@@ -5159,11 +5202,12 @@ scene("game", function (_ref) {
     }
   });
   onCollide("dangerous", "bullet", function (d, b) {
-    shake(40);
+    //shake(40);
     destroy(d);
     destroy(b);
   }); // The mobile version begins
   //The following is for the mobile support
+  //##############MOBILE##################
 
   if (isTouch()) {
     //console.log(isTouch);
@@ -5181,97 +5225,66 @@ scene("game", function (_ref) {
 
     var moveRight = function moveRight() {
       player.move(MOVE_SPEED, 0);
-    };
+    }; //Mobile Buttons
 
-    onKeyDown("left", function () {
-      keyDownOnMobile.left = true;
-    });
-    onKeyDown("right", function () {
-      keyDownOnMobile.right = true;
-    });
-    onKeyRelease("left", function () {
-      keyDownOnMobile.left = false;
-    });
-    onKeyRelease("right", function () {
-      keyDownOnMobile.right = false;
-    });
+
     var leftButton = add([sprite("a"), pos(50, 450), opacity(0.5), fixed(), area()]);
-    var rightButton = add([sprite("d"), pos(100, 450), opacity(0.5), fixed(), area()]);
+    var rightButton = add([sprite("d"), pos(125, 450), opacity(0.5), fixed(), area()]);
     var actionButton = add([sprite("highjump"), pos(750, 450), opacity(0.5), fixed(), area()]);
-    var shootButton = add([sprite("shoot"), pos(650, 450), opacity(0.5), fixed(), area()]); // onTouchStart gets called each time a new touch event is registered
+    var shootButton = add([sprite("shoot"), pos(650, 450), opacity(0.5), fixed(), area()]); //TouchStart acts similar to a key press
+    //Sperate starts allow for mulitple button presses
 
-    onTouchStart(function (id, pos) {
-      // we will check if the touch overlaps with the left button
+    onTouchStart(function (leftPress, pos) {
       if (leftButton.hasPoint(pos)) {
         keyDownOnMobile.left = true;
         leftButton.opacity = 1;
-      } else if (rightButton.hasPoint(pos)) {
+      }
+    });
+    onTouchStart(function (rightPress, pos) {
+      if (rightButton.hasPoint(pos)) {
         keyDownOnMobile.right = true;
         rightButton.opacity = 1;
-      } else if (actionButton.hasPoint(pos)) {
+      }
+    });
+    onTouchStart(function (jumpPress, pos) {
+      if (actionButton.hasPoint(pos)) {
         jumping();
         actionButton.opacity = 1;
-      } else if (shootButton.hasPoint(pos)) {
+      }
+    });
+    onTouchStart(function (shootPress, pos) {
+      if (shootButton.hasPoint(pos)) {
         spawnBullet(player.pos.add(25, -10));
         shootButton.opacity = 1;
       }
-    }); // But we if dont take the fingers off the screen then the touch persists so we need to make changes on
-    // onTouchEnd by using async functionality
+    }); //Keeps movement even if screen is touched, or other button is touched
 
-    var onTouchChanged = function onTouchChanged(_, pos) {
-      // if the button is used for touch event registration and else is used for touch event de-registration
-      if (!leftButton.hasPoint(pos)) {
-        keyDownOnMobile.left = false;
-        leftButton.opacity = 0.5;
-      } else {
+    onTouchMove(function (id, pos) {
+      if (leftButton.hasPoint(pos)) {
         keyDownOnMobile.left = true;
         leftButton.opacity = 1;
       }
 
-      if (!rightButton.hasPoint(pos)) {
-        keyDownOnMobile.right = false;
-        rightButton.opacity = 0.5;
-      } else {
+      if (rightButton.hasPoint(pos)) {
         keyDownOnMobile.right = true;
         rightButton.opacity = 1;
       }
+    }); //Ends individual presses
 
-      if (!actionButton.hasPoint(pos)) {
-        actionButton.opacity = 0.5;
-      } else {
-        actionButton.opacity = 1;
-      }
-
-      if (!shootButton.hasPoint(pos)) {
-        shootButton.opacity = 0.5;
-      } else {
-        shootButton.opacity = 1;
-      }
-    }; // onTouchMove
-
-
-    onTouchMove(onTouchChanged);
-    onTouchEnd(onTouchChanged); // onTouchEnd
-
-    /*
-    onTouchEnd((_, pos) => {
-      if (!leftButton.hasPoint(pos)) {
-        keyDownOnMobile.left = false;
-        leftButton.opacity = 0.5;
-      }
-       if (!rightButton.hasPoint(pos)) {
-        keyDownOnMobile.right = false;
-        rightButton.opacity = 0.5;
-      }
-       if (!actionButton.hasPoint(pos)) {
-        actionButton.opacity = 0.5;
-      }
-       if (!shootButton.hasPoint(pos)) {
-        shootButton.opacity = 0.5;
-      }
+    onTouchEnd(function (leftPress, pos) {
+      keyDownOnMobile.left = false;
+      leftButton.opacity = 0.5;
     });
-    */
-
+    onTouchEnd(function (rightPress, pos) {
+      keyDownOnMobile.right = false;
+      rightButton.opacity = 0.5;
+    });
+    onTouchEnd(function (actionPress, pos) {
+      actionButton.opacity = 0.5;
+    });
+    onTouchEnd(function (shootPress, pos) {
+      shootButton.opacity = 0.5;
+    });
     onUpdate(function () {
       if (keyDownOnMobile.left) {
         moveLeft();
@@ -5285,13 +5298,14 @@ scene("game", function (_ref) {
 scene("lose", function (_ref2) {
   var score = _ref2.score;
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
+  console.log("Want to Play Again");
 }); //init();
 
 go("game", {
   level: 0,
   score: 0
 });
-},{"kaboom":"node_modules/kaboom/dist/kaboom.mjs"}],"C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"kaboom":"node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"src_mario/src/PlayableMap.js"}],"C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5319,7 +5333,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62496" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49172" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
