@@ -1,4 +1,4 @@
-import kaboom from "kaboom";
+import kaboom from "../../node_modules/kaboom";
 import { playableMap } from "./PlayableMap";
 const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
@@ -14,7 +14,7 @@ let buttonsVisible = true;
 
 let hasBulletAbility = false;
 
-kaboom({
+const k = kaboom({
   global: true,
   // enable full screen
   fullscreen: true,
@@ -26,6 +26,22 @@ kaboom({
   debug: true,
 });
 
+window.addEventListener("resize", resize, false);
+function resize() {
+  // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
+  var canvas = document.querySelector("canvas");
+  var windowWidth = window.innerWidth;
+  var windowHeight = window.innerHeight;
+  var windowRatio = windowWidth / windowHeight;
+  var gameRatio = k.width / k.height;
+  if (windowRatio < gameRatio) {
+    canvas.style.width = windowWidth + "px";
+    canvas.style.height = windowWidth / gameRatio + "px";
+  } else {
+    canvas.style.width = windowHeight * gameRatio + "px";
+    canvas.style.height = windowHeight + "px";
+  }
+}
 //add scenes
 //coins
 loadRoot("https://i.imgur.com/");
@@ -608,7 +624,14 @@ scene("game", ({ level, score }) => {
 
 scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
-  console.log("Want to Play Again");
+  add([
+    text('Hit "Space bar" to Play again'),
+    scale(0.5),
+    pos(width() / 2 - 240, height() / 2 + 30),
+  ]);
+  onKeyPress("space", () => {
+    go("game", { level: 0, score: 0 });
+  });
 });
 
 //init();
