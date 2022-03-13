@@ -4817,7 +4817,7 @@ exports.playableMap = playableMap;
 },{}],"src_mario/src/game.js":[function(require,module,exports) {
 "use strict";
 
-var _kaboom = _interopRequireDefault(require("kaboom"));
+var _kaboom = _interopRequireDefault(require("../../node_modules/kaboom"));
 
 var _PlayableMap = require("./PlayableMap");
 
@@ -4835,7 +4835,7 @@ var BULLET_TIME_LEFT = 4;
 var _isBig = false;
 var buttonsVisible = true;
 var hasBulletAbility = false;
-(0, _kaboom.default)({
+var k = (0, _kaboom.default)({
   global: true,
   // enable full screen
   fullscreen: true,
@@ -4843,8 +4843,27 @@ var hasBulletAbility = false;
   background: [0.1, 0, 0, 0],
   // for debug mode
   debug: true
-}); //add scenes
+});
+window.addEventListener("resize", resize, false);
+
+function resize() {
+  // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
+  var canvas = document.querySelector("canvas");
+  var windowWidth = window.innerWidth;
+  var windowHeight = window.innerHeight;
+  var windowRatio = windowWidth / windowHeight;
+  var gameRatio = k.width / k.height;
+
+  if (windowRatio < gameRatio) {
+    canvas.style.width = windowWidth + "px";
+    canvas.style.height = windowWidth / gameRatio + "px";
+  } else {
+    canvas.style.width = windowHeight * gameRatio + "px";
+    canvas.style.height = windowHeight + "px";
+  }
+} //add scenes
 //coins
+
 
 loadRoot("https://i.imgur.com/");
 loadSprite("coin", "wbKxhcd.png"); //enenmies
@@ -5298,14 +5317,20 @@ scene("game", function (_ref) {
 scene("lose", function (_ref2) {
   var score = _ref2.score;
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
-  console.log("Want to Play Again");
+  add([text('Hit "Space bar" to Play again'), scale(0.5), pos(width() / 2 - 240, height() / 2 + 30)]);
+  onKeyPress("space", function () {
+    go("game", {
+      level: 0,
+      score: 0
+    });
+  });
 }); //init();
 
 go("game", {
   level: 0,
   score: 0
 });
-},{"kaboom":"node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"src_mario/src/PlayableMap.js"}],"C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../../node_modules/kaboom":"node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"src_mario/src/PlayableMap.js"}],"C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5333,7 +5358,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50972" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51232" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
