@@ -26,6 +26,80 @@ const k = kaboom({
   debug: true,
 });
 
+//This is for Menu
+
+scene("menu", () => {
+  add(
+    [text("Mario game"), pos(240, 80), scale(1)],
+    origin("center"),
+    color(100, 120, 220)
+  );
+
+  add([
+    rect(160, 20),
+    pos(240, 180),
+
+    origin("center"),
+    "button",
+    {
+      clickAction: () => go("game", { level: 0, score: 0 }),
+    },
+    scale(2),
+    area(),
+    color(255, 10, 120),
+    ,
+  ]);
+
+  add([
+    text("Play game"),
+    pos(240, 180),
+    scale(0.7),
+    area(),
+    origin("center"),
+    color(100, 120, 220),
+  ]);
+
+  add([
+    rect(160, 20),
+    pos(240, 210),
+    "button",
+    {
+      clickAction: () =>
+        window.open("C:UserskaushDesktopCSCE_606_Projectindex.html"),
+    },
+    scale(2),
+    area(),
+
+    origin("center"),
+  ]);
+
+  add([
+    text("Back to Main Menu"),
+    pos(240, 210),
+    scale(0.7),
+    area(),
+    origin("center"),
+
+    color(100, 120, 220),
+  ]);
+
+  action("button", (b) => {
+    if (b.onHover) {
+      b.use(color(0.7, 0.7, 0.7));
+    } else {
+      b.use(color(1, 0, 1));
+    }
+
+    // if (b.onClick) {
+    //   b.clickAction();
+    // }
+  });
+
+  onClick("button", (b) => {
+    b.clickAction();
+  });
+});
+
 window.addEventListener("resize", resize, false);
 function resize() {
   // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
@@ -625,14 +699,22 @@ scene("game", ({ level, score }) => {
 scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
   add([
-    text('Hit "Space bar" to Play again'),
+    text("Game Over. Going Back to Home Page in 2 seconds"),
     scale(0.5),
-    pos(width() / 2 - 240, height() / 2 + 30),
+    pos(width() / 2 - 340, height() / 2 + 30),
   ]);
-  onKeyPress("space", () => {
-    go("game", { level: 0, score: 0 });
+
+  // start the game
+
+  // onKeyPress("space", () => {
+  //   go("game", { level: 0, score: 0 });
+  // });
+
+  wait(2, () => {
+    go("menu");
   });
 });
 
 //init();
-go("game", { level: 0, score: 0 });
+go("menu");
+//go("game", { level: 0, score: 0 });
