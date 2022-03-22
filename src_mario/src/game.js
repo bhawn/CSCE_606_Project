@@ -1,5 +1,6 @@
 import kaboom from "../../node_modules/kaboom";
 import { playableMap } from "./PlayableMap";
+import { info } from "./info";
 const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
@@ -43,10 +44,9 @@ scene("menu", () => {
     "button",
     {
       clickAction: () => {
-        wait(3, () => {
-          go("vaccineInfoScene", { level: level + 1 });
-        });
-        go("game", { level: 0, score: 0 });
+        go("vaccineInfoScene", { level: 0, score: 0 });
+
+        //go("game", { level: 0, score: 0 });
       },
     },
     scale(2),
@@ -178,10 +178,6 @@ loadSprite("highjump", "xfWsMOV.png");
 loadSprite("shoot", "mPlhKAi.png");
 
 //Vaccine Info Scene begins
-
-scene("vaccineInfoScene", ({ level }) => {
-  add([text(info[level]), scale(0.3), pos(20, 6), fixed()]);
-});
 
 //Vaccine Info scene ends
 // game scene
@@ -449,16 +445,16 @@ scene("game", ({ level, score }) => {
   // big mario becomes small
   // small mario dies
 
-  player.onCollide("dangerous", (d) => {
-    console.log(d.pos.y + " " + player.pos.y);
-    if (player.pos.y == d.pos.y || isJumping) {
-      console.log("detect");
-      destroy(d);
-    } else {
-      // go to a lose scene and display the final score
-      go("lose", { score: scoreLabel.value });
-    }
-  });
+  // player.onCollide("dangerous", (d) => {
+  //   console.log(d.pos.y + " " + player.pos.y);
+  //   if (player.pos.y == d.pos.y || isJumping) {
+  //     console.log("detect");
+  //     destroy(d);
+  //   } else {
+  //     // go to a lose scene and display the final score
+  //     go("lose", { score: scoreLabel.value });
+  //   }
+  // });
 
   onUpdate(() => {
     // Make camera Position same as player position
@@ -496,11 +492,8 @@ scene("game", ({ level, score }) => {
   player.onCollide("pipe", () => {
     onKeyPress("down", () => {
       /* Scene to display vaccine informations*/
-      wait(3, () => {
-        go("vaccineInfoScene", { level: level + 1 });
-      });
 
-      go("game", { level: level + 1, score: scoreLabel.value });
+      go("vaccineInfoScene", { level: level + 1, score: score });
     });
   });
 
@@ -733,6 +726,22 @@ scene("lose", ({ score }) => {
   });
 });
 
+scene("vaccineInfoScene", ({ level, score }) => {
+  add([
+    text(info[level], {
+      size: 48, // 48 pixels tall
+      width: window.innerWidth, // it'll wrap to next line when width exceeds this value
+    }),
+
+    scale(1),
+
+    //area(),
+  ]);
+
+  wait(3, () => {
+    go("game", { level: level, score: score });
+  });
+});
 //init();
 go("menu");
 //go("game", { level: 0, score: 0 });

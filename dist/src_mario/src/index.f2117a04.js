@@ -523,6 +523,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("../../node_modules/kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _playableMap = require("./PlayableMap");
+var _info = require("./info");
 const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
@@ -563,15 +564,11 @@ scene("menu", ()=>{
         "button",
         {
             clickAction: ()=>{
-                wait(3, ()=>{
-                    go("vaccineInfoScene", {
-                        level: level + 1
-                    });
-                });
-                go("game", {
+                go("vaccineInfoScene", {
                     level: 0,
                     score: 0
                 });
+            //go("game", { level: 0, score: 0 });
             }
         },
         scale(2),
@@ -667,14 +664,6 @@ loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 loadSprite("shoot", "mPlhKAi.png");
 //Vaccine Info Scene begins
-scene("vaccineInfoScene", ({ level  })=>{
-    add([
-        text(info[level]),
-        scale(0.3),
-        pos(20, 6),
-        fixed()
-    ]);
-});
 //Vaccine Info scene ends
 // game scene
 scene("game", ({ level , score  })=>{
@@ -997,16 +986,16 @@ scene("game", ({ level , score  })=>{
     // if player onCollide with anythig with dangerous
     // big mario becomes small
     // small mario dies
-    player.onCollide("dangerous", (d)=>{
-        console.log(d.pos.y + " " + player.pos.y);
-        if (player.pos.y == d.pos.y || isJumping) {
-            console.log("detect");
-            destroy(d);
-        } else // go to a lose scene and display the final score
-        go("lose", {
-            score: scoreLabel.value
-        });
-    });
+    // player.onCollide("dangerous", (d) => {
+    //   console.log(d.pos.y + " " + player.pos.y);
+    //   if (player.pos.y == d.pos.y || isJumping) {
+    //     console.log("detect");
+    //     destroy(d);
+    //   } else {
+    //     // go to a lose scene and display the final score
+    //     go("lose", { score: scoreLabel.value });
+    //   }
+    // });
     onUpdate(()=>{
         // Make camera Position same as player position
         camPos(player.pos);
@@ -1035,14 +1024,9 @@ scene("game", ({ level , score  })=>{
     // or create a house and then use the key desired
     player.onCollide("pipe", ()=>{
         onKeyPress("down", ()=>{
-            /* Scene to display vaccine informations*/ wait(3, ()=>{
-                go("vaccineInfoScene", {
-                    level: level + 1
-                });
-            });
-            go("game", {
+            /* Scene to display vaccine informations*/ go("vaccineInfoScene", {
                 level: level + 1,
-                score: scoreLabel.value
+                score: score
             });
         });
     });
@@ -1246,10 +1230,25 @@ scene("lose", ({ score  })=>{
         go("menu");
     });
 });
+scene("vaccineInfoScene", ({ level , score  })=>{
+    add([
+        text(_info.info[level], {
+            size: 48,
+            width: window.innerWidth
+        }),
+        scale(1), 
+    ]);
+    wait(3, ()=>{
+        go("game", {
+            level: level,
+            score: score
+        });
+    });
+});
 //init();
 go("menu"); //go("game", { level: 0, score: 0 });
 
-},{"../../node_modules/kaboom":"larQu","./PlayableMap":"bygFB","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"larQu":[function(require,module,exports) {
+},{"../../node_modules/kaboom":"larQu","./PlayableMap":"bygFB","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu","./info":"7c9oL"}],"larQu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>no
@@ -5526,6 +5525,38 @@ const playableMap = [
         "()                     xxx             xxx            xx         xx   xx            x                x       x",
         "()               x       xxx           xxx            xx            xx              x                 x",
         "()    xxxxxx           xxxxxxxxxxxxxxxxxxx                 xxxxxxxxxxxxxx              xxxxxxxxxxxxxxxxxxx                                        x", 
+    ], 
+];
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"7c9oL":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "info", ()=>info
+);
+const info = [
+    [
+        "Live, attenuated vaccines fight viruses and bacteria. These vaccines contain a version of the living virus or bacteria that has been weakened so that it does not cause serious disease in people with healthy immune systems. Because live, attenuated vaccines are the closest thing to a natural infection, they are good teachers for the immune system. Examples of live, attenuated vaccines include measles, mumps, and rubella vaccine (MMR) and varicella (chickenpox) vaccine. Even though they are very effective, not everyone can receive these vaccines. Children with weakened immune systems—for example, those who are undergoing chemotherapy—cannot get live vaccines.", 
+    ],
+    [
+        "It is always better to prevent a disease than to treat it after it occurs.", 
+    ],
+    [
+        "Vaccination is a highly effective, safe and easy way to help keep your family healthy.", 
+    ],
+    [
+        "Your child is exposed to thousands of germs every day in his environment. This happens through the food he eats, air he breathes, and things he puts in his mouth.", 
+    ],
+    [
+        "Babies are born with immune systems that can fight most germs, but there are some deadly diseases they can’t handle. That’s why they need vaccines to strengthen their immune system.", 
+    ],
+    [
+        "Vaccines use very small amounts of antigens to help your child’s immune system recognize and learn to fight serious diseases. Antigens are parts of germs that cause the body’s immune system to go to work.", 
+    ],
+    [
+        "Thirty years ago, vaccines used 3,000 antigens to protect against 8 diseases by age two. Today, vaccines use 305 antigens to protect against 14 diseases by age two.", 
+    ],
+    [
+        "For some vaccines (primarily inactivated vaccines), the first dose does not provide as much immunity as possible. So, more than one dose is needed to build more complete immunity. The vaccine that protects against the bacteria Hib, which causes meningitis, is a good example.", 
     ], 
 ];
 
