@@ -1,3 +1,4 @@
+.parcel-cache/*
 examples/*
 _other/*
 .c9/*
