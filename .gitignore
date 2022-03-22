@@ -10,4 +10,4 @@ makefile
 src_mario/.cache/*
 node_modules/
 .cache/*
-dist/
+dist/*

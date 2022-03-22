@@ -45,7 +45,7 @@ function resize() {
 //add scenes
 //coins
 loadRoot("https://i.imgur.com/");
-loadSprite("coin", "wbKxhcd.png");
+loadSprite("coin", "O0rwU31.png"); //https://imgur.com/O0rwU31
 
 //enenmies
 

@@ -4866,7 +4866,8 @@ function resize() {
 
 
 loadRoot("https://i.imgur.com/");
-loadSprite("coin", "wbKxhcd.png"); //enenmies
+loadSprite("coin", "O0rwU31.png"); //https://imgur.com/O0rwU31
+//enenmies
 
 loadSprite("evil-shroom", "KPO3fR9.png");
 loadSprite("covid", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
@@ -5358,7 +5359,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51232" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51669" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
