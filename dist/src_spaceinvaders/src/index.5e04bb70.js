@@ -523,6 +523,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("../../node_modules/kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _playableMap = require("./PlayableMap");
+//Created a new clone //
 const MOVE_SPEED = 200;
 const INVADER_SPEED = 200;
 let CURRENT_SPEED = INVADER_SPEED;
@@ -543,6 +544,22 @@ const k = _kaboomDefault.default({
     // for debug mode
     debug: true
 });
+window.addEventListener("resize", resize, false);
+function resize() {
+    // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
+    var canvas = document.querySelector("canvas");
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+    var windowRatio = windowWidth / windowHeight;
+    var gameRatio = k.width / k.height;
+    if (windowRatio < gameRatio) {
+        canvas.style.width = windowWidth + "px";
+        canvas.style.height = windowWidth / gameRatio + "px";
+    } else {
+        canvas.style.width = windowHeight * gameRatio + "px";
+        canvas.style.height = windowHeight + "px";
+    }
+}
 loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
@@ -638,7 +655,7 @@ scene("game", ({ level , score  })=>{
     });
     const player = add([
         sprite("space_ship"),
-        pos(width() / 2, height() / 2),
+        pos(width() / 2 - 500, height() / 2),
         origin("center"),
         area(),
         solid(), 
@@ -676,11 +693,7 @@ scene("game", ({ level , score  })=>{
     });
     //Let us make the space_invader moving
     onUpdate("space_invader", (s)=>{
-        if (s != null) s.move(CURRENT_SPEED, 0);
-        else go("game", {
-            level: level + 1,
-            score: scoreLabel.value
-        });
+        s.move(CURRENT_SPEED, 0);
     });
     //On Collision with right wall
     // Space-invader has to turn around and move down on each collision

@@ -42,7 +42,12 @@ scene("menu", () => {
     origin("center"),
     "button",
     {
-      clickAction: () => go("game", { level: 0, score: 0 }),
+      clickAction: () => {
+        wait(3, () => {
+          go("vaccineInfoScene", { level: level + 1 });
+        });
+        go("game", { level: 0, score: 0 });
+      },
     },
     scale(2),
     area(),
@@ -171,6 +176,14 @@ loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 
 loadSprite("shoot", "mPlhKAi.png");
+
+//Vaccine Info Scene begins
+
+scene("vaccineInfoScene", ({ level }) => {
+  add([text(info[level]), scale(0.3), pos(20, 6), fixed()]);
+});
+
+//Vaccine Info scene ends
 // game scene
 scene("game", ({ level, score }) => {
   //create layers
@@ -482,6 +495,11 @@ scene("game", ({ level, score }) => {
   // or create a house and then use the key desired
   player.onCollide("pipe", () => {
     onKeyPress("down", () => {
+      /* Scene to display vaccine informations*/
+      wait(3, () => {
+        go("vaccineInfoScene", { level: level + 1 });
+      });
+
       go("game", { level: level + 1, score: scoreLabel.value });
     });
   });

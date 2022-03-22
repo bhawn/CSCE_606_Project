@@ -549,6 +549,74 @@ const k = _kaboomDefault.default({
     // for debug mode
     debug: true
 });
+//This is for Menu
+scene("menu", ()=>{
+    add([
+        text("Mario game"),
+        pos(240, 80),
+        scale(1)
+    ], origin("center"), color(100, 120, 220));
+    add([
+        rect(160, 20),
+        pos(240, 180),
+        origin("center"),
+        "button",
+        {
+            clickAction: ()=>{
+                wait(3, ()=>{
+                    go("vaccineInfoScene", {
+                        level: level + 1
+                    });
+                });
+                go("game", {
+                    level: 0,
+                    score: 0
+                });
+            }
+        },
+        scale(2),
+        area(),
+        color(255, 10, 120),
+        , 
+    ]);
+    add([
+        text("Play game"),
+        pos(240, 180),
+        scale(0.7),
+        area(),
+        origin("center"),
+        color(100, 120, 220), 
+    ]);
+    add([
+        rect(160, 20),
+        pos(240, 210),
+        "button",
+        {
+            clickAction: ()=>window.open("C:UserskaushDesktopCSCE_606_Projectindex.html")
+        },
+        scale(2),
+        area(),
+        origin("center"), 
+    ]);
+    add([
+        text("Back to Main Menu"),
+        pos(240, 210),
+        scale(0.7),
+        area(),
+        origin("center"),
+        color(100, 120, 220), 
+    ]);
+    action("button", (b)=>{
+        if (b.onHover) b.use(color(0.7, 0.7, 0.7));
+        else b.use(color(1, 0, 1));
+    // if (b.onClick) {
+    //   b.clickAction();
+    // }
+    });
+    onClick("button", (b)=>{
+        b.clickAction();
+    });
+});
 window.addEventListener("resize", resize, false);
 function resize() {
     // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
@@ -598,6 +666,16 @@ loadSprite("a", "agdsuPW.png");
 loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 loadSprite("shoot", "mPlhKAi.png");
+//Vaccine Info Scene begins
+scene("vaccineInfoScene", ({ level  })=>{
+    add([
+        text(info[level]),
+        scale(0.3),
+        pos(20, 6),
+        fixed()
+    ]);
+});
+//Vaccine Info scene ends
 // game scene
 scene("game", ({ level , score  })=>{
     //create layers
@@ -957,6 +1035,11 @@ scene("game", ({ level , score  })=>{
     // or create a house and then use the key desired
     player.onCollide("pipe", ()=>{
         onKeyPress("down", ()=>{
+            /* Scene to display vaccine informations*/ wait(3, ()=>{
+                go("vaccineInfoScene", {
+                    level: level + 1
+                });
+            });
             go("game", {
                 level: level + 1,
                 score: scoreLabel.value
@@ -1151,311 +1234,22 @@ scene("lose", ({ score  })=>{
         pos(width() / 2, height() / 2)
     ]);
     add([
-        text('Hit "Space bar" to Play again'),
+        text("Game Over. Going Back to Home Page in 2 seconds"),
         scale(0.5),
-        pos(width() / 2 - 240, height() / 2 + 30), 
+        pos(width() / 2 - 340, height() / 2 + 30), 
     ]);
-    onKeyPress("space", ()=>{
-        go("game", {
-            level: 0,
-            score: 0
-        });
+    // start the game
+    // onKeyPress("space", () => {
+    //   go("game", { level: 0, score: 0 });
+    // });
+    wait(2, ()=>{
+        go("menu");
     });
 });
 //init();
-go("game", {
-    level: 0,
-    score: 0
-});
+go("menu"); //go("game", { level: 0, score: 0 });
 
-},{"./PlayableMap":"bygFB","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu","../../node_modules/kaboom":"larQu"}],"bygFB":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "playableMap", ()=>playableMap
-);
-const playableMap = [
-    [
-        "                                                                          ===========                        ",
-        "                                                                         ===========                         ",
-        "                                                                       ===========  ===========                      ",
-        "                                                                      ===========             ===========                ",
-        "                                                                    ===========                           =========== ",
-        "                                                                   ===========                                            ===========   ",
-        "                                                                 ===========                                      =========== ",
-        "                                                               ===========                                             =========== ",
-        "         ============================                        ===========                                                               ",
-        "                                                           ===========                                        =========== ",
-        "                                                         ===========                                  =========== ",
-        "                                                       ===========                                =========== ",
-        "                                                     ===========                            ===========   ",
-        "     %    =*=%=                                    ============                                    =============== ",
-        "  -+                                               ===========                -+                    ====================       ",
-        "  ()                         ^       ^           ===========                  ()          $$$$$$       ======================  ",
-        "======================================================                    =====     =========================  ", 
-    ],
-    [
-        "£                                                                                                                                           £",
-        "£     ! ! ! ! ! ! ! ! ! ! ! !                                            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!             £",
-        "£              $$$$$$                                                 !!!!!!!!!!!!!!!!!!!!!!!!!!         !!!!!!!!!!!!!!!!!!!!!!!!!!       £",
-        "£             $$$$$$$                $$$$$          $$$$$$          !!!!!!!!!!!!!!!!!!!!!!!!!!                 !!!!!!!!!!!!!!!!!!!!!!!!!!                                         £",
-        "£           $$$$$$$$$$                                            !!!!!!!!!!!!!!!!!!!!!!!!!!                      !!!!!!!!!!!!!!!!!!!!!!!!!!                                   -+£",
-        "£                               x      $$$$$$     $$$$$$       !!!!!!!!!!!!!!!!!!!!!!!!!!                            !!!!!!!!!!!!!!!!!!!!!!!!!!                              !!()£",
-        "£     %    @@@@@@              xx                            !!!!!!!!!!!!!!!!!!!!!!!!!!                                 !!!!!!!!!!!!!!!!!!!!!!!!!!                        !!£",
-        "£ -+                            xxx           $$$$$          !!!!!!!!!!!!!!!!!!!!!!!!!!                                     !!!!!!!!!!!!!!!!!!!!!!!!!!      !!       !!£",
-        "£ ()                z   z      xxxx                        !!!!!!!!!!!!!!!!!!!!!!!!!!                                          !!!!!!!!!!!!!!!!!!!!!!!!!!       !!     £",
-        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!", 
-    ],
-    [
-        "==   -+   $$$$                                  $$                                                        ",
-        "     ()                                         ==                                                   ",
-        "     ==                                                                                            ",
-        "                 $$$                     ==      ==                                                     ",
-        "          ==                          ^^                                                           ",
-        "                ^^                   ==              ==                                              ",
-        "               ==       $$$      ^^                                                                 ",
-        "                                ==                      ==                                                ",
-        "                     ^^                                                                                                                        ",
-        "                    ==    *   ==                            ==                                           ",
-        "                                                                                                         ",
-        "                         ==                                    ==                                          ",
-        "                                                                                                              ",
-        "                                                                  ==                                           ",
-        "                                                              ==                                          ",
-        "                                                                                                       ",
-        "                   ^^^^^^^^^^                                       ==                                          ",
-        "                                                                                                                       ",
-        "                                                      ==",
-        "                                                  ==",
-        "                                         ",
-        "                    ^^                                                                                                     ",
-        "                                              ==                                                     -+                    ",
-        "                ^^                                   ==                                $$            ()                                        ",
-        "                                                                                                   ====                                       ",
-        "                                                       ===                                          ",
-        "                                                                          ==     =  =      ====                                           ",
-        "                  ^^^^                                         ===                                          ",
-        "                                                                   ===                                          ",
-        "                                                                                                                  ",
-        "                                                                                                                      ", 
-    ],
-    [
-        "£                                                             !                            £",
-        "£     ! ! ! ! ! ! ! ! ! ! ! !                           !!!                            -+   £",
-        "£                                        *           !!!                           xxxx()  £",
-        "£             $$$           $$$      x             !!!                          xxxx         £",
-        "£             !!             zz          *        !!!                        xxxx     £",
-        "£        !!!        !!1               x          !!!                     xxxx    £",
-        "£     %    @@@@@@     zzzz     !!!    xx        !!!                  xxxx     £",
-        "£ -+                            xxx       !!!      x                xxxx      £",
-        "£ ()    zzzzzzzzz       zzzzzz          zzzzzzzzzzzx zzzz      xxxx         £",
-        "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", 
-    ],
-    [
-        "=======      ===   ========    ==========                                                                    ",
-        "      x                                                                                                ",
-        "      x  z             ====xxx              ==                                                        ",
-        "      ====   -+          x                    =                                                                  ",
-        "      x   z  ()    x===xxx               =                                                        ",
-        "      x   x======                   =                                                        ",
-        "      x                          =                                                        ",
-        "      x                         =                                                        ",
-        "      x                       =                                                        ",
-        "      x                       =                                                        ",
-        "xxxxxx                   =                                                        ",
-        "                       =                            ",
-        "     ===             =                      ",
-        "        xxx==     =                           ",
-        "              x                                                                                           ",
-        "              x     ========                                                                                     ",
-        "              xxxxxx        =======                                                                              ",
-        "                                 =======                                                                       ",
-        "                                         =======                                                                ",
-        "               ===                                                                                          ",
-        "          ===      ===                                                                                    ",
-        "-+    ===                                     =======",
-        "()                     =======     ===                 ",
-        "()    ===                   ===    =======     ===                 ",
-        "()       ====                                                     ",
-        "()            ====     ===    =======     ===                 ", 
-    ],
-    [
-        "                                                                                                                                                                                                                     ",
-        "       =                  %                                                                                                                                                                                            ",
-        "                                                                                                                                                                                                                     ",
-        "   *                  $          ==     ====                                         %                                                                                                                                             ",
-        "                      $    =                                                                                                                                                                                           ",
-        "       =                                %       x                                       ==    x  xxx                                                                                                                          ",
-        "                      *                                                                            x                                                                                                                     ",
-        "   *                                 x               x                              ==             x                                                                                                                      ",
-        "       ^^                   =                                                                      x                                                                                                                   ",
-        "       =                                x                    x                   %                 x                                                                                                         ",
-        "                       %                                      x                                    x                                                                                                       ",
-        "   %        =              =                                   x                ==                 x                                                                                                            ",
-        "     ^^                                                         x                                  x                                                                                                        ",
-        "       x           =    =                                         x            x                    x                                                                                                       ",
-        "           x                                                       x         x                      x                                                                                                             ",
-        "             ^^                                                    x     x         x               x                                                                                                                      ",
-        "   *                                                                x                              x                                                                                                       ",
-        "        x                                                                  x      x                x                                                                                                        ",
-        "                                                                               x                   xxx                                                                                                      ",
-        "   %                                                                                                    x                                                                                                 ",
-        "                                                                                                                                                                                                        ",
-        "      ^^                                                                                              x                                                                                                    ",
-        "       =                                                                                           ==                                                                                                      ",
-        "                                                                                x              x                                                                                                            ",
-        "                                                                                                                                                                                                           ",
-        "   *                                                                     =          =   =                                                                                                                   ",
-        "-+       x                                                                                                                                                                                                    ",
-        "()  = =                                                                                                                                                                                                    ",
-        "=                                                                                                                                                                                                    ",
-        "                                                                                                                                                                                                   ",
-        "     =                                                                                                                                                                                                   ",
-        "     =                                                                   -+                                                                                                                                ",
-        "     =                                                                   ()                                                                                                                                ",
-        "     =                                                                   ()                                                                                                                                ", 
-    ],
-    [
-        "                                                       £",
-        "                                      $$             £",
-        "                                     %%                                   ",
-        "                                                                       ",
-        "                                   x  x                 £",
-        "                                                   $$$$$$$$                    ",
-        "                                      $                                 ",
-        "                    x                x     x       x x         £",
-        "                                    $                                   ",
-        "              x           x        x           x        x                 £",
-        "                                                                       ",
-        "           x x             x   x         x           x             £",
-        "                                                                       ",
-        "        x   x              x x       x              x        £",
-        "-+                                                                       ",
-        "()     x      x       x        x     x                  x         £",
-        "                                                                       ",
-        " x         x      x          x   x                      x        ",
-        "                  x                                                     ",
-        "x           xxxxx x       xxxxxxx                       x     xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-        "                  x                                       x",
-        "                  xxxx    xxx                                     x            ",
-        "                x                                         x                       ",
-        "            x x x           x                                              ",
-        "                x                                                                      ",
-        "            x                                                                     ",
-        "                                         x                       x                         ",
-        "            x                       x        x                                        ",
-        "                x                  x             x             x                         ",
-        "                   x                                                                ",
-        "                     x           x                  x         x                 ",
-        "                                                       x   x                           ",
-        "                             x                                                    ",
-        "                x                                                               ",
-        "                     -+   x                                                         ",
-        "                     ()                                                             ",
-        "                     ()                                                           ",
-        "                     x                                                           ", 
-    ],
-    [
-        "                                                                                                                                                                                           ",
-        "   =======   =====      ======    ======                                                                                                                                               -+ ",
-        "                                                     ^  ^^^             ^                                                                                                                 ()",
-        "                  ^^^^^^                          ================  ===     ==                                                                                                    ==    % ",
-        "                                                                 ^^^^                                                                                                        %",
-        "                                                            $$    ===                                                                                                     %",
-        "                                           ^^^               $$$$                                                                                                      % ",
-        "        *          %                                     $$$$$$                                                                                                     %",
-        "                                                               ^^^^^^                                                                                            %",
-        "                                             ===            ====================                                                                             % ",
-        "             ^                                                                           *                                                                %",
-        "           ===========================               $^                                                                                                %",
-        "             ^                                         ==   *                                                ^                                      %",
-        "                                                                           	           =                      %=   =     *                     %",
-        "     %    =*=%=                                            =             %%%%         =    =                    =                    %       %     ",
-        "    -+                                  ^^^^                                             =          =                           =             %          ",
-        "    ()     ^^      ^^^^^^                                                      =                                    ^^                       =             %      ",
-        "===============================   ==  = =   =  =  ========         ================         ==   =======   ========           ==    ==     ============== ", 
-    ],
-    [
-        "£                                                  @@@                                                     £",
-        "£                                                                                                          £",
-        "£                                                   !                                                      £",
-        "£                                           **                                                      £",
-        "£                                  z           $$$     !!    !!        $$$$$$$$$$$$$$$$$$$$$£",
-        "£                                  x          !!!                            £   £   £   £      £    £",
-        "£     %    @@@@@@                 xx                             xxx%%         %      %      %     £",
-        "£   -+                           xxx                                                               £",
-        "£   ()              z   z       xxxx        xx                     xx£       !!     !!     !!               ",
-        "!!!!!!!!!!!!!!!!!!     !!!!!!!       !!    !!!!!!  !!!!!!xxxxxx!!!!!!!!!!!                                  ",
-        "                                                                                                             ",
-        "                                                                              %             %           ",
-        "                    *                                      -+                        xx           xx     ",
-        "                   £                                       ()                                       ",
-        "                   !!!!!                    !!!!!!!!!!!!!!!!!!!!!!!   x x      xx         xx           ", 
-    ],
-    [
-        "£                                                                                                          £",
-        "£     ! ! ! ! ! ! ! ! ! ! ! !                                                                                £",
-        "£                                                                                                            £",
-        "£      xxxxx       xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                               £",
-        "£                                                                                                              £",
-        "£                               x                                                                              £",
-        "£                               x                                                                              £",
-        "£                               x                                                                              £",
-        "£                               x                                                                            £",
-        "£                               x                                                                            £",
-        "£     %    @@      @@@@              xx                                                                       £",
-        "£    -+     $   $$   $$$   $$$$      $$$$$$      $$$$$$$        xxx                                            £",
-        "£    ()                                        ()                                                               £",
-        "!xx!!!!!!!!!!!!!         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                            x",
-        "                                                                                                                x",
-        "                                                                                                                  ",
-        "                                                                                 $$$$$                             ",
-        "-+xxx  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx    xxxxxxxxxxxxxx    xxxxxx   xxxxxx    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx      ",
-        "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$                ",
-        "                $$     xxxxx                                                                                 xxxxxxx",
-        "-+                                      $$                                                               xxxxxxx",
-        "()   x          xxxx                   xxxxxxxxxxxxxxxxx                          xx     xx   x    xxxxxxxx                        x",
-        "()          x   xxxx    %              xxx            xx         x               xx  x     x            x",
-        "()              xxxx                   xxx            xx                      xx    x        x           x",
-        "()       x      xxxx        x          xxx            xx      xx            xx      x          x          x",
-        "()                                     xxx            xx                  xx        x            x        x",
-        "()                    xxx              xxx            xx   %            xx          x              x        x",
-        "()                     xxx             xxx            xx         xx   xx            x                x       x",
-        "()               x       xxx           xxx            xx            xx              x                 x",
-        "()    xxxxxx           xxxxxxxxxxxxxxxxxxx                 xxxxxxxxxxxxxx              xxxxxxxxxxxxxxxxxxx                                        x", 
-    ], 
-];
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"c1kAu":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"larQu":[function(require,module,exports) {
+},{"../../node_modules/kaboom":"larQu","./PlayableMap":"bygFB","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"larQu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>no
@@ -5447,6 +5241,293 @@ var no = a((i = {
     if (i.plugins && i.plugins.forEach(Bn), i.global !== !1) for(let e1 in ye)window[e1] = ye[e1];
     return ye;
 }, "default");
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"c1kAu":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"bygFB":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "playableMap", ()=>playableMap
+);
+const playableMap = [
+    [
+        "                                                                          ===========                        ",
+        "                                                                         ===========                         ",
+        "                                                                       ===========  ===========                      ",
+        "                                                                      ===========             ===========                ",
+        "                                                                    ===========                           =========== ",
+        "                                                                   ===========                                            ===========   ",
+        "                                                                 ===========                                      =========== ",
+        "                                                               ===========                                             =========== ",
+        "         ============================                        ===========                                                               ",
+        "                                                           ===========                                        =========== ",
+        "                                                         ===========                                  =========== ",
+        "                                                       ===========                                =========== ",
+        "                                                     ===========                            ===========   ",
+        "     %    =*=%=                                    ============                                    =============== ",
+        "  -+                                               ===========                -+                    ====================       ",
+        "  ()                         ^       ^           ===========                  ()          $$$$$$       ======================  ",
+        "======================================================                    =====     =========================  ", 
+    ],
+    [
+        "£                                                                                                                                           £",
+        "£     ! ! ! ! ! ! ! ! ! ! ! !                                            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!             £",
+        "£              $$$$$$                                                 !!!!!!!!!!!!!!!!!!!!!!!!!!         !!!!!!!!!!!!!!!!!!!!!!!!!!       £",
+        "£             $$$$$$$                $$$$$          $$$$$$          !!!!!!!!!!!!!!!!!!!!!!!!!!                 !!!!!!!!!!!!!!!!!!!!!!!!!!                                         £",
+        "£           $$$$$$$$$$                                            !!!!!!!!!!!!!!!!!!!!!!!!!!                      !!!!!!!!!!!!!!!!!!!!!!!!!!                                   -+£",
+        "£                               x      $$$$$$     $$$$$$       !!!!!!!!!!!!!!!!!!!!!!!!!!                            !!!!!!!!!!!!!!!!!!!!!!!!!!                              !!()£",
+        "£     %    @@@@@@              xx                            !!!!!!!!!!!!!!!!!!!!!!!!!!                                 !!!!!!!!!!!!!!!!!!!!!!!!!!                        !!£",
+        "£ -+                            xxx           $$$$$          !!!!!!!!!!!!!!!!!!!!!!!!!!                                     !!!!!!!!!!!!!!!!!!!!!!!!!!      !!       !!£",
+        "£ ()                z   z      xxxx                        !!!!!!!!!!!!!!!!!!!!!!!!!!                                          !!!!!!!!!!!!!!!!!!!!!!!!!!       !!     £",
+        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!", 
+    ],
+    [
+        "==   -+   $$$$                                  $$                                                        ",
+        "     ()                                         ==                                                   ",
+        "     ==                                                                                            ",
+        "                 $$$                     ==      ==                                                     ",
+        "          ==                          ^^                                                           ",
+        "                ^^                   ==              ==                                              ",
+        "               ==       $$$      ^^                                                                 ",
+        "                                ==                      ==                                                ",
+        "                     ^^                                                                                                                        ",
+        "                    ==    *   ==                            ==                                           ",
+        "                                                                                                         ",
+        "                         ==                                    ==                                          ",
+        "                                                                                                              ",
+        "                                                                  ==                                           ",
+        "                                                              ==                                          ",
+        "                                                                                                       ",
+        "                   ^^^^^^^^^^                                       ==                                          ",
+        "                                                                                                                       ",
+        "                                                      ==",
+        "                                                  ==",
+        "                                         ",
+        "                    ^^                                                                                                     ",
+        "                                              ==                                                     -+                    ",
+        "                ^^                                   ==                                $$            ()                                        ",
+        "                                                                                                   ====                                       ",
+        "                                                       ===                                          ",
+        "                                                                          ==     =  =      ====                                           ",
+        "                  ^^^^                                         ===                                          ",
+        "                                                                   ===                                          ",
+        "                                                                                                                  ",
+        "                                                                                                                      ", 
+    ],
+    [
+        "£                                                             !                            £",
+        "£     ! ! ! ! ! ! ! ! ! ! ! !                           !!!                            -+   £",
+        "£                                        *           !!!                           xxxx()  £",
+        "£             $$$           $$$      x             !!!                          xxxx         £",
+        "£             !!             zz          *        !!!                        xxxx     £",
+        "£        !!!        !!1               x          !!!                     xxxx    £",
+        "£     %    @@@@@@     zzzz     !!!    xx        !!!                  xxxx     £",
+        "£ -+                            xxx       !!!      x                xxxx      £",
+        "£ ()    zzzzzzzzz       zzzzzz          zzzzzzzzzzzx zzzz      xxxx         £",
+        "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", 
+    ],
+    [
+        "=======      ===   ========    ==========                                                                    ",
+        "      x                                                                                                ",
+        "      x  z             ====xxx              ==                                                        ",
+        "      ====   -+          x                    =                                                                  ",
+        "      x   z  ()    x===xxx               =                                                        ",
+        "      x   x======                   =                                                        ",
+        "      x                          =                                                        ",
+        "      x                         =                                                        ",
+        "      x                       =                                                        ",
+        "      x                       =                                                        ",
+        "xxxxxx                   =                                                        ",
+        "                       =                            ",
+        "     ===             =                      ",
+        "        xxx==     =                           ",
+        "              x                                                                                           ",
+        "              x     ========                                                                                     ",
+        "              xxxxxx        =======                                                                              ",
+        "                                 =======                                                                       ",
+        "                                         =======                                                                ",
+        "               ===                                                                                          ",
+        "          ===      ===                                                                                    ",
+        "-+    ===                                     =======",
+        "()                     =======     ===                 ",
+        "()    ===                   ===    =======     ===                 ",
+        "()       ====                                                     ",
+        "()            ====     ===    =======     ===                 ", 
+    ],
+    [
+        "                                                                                                                                                                                                                     ",
+        "       =                  %                                                                                                                                                                                            ",
+        "                                                                                                                                                                                                                     ",
+        "   *                  $          ==     ====                                         %                                                                                                                                             ",
+        "                      $    =                                                                                                                                                                                           ",
+        "       =                                %       x                                       ==    x  xxx                                                                                                                          ",
+        "                      *                                                                            x                                                                                                                     ",
+        "   *                                 x               x                              ==             x                                                                                                                      ",
+        "       ^^                   =                                                                      x                                                                                                                   ",
+        "       =                                x                    x                   %                 x                                                                                                         ",
+        "                       %                                      x                                    x                                                                                                       ",
+        "   %        =              =                                   x                ==                 x                                                                                                            ",
+        "     ^^                                                         x                                  x                                                                                                        ",
+        "       x           =    =                                         x            x                    x                                                                                                       ",
+        "           x                                                       x         x                      x                                                                                                             ",
+        "             ^^                                                    x     x         x               x                                                                                                                      ",
+        "   *                                                                x                              x                                                                                                       ",
+        "        x                                                                  x      x                x                                                                                                        ",
+        "                                                                               x                   xxx                                                                                                      ",
+        "   %                                                                                                    x                                                                                                 ",
+        "                                                                                                                                                                                                        ",
+        "      ^^                                                                                              x                                                                                                    ",
+        "       =                                                                                           ==                                                                                                      ",
+        "                                                                                x              x                                                                                                            ",
+        "                                                                                                                                                                                                           ",
+        "   *                                                                     =          =   =                                                                                                                   ",
+        "-+       x                                                                                                                                                                                                    ",
+        "()  = =                                                                                                                                                                                                    ",
+        "=                                                                                                                                                                                                    ",
+        "                                                                                                                                                                                                   ",
+        "     =                                                                                                                                                                                                   ",
+        "     =                                                                   -+                                                                                                                                ",
+        "     =                                                                   ()                                                                                                                                ",
+        "     =                                                                   ()                                                                                                                                ", 
+    ],
+    [
+        "                                                       £",
+        "                                      $$             £",
+        "                                     %%                                   ",
+        "                                                                       ",
+        "                                   x  x                 £",
+        "                                                   $$$$$$$$                    ",
+        "                                      $                                 ",
+        "                    x                x     x       x x         £",
+        "                                    $                                   ",
+        "              x           x        x           x        x                 £",
+        "                                                                       ",
+        "           x x             x   x         x           x             £",
+        "                                                                       ",
+        "        x   x              x x       x              x        £",
+        "-+                                                                       ",
+        "()     x      x       x        x     x                  x         £",
+        "                                                                       ",
+        " x         x      x          x   x                      x        ",
+        "                  x                                                     ",
+        "x           xxxxx x       xxxxxxx                       x     xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "                  x                                       x",
+        "                  xxxx    xxx                                     x            ",
+        "                x                                         x                       ",
+        "            x x x           x                                              ",
+        "                x                                                                      ",
+        "            x                                                                     ",
+        "                                         x                       x                         ",
+        "            x                       x        x                                        ",
+        "                x                  x             x             x                         ",
+        "                   x                                                                ",
+        "                     x           x                  x         x                 ",
+        "                                                       x   x                           ",
+        "                             x                                                    ",
+        "                x                                                               ",
+        "                     -+   x                                                         ",
+        "                     ()                                                             ",
+        "                     ()                                                           ",
+        "                     x                                                           ", 
+    ],
+    [
+        "                                                                                                                                                                                           ",
+        "   =======   =====      ======    ======                                                                                                                                               -+ ",
+        "                                                     ^  ^^^             ^                                                                                                                 ()",
+        "                  ^^^^^^                          ================  ===     ==                                                                                                    ==    % ",
+        "                                                                 ^^^^                                                                                                        %",
+        "                                                            $$    ===                                                                                                     %",
+        "                                           ^^^               $$$$                                                                                                      % ",
+        "        *          %                                     $$$$$$                                                                                                     %",
+        "                                                               ^^^^^^                                                                                            %",
+        "                                             ===            ====================                                                                             % ",
+        "             ^                                                                           *                                                                %",
+        "           ===========================               $^                                                                                                %",
+        "             ^                                         ==   *                                                ^                                      %",
+        "                                                                           	           =                      %=   =     *                     %",
+        "     %    =*=%=                                            =             %%%%         =    =                    =                    %       %     ",
+        "    -+                                  ^^^^                                             =          =                           =             %          ",
+        "    ()     ^^      ^^^^^^                                                      =                                    ^^                       =             %      ",
+        "===============================   ==  = =   =  =  ========         ================         ==   =======   ========           ==    ==     ============== ", 
+    ],
+    [
+        "£                                                  @@@                                                     £",
+        "£                                                                                                          £",
+        "£                                                   !                                                      £",
+        "£                                           **                                                      £",
+        "£                                  z           $$$     !!    !!        $$$$$$$$$$$$$$$$$$$$$£",
+        "£                                  x          !!!                            £   £   £   £      £    £",
+        "£     %    @@@@@@                 xx                             xxx%%         %      %      %     £",
+        "£   -+                           xxx                                                               £",
+        "£   ()              z   z       xxxx        xx                     xx£       !!     !!     !!               ",
+        "!!!!!!!!!!!!!!!!!!     !!!!!!!       !!    !!!!!!  !!!!!!xxxxxx!!!!!!!!!!!                                  ",
+        "                                                                                                             ",
+        "                                                                              %             %           ",
+        "                    *                                      -+                        xx           xx     ",
+        "                   £                                       ()                                       ",
+        "                   !!!!!                    !!!!!!!!!!!!!!!!!!!!!!!   x x      xx         xx           ", 
+    ],
+    [
+        "£                                                                                                          £",
+        "£     ! ! ! ! ! ! ! ! ! ! ! !                                                                                £",
+        "£                                                                                                            £",
+        "£      xxxxx       xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                               £",
+        "£                                                                                                              £",
+        "£                               x                                                                              £",
+        "£                               x                                                                              £",
+        "£                               x                                                                              £",
+        "£                               x                                                                            £",
+        "£                               x                                                                            £",
+        "£     %    @@      @@@@              xx                                                                       £",
+        "£    -+     $   $$   $$$   $$$$      $$$$$$      $$$$$$$        xxx                                            £",
+        "£    ()                                        ()                                                               £",
+        "!xx!!!!!!!!!!!!!         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                            x",
+        "                                                                                                                x",
+        "                                                                                                                  ",
+        "                                                                                 $$$$$                             ",
+        "-+xxx  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx    xxxxxxxxxxxxxx    xxxxxx   xxxxxx    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx      ",
+        "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$                ",
+        "                $$     xxxxx                                                                                 xxxxxxx",
+        "-+                                      $$                                                               xxxxxxx",
+        "()   x          xxxx                   xxxxxxxxxxxxxxxxx                          xx     xx   x    xxxxxxxx                        x",
+        "()          x   xxxx    %              xxx            xx         x               xx  x     x            x",
+        "()              xxxx                   xxx            xx                      xx    x        x           x",
+        "()       x      xxxx        x          xxx            xx      xx            xx      x          x          x",
+        "()                                     xxx            xx                  xx        x            x        x",
+        "()                    xxx              xxx            xx   %            xx          x              x        x",
+        "()                     xxx             xxx            xx         xx   xx            x                x       x",
+        "()               x       xxx           xxx            xx            xx              x                 x",
+        "()    xxxxxx           xxxxxxxxxxxxxxxxxxx                 xxxxxxxxxxxxxx              xxxxxxxxxxxxxxxxxxx                                        x", 
+    ], 
+];
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}]},["aPgZf","bQBuh"], "bQBuh", "parcelRequire0c6d")
 
