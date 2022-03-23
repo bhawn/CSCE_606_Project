@@ -1222,9 +1222,10 @@ scene("lose", ({ score  })=>{
         pos(width() / 2, height() / 2)
     ]);
     add([
-        text("Game Over. Going Back to Home Page in 2 seconds"),
+        text("Game Over. Going Back to Main Menu in 2 seconds"),
+        color(200, 50, 10),
         scale(0.5),
-        pos(width() / 2 - 340, height() / 2 + 30), 
+        pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30), 
     ]);
     // start the game
     // onKeyPress("space", () => {
