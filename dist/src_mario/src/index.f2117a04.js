@@ -990,16 +990,16 @@ scene("game", ({ level , score  })=>{
     // if player onCollide with anythig with dangerous
     // big mario becomes small
     // small mario dies
-    // player.onCollide("dangerous", (d) => {
-    //   console.log(d.pos.y + " " + player.pos.y);
-    //   if (player.pos.y == d.pos.y || isJumping) {
-    //     console.log("detect");
-    //     destroy(d);
-    //   } else {
-    //     // go to a lose scene and display the final score
-    //     go("lose", { score: scoreLabel.value });
-    //   }
-    // });
+    player.onCollide("dangerous", (d)=>{
+        console.log(d.pos.y + " " + player.pos.y);
+        if (player.pos.y == d.pos.y || isJumping) {
+            console.log("detect");
+            destroy(d);
+        } else // go to a lose scene and display the final score
+        go("lose", {
+            score: scoreLabel.value
+        });
+    });
     onUpdate(()=>{
         // Make camera Position same as player position
         camPos(player.pos);
@@ -1254,6 +1254,11 @@ scene("vaccineInfoScene", ({ level , score  })=>{
         scale(1),
         color(200, 144, 255),
         pos(20, 70), 
+    ]), add([
+        text("Loading next Level..Please Wait..."),
+        scale(0.5),
+        color(200, 3, 10),
+        pos(100, window.innerHeight - 100), 
     ]);
     wait(3, ()=>{
         go("game", {
@@ -5552,7 +5557,7 @@ parcelHelpers.export(exports, "info", ()=>info
 );
 const info = [
     [
-        "Get Vaccinated.. Encourage Others,"
+        "Get Vaccinated.. Encourage Others"
     ],
     [
         "Kill that hestitation regarding vaccines or that hesitation will kill you"

@@ -1,5 +1,5 @@
 export const info = [
-  ["Get Vaccinated.. Encourage Others,"],
+  ["Get Vaccinated.. Encourage Others"],
   ["Kill that hestitation regarding vaccines or that hesitation will kill you"],
   [
     "Don't succumb to viruses.. Make viruses succumb when they attack you. Happens only when you are fully immune. Believe in what great researchers are saying",
