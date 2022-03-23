@@ -21,7 +21,8 @@ const k = kaboom({
   fullscreen: true,
 
   scale: 1,
-  background: [0.1, 0, 0, 0],
+  background: [0, 0, 1],
+  clearColor: [51, 151, 255],
   // for debug mode
 
   debug: true,
@@ -30,15 +31,29 @@ const k = kaboom({
 //This is for Menu
 
 scene("menu", () => {
+  var x = 10,
+    y = 10,
+    z = 155;
+  color(240, 100, 24);
   add(
-    [text("Mario game"), pos(240, 80), scale(1)],
-    origin("center"),
-    color(100, 120, 220)
+    [
+      text("Mario game"),
+      pos(window.innerWidth / 2 - 240, window.innerHeight / 2 - 200),
+      ,
+      scale(1),
+      color(10, 10, 155),
+      area(),
+      "title",
+    ],
+    origin("center")
   );
-
+  // Play game button
   add([
-    rect(160, 20),
-    pos(240, 180),
+    //rect(260, 20),
+    text("Play game"),
+
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+    color(10, 10, 155),
 
     origin("center"),
     "button",
@@ -49,55 +64,33 @@ scene("menu", () => {
         //go("game", { level: 0, score: 0 });
       },
     },
-    scale(2),
+    scale(0.7),
     area(),
-    color(255, 10, 120),
+
     ,
   ]);
 
   add([
-    text("Play game"),
-    pos(240, 180),
-    scale(0.7),
-    area(),
-    origin("center"),
-    color(100, 120, 220),
-  ]);
-
-  add([
-    rect(160, 20),
-    pos(240, 210),
+    //rect(260, 20),
+    text("Back to Main Menu"),
+    color(10, 10, 155),
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2),
     "button",
     {
       clickAction: () =>
         window.open("C:UserskaushDesktopCSCE_606_Projectindex.html"),
     },
-    scale(2),
-    area(),
-
-    origin("center"),
-  ]);
-
-  add([
-    text("Back to Main Menu"),
-    pos(240, 210),
     scale(0.7),
     area(),
-    origin("center"),
 
-    color(100, 120, 220),
+    origin("center"),
   ]);
 
   action("button", (b) => {
-    if (b.onHover) {
-      b.use(color(0.7, 0.7, 0.7));
-    } else {
-      b.use(color(1, 0, 1));
-    }
-
-    // if (b.onClick) {
-    //   b.clickAction();
-    // }
+    onHover("button", (b) => {
+      b.use(color(240, 100, 155));
+    });
+    b.use(color(10, 10, 155));
   });
 
   onClick("button", (b) => {
@@ -178,15 +171,23 @@ loadSprite("highjump", "xfWsMOV.png");
 loadSprite("shoot", "mPlhKAi.png");
 
 //Vaccine Info Scene begins
+//loadRoot("C:UserskaushDesktopCSCE_606_Projectsrc_mariosrc/");
 
 //Vaccine Info scene ends
 // game scene
+
 scene("game", ({ level, score }) => {
   //create layers
   //An array
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
+  const bgColor = add([
+    rect(100000000000000, 1000000000000000),
+    color(0, 10, 24),
+    layer("bg", "ui"),
+    fixed(),
+  ]);
 
   //level configuration
   const levelCfg = {
@@ -727,13 +728,25 @@ scene("lose", ({ score }) => {
 });
 
 scene("vaccineInfoScene", ({ level, score }) => {
+  layers(["ui", "bg"], "bg");
+  const infoColor = add([
+    rect(window.innerWidth, window.innerHeight),
+    color(10, 0, 10),
+    layer("bg", "ui"),
+    fixed(),
+  ]);
   add([
     text(info[level], {
-      size: 48, // 48 pixels tall
-      width: window.innerWidth, // it'll wrap to next line when width exceeds this value
+      size: 35, // 48 pixels tall
+      width: window.innerWidth,
+      font: "apl386o",
+
+      // it'll wrap to next line when width exceeds this value
     }),
 
     scale(1),
+    color(200, 144, 255),
+    pos(20, 70),
 
     //area(),
   ]);
