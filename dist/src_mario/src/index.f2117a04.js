@@ -5552,6 +5552,15 @@ parcelHelpers.export(exports, "info", ()=>info
 );
 const info = [
     [
+        "Get Vaccinated.. Encourage Others,"
+    ],
+    [
+        "Kill that hestitation regarding vaccines or that hesitation will kill you"
+    ],
+    [
+        "Don't succumb to viruses.. Make viruses succumb when they attack you. Happens only when you are fully immune. Believe in what great researchers are saying", 
+    ],
+    [
         "Live, attenuated vaccines fight viruses and bacteria. These vaccines contain a version of the living virus or bacteria that has been weakened so that it does not cause serious disease in people with healthy immune systems. Because live, attenuated vaccines are the closest thing to a natural infection, they are good teachers for the immune system. Examples of live, attenuated vaccines include measles, mumps, and rubella vaccine (MMR) and varicella (chickenpox) vaccine. Even though they are very effective, not everyone can receive these vaccines. Children with weakened immune systems—for example, those who are undergoing chemotherapy—cannot get live vaccines.", 
     ],
     [
