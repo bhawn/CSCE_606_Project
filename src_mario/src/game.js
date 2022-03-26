@@ -1,5 +1,7 @@
 import kaboom from "../../node_modules/kaboom";
 import { playableMap } from "./PlayableMap";
+const AGRO_RANGE_X = 300;
+const AGRO_RANGE_Y = 75;
 const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
@@ -175,7 +177,7 @@ scene("game", ({ level, score }) => {
       scale(0.5),
       // body(),
       area(),
-      "dangerous",
+      "dangerous"
     ],
     "@": () => [
       sprite("blue-surprise"),
@@ -348,20 +350,32 @@ scene("game", ({ level, score }) => {
   });
 
   // Let us make evils move
-
   onUpdate("dangerous", (d) => {
-    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3 * (level + 1), 0);
-    else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3 * (level + 1), 0);
-    if (d.pos.y < player.pos.y)
-      d.move(-ENEMY_SPEED * (level + 1), ENEMY_SPEED * 3 * (level + 1));
-    else if (d.pos.y > player.pos.y)
-      d.move(ENEMY_SPEED * (level + 1), -ENEMY_SPEED * 3 * (level + 1));
-    // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
+	let x_dist = d.pos.x - player.pos.x;
+	let y_dist = d.pos.y - (player.pos.y - 20);
+	console.log("X dist: " + x_dist + ", Y dist: " + y_dist);
+	
+	// Check how far away the guy is and if it's already moving.
+	// Bias x distance over y distance
+	d.moving = d.moving ? true : (Math.abs(x_dist) < AGRO_RANGE_X) && (Math.abs(y_dist) < AGRO_RANGE_Y);
+	if (!d.moving) return;
+	
+	let movement = 3 * ENEMY_SPEED * (level + 1);
+	let x_move = movement;
+	let y_move = movement;
+	
+	// Set movement to negative if needed.
+    if (x_dist > 0)
+		x_move = -1 * x_move;
+    if (y_dist > 0)
+		y_move = -1 * y_move;
+	
+	d.move(x_move, y_move);
   });
+  
   // if player onCollide with anythig with dangerous
   // big mario becomes small
   // small mario dies
-
   player.onCollide("dangerous", (d) => {
     console.log(d.pos.y + " " + player.pos.y);
     if (player.pos.y == d.pos.y || isJumping) {
