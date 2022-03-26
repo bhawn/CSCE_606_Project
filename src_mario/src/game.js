@@ -405,9 +405,17 @@ scene("game", ({ level, score }) => {
     // left we need to have minus direction
     player.move(-MOVE_SPEED, 0);
   });
+    
+  onKeyDown("a", () => {
+      player.move(-MOVE_SPEED, 0);
+  });
 
   onKeyDown("right", () => {
     // right we need to have plus direction
+    player.move(MOVE_SPEED, 0);
+  });
+    
+  onKeyDown("d", () => {
     player.move(MOVE_SPEED, 0);
   });
   // So during any action if the player is grounded
@@ -422,6 +430,9 @@ scene("game", ({ level, score }) => {
   // or create a house and then use the key desired
   player.onCollide("pipe", () => {
     onKeyPress("down", () => {
+      go("game", { level: level + 1, score: scoreLabel.value });
+    });
+    onKeyPress("s", () => {
       go("game", { level: level + 1, score: scoreLabel.value });
     });
   });
@@ -440,6 +451,8 @@ scene("game", ({ level, score }) => {
 
   //keyPress is a JS method especially used here to make use of space key to jump
   onKeyPress("space", jumping);
+  //onKeyPress("w", jumping);
+  //onKeyPress("up", jumping);
 
   // timer functionality in game scene
 
@@ -465,6 +478,18 @@ scene("game", ({ level, score }) => {
       go("lose", { score: scoreLabel.value });
     }
   });
+    
+  add([text("C - Controls"), pos (20, 54), scale(0.3), fixed()]);
+    
+  const controlsInfo = () => {
+    add([text("Left - A or Left Arrow Key"), pos(20, 70), scale(0.3), fixed()]);
+    add([text("Right - D or Right Arrow Key"), pos(20, 86), scale(0.3), fixed()]);
+    add([text("Jump - Space"), pos(20, 102), scale(0.3), fixed()]);
+    add([text("Shoot - B"), pos(20, 118), scale(0.3), fixed()]);
+    add([text("Use Pipe - S or Down Arrow"), pos(20, 134), scale(0.3), fixed()]);
+  };
+    
+  onKeyPress("c", controlsInfo);
 
   // Bullet functionality
   // positon of player as parameter
