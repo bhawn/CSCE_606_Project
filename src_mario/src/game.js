@@ -1,5 +1,6 @@
 import kaboom from "../../node_modules/kaboom";
 import { playableMap } from "./PlayableMap";
+import { info } from "./info";
 const AGRO_RANGE_X = 300;
 const AGRO_RANGE_Y = 75;
 const MOVE_SPEED = 150;
@@ -22,10 +23,81 @@ const k = kaboom({
   fullscreen: true,
 
   scale: 1,
-  background: [0.1, 0, 0, 0],
+  background: [0, 0, 1],
+  clearColor: [51, 151, 255],
   // for debug mode
 
   debug: true,
+});
+
+//This is for Menu
+
+scene("menu", () => {
+  var x = 10,
+    y = 10,
+    z = 155;
+  color(240, 100, 24);
+  add(
+    [
+      text("Mario game"),
+      pos(window.innerWidth / 2 - 240, window.innerHeight / 2 - 200),
+      ,
+      scale(1),
+      color(10, 10, 155),
+      area(),
+      "title",
+    ],
+    origin("center")
+  );
+  // Play game button
+  add([
+    //rect(260, 20),
+    text("Play game"),
+
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+    color(10, 10, 155),
+
+    origin("center"),
+    "button",
+    {
+      clickAction: () => {
+        go("vaccineInfoScene", { level: 0, score: 0 });
+
+        //go("game", { level: 0, score: 0 });
+      },
+    },
+    scale(0.7),
+    area(),
+
+    ,
+  ]);
+
+  add([
+    //rect(260, 20),
+    text("Back to Main Menu"),
+    color(10, 10, 155),
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2),
+    "button",
+    {
+      clickAction: () =>
+        window.open("C:UserskaushDesktopCSCE_606_Projectindex.html"),
+    },
+    scale(0.7),
+    area(),
+
+    origin("center"),
+  ]);
+
+  action("button", (b) => {
+    onHover("button", (b) => {
+      b.use(color(240, 100, 155));
+    });
+    b.use(color(10, 10, 155));
+  });
+
+  onClick("button", (b) => {
+    b.clickAction();
+  });
 });
 
 window.addEventListener("resize", resize, false);
@@ -99,13 +171,25 @@ loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 
 loadSprite("shoot", "mPlhKAi.png");
+
+//Vaccine Info Scene begins
+//loadRoot("C:UserskaushDesktopCSCE_606_Projectsrc_mariosrc/");
+
+//Vaccine Info scene ends
 // game scene
+
 scene("game", ({ level, score }) => {
   //create layers
   //An array
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
+  const bgColor = add([
+    rect(100000000000000, 1000000000000000),
+    color(0, 10, 24),
+    layer("bg", "ui"),
+    fixed(),
+  ]);
 
   //level configuration
   const levelCfg = {
@@ -430,7 +514,9 @@ scene("game", ({ level, score }) => {
   // or create a house and then use the key desired
   player.onCollide("pipe", () => {
     onKeyPress("down", () => {
-      go("game", { level: level + 1, score: scoreLabel.value });
+      /* Scene to display vaccine informations*/
+
+      go("vaccineInfoScene", { level: level + 1, score: score });
     });
     onKeyPress("s", () => {
       go("game", { level: level + 1, score: scoreLabel.value });
@@ -664,14 +750,58 @@ scene("game", ({ level, score }) => {
 scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
   add([
-    text('Hit "Space bar" to Play again'),
+    text("Game Over. Going Back to Main Menu in 2 seconds"),
+    color(200, 50, 10),
     scale(0.5),
-    pos(width() / 2 - 240, height() / 2 + 30),
+    pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
   ]);
-  onKeyPress("space", () => {
-    go("game", { level: 0, score: 0 });
+
+  // start the game
+
+  // onKeyPress("space", () => {
+  //   go("game", { level: 0, score: 0 });
+  // });
+
+  wait(2, () => {
+    go("menu");
   });
 });
 
+scene("vaccineInfoScene", ({ level, score }) => {
+  layers(["ui", "bg"], "bg");
+  const infoColor = add([
+    rect(window.innerWidth, window.innerHeight),
+    color(10, 0, 10),
+    layer("bg", "ui"),
+    fixed(),
+  ]);
+  add([
+    text(info[level], {
+      size: 35, // 48 pixels tall
+      width: window.innerWidth,
+      font: "apl386o",
+
+      // it'll wrap to next line when width exceeds this value
+    }),
+
+    scale(1),
+    color(200, 144, 255),
+    pos(20, 70),
+
+    //area(),
+  ]),
+    add([
+      text("Loading next Level..Please Wait..."),
+      scale(0.5),
+      color(200, 3, 10),
+
+      pos(100, window.innerHeight - 100),
+    ]);
+
+  wait(3, () => {
+    go("game", { level: level, score: score });
+  });
+});
 //init();
-go("game", { level: 0, score: 0 });
+go("menu");
+//go("game", { level: 0, score: 0 });
