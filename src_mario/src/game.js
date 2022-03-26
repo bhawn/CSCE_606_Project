@@ -1,6 +1,8 @@
 import kaboom from "../../node_modules/kaboom";
 import { playableMap } from "./PlayableMap";
 import { info } from "./info";
+const AGRO_RANGE_X = 300;
+const AGRO_RANGE_Y = 75;
 const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
@@ -117,7 +119,7 @@ function resize() {
 //add scenes
 //coins
 loadRoot("https://i.imgur.com/");
-loadSprite("coin", "wbKxhcd.png");
+loadSprite("coin", "O0rwU31.png"); //https://imgur.com/O0rwU31
 
 //enenmies
 
@@ -259,7 +261,7 @@ scene("game", ({ level, score }) => {
       scale(0.5),
       // body(),
       area(),
-      "dangerous",
+      "dangerous"
     ],
     "@": () => [
       sprite("blue-surprise"),
@@ -432,20 +434,32 @@ scene("game", ({ level, score }) => {
   });
 
   // Let us make evils move
-
   onUpdate("dangerous", (d) => {
-    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3 * (level + 1), 0);
-    else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3 * (level + 1), 0);
-    if (d.pos.y < player.pos.y)
-      d.move(-ENEMY_SPEED * (level + 1), ENEMY_SPEED * 3 * (level + 1));
-    else if (d.pos.y > player.pos.y)
-      d.move(ENEMY_SPEED * (level + 1), -ENEMY_SPEED * 3 * (level + 1));
-    // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
+	let x_dist = d.pos.x - player.pos.x;
+	let y_dist = d.pos.y - (player.pos.y - 20);
+	console.log("X dist: " + x_dist + ", Y dist: " + y_dist);
+	
+	// Check how far away the guy is and if it's already moving.
+	// Bias x distance over y distance
+	d.moving = d.moving ? true : (Math.abs(x_dist) < AGRO_RANGE_X) && (Math.abs(y_dist) < AGRO_RANGE_Y);
+	if (!d.moving) return;
+	
+	let movement = 3 * ENEMY_SPEED * (level + 1);
+	let x_move = movement;
+	let y_move = movement;
+	
+	// Set movement to negative if needed.
+    if (x_dist > 0)
+		x_move = -1 * x_move;
+    if (y_dist > 0)
+		y_move = -1 * y_move;
+	
+	d.move(x_move, y_move);
   });
+  
   // if player onCollide with anythig with dangerous
   // big mario becomes small
   // small mario dies
-
   player.onCollide("dangerous", (d) => {
     console.log(d.pos.y + " " + player.pos.y);
     if (player.pos.y == d.pos.y || isJumping) {
@@ -475,9 +489,17 @@ scene("game", ({ level, score }) => {
     // left we need to have minus direction
     player.move(-MOVE_SPEED, 0);
   });
+    
+  onKeyDown("a", () => {
+      player.move(-MOVE_SPEED, 0);
+  });
 
   onKeyDown("right", () => {
     // right we need to have plus direction
+    player.move(MOVE_SPEED, 0);
+  });
+    
+  onKeyDown("d", () => {
     player.move(MOVE_SPEED, 0);
   });
   // So during any action if the player is grounded
@@ -496,6 +518,9 @@ scene("game", ({ level, score }) => {
 
       go("vaccineInfoScene", { level: level + 1, score: score });
     });
+    onKeyPress("s", () => {
+      go("game", { level: level + 1, score: scoreLabel.value });
+    });
   });
 
   // we will define a function jump so that it can be reused both by touch and keyboard
@@ -512,6 +537,8 @@ scene("game", ({ level, score }) => {
 
   //keyPress is a JS method especially used here to make use of space key to jump
   onKeyPress("space", jumping);
+  //onKeyPress("w", jumping);
+  //onKeyPress("up", jumping);
 
   // timer functionality in game scene
 
@@ -537,6 +564,18 @@ scene("game", ({ level, score }) => {
       go("lose", { score: scoreLabel.value });
     }
   });
+    
+  add([text("C - Controls"), pos (20, 54), scale(0.3), fixed()]);
+    
+  const controlsInfo = () => {
+    add([text("Left - A or Left Arrow Key"), pos(20, 70), scale(0.3), fixed()]);
+    add([text("Right - D or Right Arrow Key"), pos(20, 86), scale(0.3), fixed()]);
+    add([text("Jump - Space"), pos(20, 102), scale(0.3), fixed()]);
+    add([text("Shoot - B"), pos(20, 118), scale(0.3), fixed()]);
+    add([text("Use Pipe - S or Down Arrow"), pos(20, 134), scale(0.3), fixed()]);
+  };
+    
+  onKeyPress("c", controlsInfo);
 
   // Bullet functionality
   // positon of player as parameter
