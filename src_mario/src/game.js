@@ -14,6 +14,8 @@ let isBig = false;
 let buttonsVisible = true;
 
 let hasBulletAbility = false;
+let enemyVelocity = ENEMY_SPEED * 3
+let startUp = true
 
 kaboom({
   global: true,
@@ -99,6 +101,7 @@ scene("game", ({ level, score }) => {
 
     // load in some sprites
     "=": () => [sprite("block"), solid(), area(), "brick"],
+    "_": () => [sprite("block"), solid(), area(), "block"],
     $: () => [sprite("coin"), "coin", area()],
     "%": () => [sprite("surprise"), solid(), "coin-surprise", area()],
     "*": () => [sprite("surprise"), solid(), "mushroom-surprise", area()],
@@ -121,15 +124,15 @@ scene("game", ({ level, score }) => {
     //Newly added Sprites end here
 
     "}": () => [sprite("unboxed"), solid(), area()],
-    "(": () => [sprite("pipe-bottom-left"), solid(), scale(0.5), area()],
+    "(": () => [sprite("pipe-bottom-left"), solid(), scale(0.5), "pipe", area()],
 
-    ")": () => [sprite("pipe-bottom-right"), solid(), scale(0.5), area()],
+    ")": () => [sprite("pipe-bottom-right"), solid(), scale(0.5), "pipe", area()],
 
     "-": () => [sprite("pipe-top-left"), solid(), scale(0.5), "pipe", area()],
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), solid(), "dangerous", body(), area()],
+    "^": () => [sprite("covid"), solid(), "dangerous1", body(), area()],
 
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
 
@@ -334,27 +337,59 @@ scene("game", ({ level, score }) => {
 
   // Let us make evils move
 
-  onUpdate("dangerous", (d) => {
+  onUpdate("dangerous1", (d) => {
+    d.onCollide("block", (d1) => {
+        console.log(d1.pos.x)
+        enemyVelocity *= -1;
+        let i = 1000000
+        while (i > -1) {
+            i--;
+        }
+    });
+    d.onCollide("pipe", (d1) => {
+        console.log(d1.pos.x)
+        enemyVelocity *= -1;
+        let i = 100000
+        while (i > -1) {
+            i--;
+        }
+    });
+
+    d.move(enemyVelocity, 0);
+  });
+
+  onUpdate("dangerous", (d) => {  
     if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);
     else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
     if (d.pos.y < player.pos.y) d.move(-ENEMY_SPEED, ENEMY_SPEED * 3);
     else if (d.pos.y > player.pos.y) d.move(ENEMY_SPEED, -ENEMY_SPEED * 3);
     // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
+
   });
   // if player onCollide with anythig with dangerous
   // big mario becomes small
   // small mario dies
 
   player.onCollide("dangerous", (d) => {
-        console.log((d.pos.y) + " " + player.pos.y)
+        // console.log((d.pos.y) + " " + player.pos.y)
         if ((player.pos.y == d.pos.y) || isJumping) {
-            console.log("detect")
+            // console.log("detect")
             destroy(d);
         } else {
         // go to a lose scene and display the final score
         go("lose", { score: scoreLabel.value });
         }
   });
+  player.onCollide("dangerous1", (d) => {
+    // console.log((d.pos.y) + " " + player.pos.y)
+    if ((player.pos.y == d.pos.y) || isJumping) {
+        // console.log("detect")
+        destroy(d);
+    } else {
+    // go to a lose scene and display the final score
+    go("lose", { score: scoreLabel.value });
+    }
+});
 
   onUpdate(() => {
     // Make camera Position same as player position
@@ -472,6 +507,11 @@ scene("game", ({ level, score }) => {
     }
   });
   onCollide("dangerous", "bullet", (d, b) => {
+    //shake(40);
+    destroy(d);
+    destroy(b);
+  });
+  onCollide("dangerous1", "bullet", (d, b) => {
     //shake(40);
     destroy(d);
     destroy(b);
