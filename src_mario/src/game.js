@@ -1,6 +1,8 @@
-import kaboom from "kaboom";
+import kaboom from "../../node_modules/kaboom";
 import { playableMap } from "./PlayableMap";
-
+import { info } from "./info";
+const AGRO_RANGE_X = 300;
+const AGRO_RANGE_Y = 75;
 const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
@@ -17,22 +19,109 @@ let hasBulletAbility = false;
 let enemyVelocity = ENEMY_SPEED * 3
 
 
-kaboom({
+const k = kaboom({
   global: true,
   // enable full screen
   fullscreen: true,
 
   scale: 1,
-  background: [0.1, 0, 0, 0],
+  background: [0, 0, 1],
+  clearColor: [51, 151, 255],
   // for debug mode
 
   debug: true,
 });
 
+//This is for Menu
+
+scene("menu", () => {
+  var x = 10,
+    y = 10,
+    z = 155;
+  color(240, 100, 24);
+  add(
+    [
+      text("Mario game"),
+      pos(window.innerWidth / 2 - 240, window.innerHeight / 2 - 200),
+      ,
+      scale(1),
+      color(10, 10, 155),
+      area(),
+      "title",
+    ],
+    origin("center")
+  );
+  // Play game button
+  add([
+    //rect(260, 20),
+    text("Play game"),
+
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+    color(10, 10, 155),
+
+    origin("center"),
+    "button",
+    {
+      clickAction: () => {
+        go("vaccineInfoScene", { level: 0, score: 0 });
+
+        //go("game", { level: 0, score: 0 });
+      },
+    },
+    scale(0.7),
+    area(),
+
+    ,
+  ]);
+
+  add([
+    //rect(260, 20),
+    text("Back to Main Menu"),
+    color(10, 10, 155),
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2),
+    "button",
+    {
+      clickAction: () =>
+        window.open("C:UserskaushDesktopCSCE_606_Projectindex.html"),
+    },
+    scale(0.7),
+    area(),
+
+    origin("center"),
+  ]);
+
+  action("button", (b) => {
+    onHover("button", (b) => {
+      b.use(color(240, 100, 155));
+    });
+    b.use(color(10, 10, 155));
+  });
+
+  onClick("button", (b) => {
+    b.clickAction();
+  });
+});
+
+window.addEventListener("resize", resize, false);
+function resize() {
+  // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
+  var canvas = document.querySelector("canvas");
+  var windowWidth = window.innerWidth;
+  var windowHeight = window.innerHeight;
+  var windowRatio = windowWidth / windowHeight;
+  var gameRatio = k.width / k.height;
+  if (windowRatio < gameRatio) {
+    canvas.style.width = windowWidth + "px";
+    canvas.style.height = windowWidth / gameRatio + "px";
+  } else {
+    canvas.style.width = windowHeight * gameRatio + "px";
+    canvas.style.height = windowHeight + "px";
+  }
+}
 //add scenes
 //coins
 loadRoot("https://i.imgur.com/");
-loadSprite("coin", "wbKxhcd.png");
+loadSprite("coin", "O0rwU31.png"); //https://imgur.com/O0rwU31
 
 //enenmies
 
@@ -84,13 +173,25 @@ loadSprite("d", "7SNgoAe.png");
 loadSprite("highjump", "xfWsMOV.png");
 
 loadSprite("shoot", "mPlhKAi.png");
+
+//Vaccine Info Scene begins
+//loadRoot("C:UserskaushDesktopCSCE_606_Projectsrc_mariosrc/");
+
+//Vaccine Info scene ends
 // game scene
+
 scene("game", ({ level, score }) => {
   //create layers
   //An array
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
+  const bgColor = add([
+    rect(100000000000000, 1000000000000000),
+    color(0, 10, 24),
+    layer("bg", "ui"),
+    fixed(),
+  ]);
 
   //level configuration
   const levelCfg = {
@@ -163,7 +264,7 @@ scene("game", ({ level, score }) => {
       scale(0.5),
       // body(),
       area(),
-      "dangerous",
+      "dangerous"
     ],
     "@": () => [
       sprite("blue-surprise"),
@@ -358,27 +459,41 @@ scene("game", ({ level, score }) => {
     d.move(enemyVelocity, 0);
   });
 
-  onUpdate("dangerous", (d) => {  
-    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);
-    else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
-    if (d.pos.y < player.pos.y) d.move(-ENEMY_SPEED, ENEMY_SPEED * 3);
-    else if (d.pos.y > player.pos.y) d.move(ENEMY_SPEED, -ENEMY_SPEED * 3);
-    // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
-
+  onUpdate("dangerous", (d) => {
+	let x_dist = d.pos.x - player.pos.x;
+	let y_dist = d.pos.y - (player.pos.y - 20);
+	console.log("X dist: " + x_dist + ", Y dist: " + y_dist);
+	
+	// Check how far away the guy is and if it's already moving.
+	// Bias x distance over y distance
+	d.moving = d.moving ? true : (Math.abs(x_dist) < AGRO_RANGE_X) && (Math.abs(y_dist) < AGRO_RANGE_Y);
+	if (!d.moving) return;
+	
+	let movement = 3 * ENEMY_SPEED * (level + 1);
+	let x_move = movement;
+	let y_move = movement;
+	
+	// Set movement to negative if needed.
+    if (x_dist > 0)
+		x_move = -1 * x_move;
+    if (y_dist > 0)
+		y_move = -1 * y_move;
+	
+	d.move(x_move, y_move);
   });
+  
   // if player onCollide with anythig with dangerous
   // big mario becomes small
   // small mario dies
-
   player.onCollide("dangerous", (d) => {
-        // console.log((d.pos.y) + " " + player.pos.y)
-        if ((player.pos.y == d.pos.y) || isJumping) {
-            // console.log("detect")
-            destroy(d);
-        } else {
-        // go to a lose scene and display the final score
-        go("lose", { score: scoreLabel.value });
-        }
+    // console.log((d.pos.y) + " " + player.pos.y)
+    if ((player.pos.y == d.pos.y) || isJumping) {
+        // console.log("detect")
+        destroy(d);
+    } else {
+    // go to a lose scene and display the final score
+    go("lose", { score: scoreLabel.value });
+    }
   });
   player.onCollide("dangerous1", (d) => {
     // console.log((d.pos.y) + " " + player.pos.y)
@@ -409,9 +524,17 @@ scene("game", ({ level, score }) => {
     // left we need to have minus direction
     player.move(-MOVE_SPEED, 0);
   });
+    
+  onKeyDown("a", () => {
+      player.move(-MOVE_SPEED, 0);
+  });
 
   onKeyDown("right", () => {
     // right we need to have plus direction
+    player.move(MOVE_SPEED, 0);
+  });
+    
+  onKeyDown("d", () => {
     player.move(MOVE_SPEED, 0);
   });
   // So during any action if the player is grounded
@@ -426,6 +549,11 @@ scene("game", ({ level, score }) => {
   // or create a house and then use the key desired
   player.onCollide("pipe", () => {
     onKeyPress("down", () => {
+      /* Scene to display vaccine informations*/
+
+      go("vaccineInfoScene", { level: level + 1, score: score });
+    });
+    onKeyPress("s", () => {
       go("game", { level: level + 1, score: scoreLabel.value });
     });
   });
@@ -444,6 +572,8 @@ scene("game", ({ level, score }) => {
 
   //keyPress is a JS method especially used here to make use of space key to jump
   onKeyPress("space", jumping);
+  //onKeyPress("w", jumping);
+  //onKeyPress("up", jumping);
 
   // timer functionality in game scene
 
@@ -469,6 +599,18 @@ scene("game", ({ level, score }) => {
       go("lose", { score: scoreLabel.value });
     }
   });
+    
+  add([text("C - Controls"), pos (20, 54), scale(0.3), fixed()]);
+    
+  const controlsInfo = () => {
+    add([text("Left - A or Left Arrow Key"), pos(20, 70), scale(0.3), fixed()]);
+    add([text("Right - D or Right Arrow Key"), pos(20, 86), scale(0.3), fixed()]);
+    add([text("Jump - Space"), pos(20, 102), scale(0.3), fixed()]);
+    add([text("Shoot - B"), pos(20, 118), scale(0.3), fixed()]);
+    add([text("Use Pipe - S or Down Arrow"), pos(20, 134), scale(0.3), fixed()]);
+  };
+    
+  onKeyPress("c", controlsInfo);
 
   // Bullet functionality
   // positon of player as parameter
@@ -519,9 +661,8 @@ scene("game", ({ level, score }) => {
 
   // The mobile version begins
   //The following is for the mobile support
-
+  //##############MOBILE##################
   if (isTouch()) {
-    buttonsVisible = false;
     //console.log(isTouch);
 
     //because left and right buttons will be pressed
@@ -531,6 +672,7 @@ scene("game", ({ level, score }) => {
       right: false,
       // we will set them to true when these buttons are tocuhed
     };
+
     const moveLeft = () => {
       player.move(-MOVE_SPEED, 0);
     };
@@ -539,132 +681,100 @@ scene("game", ({ level, score }) => {
       player.move(MOVE_SPEED, 0);
     };
 
-    onKeyDown("left", () => {
-      keyDownOnMobile.left = true;
-    });
+    //Mobile Buttons
+    const leftButton = add([
+      sprite("a"),
+      pos(50, 450),
+      opacity(0.5),
+      fixed(),
+      area(),
+    ]);
 
-    onKeyDown("right", () => {
-      keyDownOnMobile.right = true;
-    });
+    const rightButton = add([
+      sprite("d"),
+      pos(125, 450),
+      opacity(0.5),
+      fixed(),
+      area(),
+    ]);
 
-    onKeyRelease("left", () => {
-      keyDownOnMobile.left = false;
-    });
+    const actionButton = add([
+      sprite("highjump"),
+      pos(750, 450),
+      opacity(0.5),
+      fixed(),
+      area(),
+    ]);
 
-    onKeyRelease("right", () => {
-      keyDownOnMobile.right = false;
-    });
-    if (buttonsVisible) {
-      const leftButton = add([
-        sprite("a"),
-        pos(50, 450),
-        opacity(0.5),
-        fixed(),
-        area(),
-      ]);
+    const shootButton = add([
+      sprite("shoot"),
+      pos(650, 450),
+      opacity(0.5),
+      fixed(),
+      area(),
+    ]);
 
-      const rightButton = add([
-        sprite("d"),
-        pos(100, 450),
-        opacity(0.5),
-        fixed(),
-        area(),
-      ]);
-
-      const actionButton = add([
-        sprite("highjump"),
-        pos(750, 450),
-        opacity(0.5),
-        fixed(),
-        area(),
-      ]);
-
-      const shootButton = add([
-        sprite("shoot"),
-        pos(650, 450),
-        opacity(0.5),
-        fixed(),
-        area(),
-      ]);
-    }
-    // onTouchStart gets called each time a new touch event is registered
-    onTouchStart((id, pos) => {
-      // we will check if the touch overlaps with the left button
+    //TouchStart acts similar to a key press
+    //Sperate starts allow for mulitple button presses
+    onTouchStart((leftPress, pos) => {
       if (leftButton.hasPoint(pos)) {
         keyDownOnMobile.left = true;
         leftButton.opacity = 1;
-      } else if (rightButton.hasPoint(pos)) {
+      }
+    });
+
+    onTouchStart((rightPress, pos) => {
+      if (rightButton.hasPoint(pos)) {
         keyDownOnMobile.right = true;
         rightButton.opacity = 1;
-      } else if (actionButton.hasPoint(pos)) {
+      }
+    });
+
+    onTouchStart((jumpPress, pos) => {
+      if (actionButton.hasPoint(pos)) {
         jumping();
         actionButton.opacity = 1;
-      } else if (shootButton.hasPoint(pos)) {
-        spawnBullet(player.pos.add(25, -10));
+      }
+    });
 
+    onTouchStart((shootPress, pos) => {
+      if (shootButton.hasPoint(pos)) {
+        spawnBullet(player.pos.add(25, -10));
         shootButton.opacity = 1;
       }
     });
-    // But we if dont take the fingers off the screen then the touch persists so we need to make changes on
-    // onTouchEnd by using async functionality
 
-    const onTouchChanged = (_, pos) => {
-      // if the button is used for touch event registration and else is used for touch event de-registration
-      if (!leftButton.hasPoint(pos)) {
-        keyDownOnMobile.left = false;
-        leftButton.opacity = 0.5;
-      } else {
+    //Keeps movement even if screen is touched, or other button is touched
+    onTouchMove((id, pos) => {
+      if (leftButton.hasPoint(pos)) {
         keyDownOnMobile.left = true;
         leftButton.opacity = 1;
       }
-
-      if (!rightButton.hasPoint(pos)) {
-        keyDownOnMobile.right = false;
-        rightButton.opacity = 0.5;
-      } else {
+      if (rightButton.hasPoint(pos)) {
         keyDownOnMobile.right = true;
         rightButton.opacity = 1;
       }
-
-      if (!actionButton.hasPoint(pos)) {
-        actionButton.opacity = 0.5;
-      } else {
-        actionButton.opacity = 1;
-      }
-
-      if (!shootButton.hasPoint(pos)) {
-        shootButton.opacity = 0.5;
-      } else {
-        shootButton.opacity = 1;
-      }
-    };
-
-    // onTouchMove
-
-    onTouchMove(onTouchChanged);
-    onTouchEnd(onTouchChanged);
-    // onTouchEnd
-    /*
-    onTouchEnd((_, pos) => {
-      if (!leftButton.hasPoint(pos)) {
-        keyDownOnMobile.left = false;
-        leftButton.opacity = 0.5;
-      }
-
-      if (!rightButton.hasPoint(pos)) {
-        keyDownOnMobile.right = false;
-        rightButton.opacity = 0.5;
-      }
-
-      if (!actionButton.hasPoint(pos)) {
-        actionButton.opacity = 0.5;
-      }
-
-      if (!shootButton.hasPoint(pos)) {
-        shootButton.opacity = 0.5;
-      }
     });
-*/
+
+    //Ends individual presses
+    onTouchEnd((leftPress, pos) => {
+      keyDownOnMobile.left = false;
+      leftButton.opacity = 0.5;
+    });
+
+    onTouchEnd((rightPress, pos) => {
+      keyDownOnMobile.right = false;
+      rightButton.opacity = 0.5;
+    });
+
+    onTouchEnd((actionPress, pos) => {
+      actionButton.opacity = 0.5;
+    });
+
+    onTouchEnd((shootPress, pos) => {
+      shootButton.opacity = 0.5;
+    });
+
     onUpdate(() => {
       if (keyDownOnMobile.left) {
         moveLeft();
@@ -679,8 +789,59 @@ scene("game", ({ level, score }) => {
 
 scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
-  console.log("Want to Play Again");
+  add([
+    text("Game Over. Going Back to Main Menu in 2 seconds"),
+    color(200, 50, 10),
+    scale(0.5),
+    pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
+  ]);
+
+  // start the game
+
+  // onKeyPress("space", () => {
+  //   go("game", { level: 0, score: 0 });
+  // });
+
+  wait(2, () => {
+    go("menu");
+  });
 });
 
+scene("vaccineInfoScene", ({ level, score }) => {
+  layers(["ui", "bg"], "bg");
+  const infoColor = add([
+    rect(window.innerWidth, window.innerHeight),
+    color(10, 0, 10),
+    layer("bg", "ui"),
+    fixed(),
+  ]);
+  add([
+    text(info[level], {
+      size: 35, // 48 pixels tall
+      width: window.innerWidth,
+      font: "apl386o",
+
+      // it'll wrap to next line when width exceeds this value
+    }),
+
+    scale(1),
+    color(200, 144, 255),
+    pos(20, 70),
+
+    //area(),
+  ]),
+    add([
+      text("Loading next Level..Please Wait..."),
+      scale(0.5),
+      color(200, 3, 10),
+
+      pos(100, window.innerHeight - 100),
+    ]);
+
+  wait(3, () => {
+    go("game", { level: level, score: score });
+  });
+});
 //init();
-go("game", { level: 0, score: 0 });
+go("menu");
+//go("game", { level: 0, score: 0 });

@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../node_modules/kaboom/dist/kaboom.mjs":[function(require,module,exports) {
+})({"../../node_modules/kaboom/dist/kaboom.mjs":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4819,17 +4819,15 @@ exports.playableMap = playableMap;
 
 var _kaboom = _interopRequireDefault(require("kaboom"));
 
-var _PlayableMap = require("./PlayableMap");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var MOVE_SPEED = 150;
+var MOVE_SPEED = 60;
 var JUMP_FORCE = 560;
 var BIG_JUMP_FORCE = 750;
 var CURRENT_JUMP_FORCE = JUMP_FORCE;
 var ENEMY_SPEED = 20;
 var isJumping = true;
-var FALL_DEATH = 700;
+var FALL_DEATH = 400;
 var TIME_LEFT = 50;
 var BULLET_TIME_LEFT = 4;
 var _isBig = false;
@@ -4841,9 +4839,13 @@ var startUp = true;
   global: true,
   // enable full screen
   fullscreen: true,
+  width: window.innerWidth,
+  height: window.outerHeight,
   scale: 1,
   background: [0.1, 0, 0, 0],
   // for debug mode
+  //isTouch= false,
+  //canvas: document.querySelector("#mycanvas"),
   debug: true
 }); //add scenes
 //coins
@@ -4851,20 +4853,14 @@ var startUp = true;
 loadRoot("https://i.imgur.com/");
 loadSprite("coin", "wbKxhcd.png"); //enenmies
 
-loadSprite("evil-shroom", "KPO3fR9.png");
-loadSprite("covid", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
-//bricks
+loadSprite("evil-shroom", "KPO3fR9.png"); //bricks
 
 loadSprite("brick", "pogC9x5.png"); //blocks
 
 loadSprite("block", "M6rwarW.png"); //mario
 
 loadSprite("mario", "Wb1qfhK.png");
-loadSprite("mushroom", "0wMd92p.png"); //BiggerMarioShor
-
-loadSprite("BigVaccineMushroom", "CCdLQNO.jpg"); //Mushroom for bullets
-
-loadSprite("BulletVaccineMushroom", "ertkPgG.jpg");
+loadSprite("mushroom", "0wMd92p.png");
 loadSprite("surprise", "gesQ1KP.png");
 loadSprite("unboxed", "bdrLpi6.png");
 loadSprite("pipe-top-left", "ReTPiWY.png");
@@ -4888,10 +4884,12 @@ scene("game", function (_ref) {
   //An array
   // background layer, object layer as default, UI layer
   // initialise with obj as default
-  layers(["bg", "obj", "ui"], "obj"); //level configuration
+  layers(["bg", "obj", "ui"], "obj"); // draw maps
+
+  var maps = [["                                                       ", "                                                       ", "                                                       ", "                                                       ", "                                                       ", "                                                       ", "        ==*==%==                                               ", "                                                         ", "                                                      ", "                                                      ", "           ============================                                             ", "                                                       ", "                                                       ", "     %    =*=%=                                        ", "               -+         -+                    -+   ", "              ()      ^  ()  ^                 ()     ", "===============================   ==  = ===  ============== "], ["£                                                       £", "£     ! ! ! ! ! ! ! ! ! ! ! !                           £", "£                                                       £", "£                                                       £", "£                                                       £", "£                               x                       £", "£     %    @@@@@@              xx                       £", "£                             xxx                -+     £", "£                 z   z      xxxx                ()     £", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!"], ["£                                                       £", "£     ! ! ! ! ! ! ! ! ! ! ! !                                                  £", "£                                                       £", "£                                                       £", "£                                                       £", "£                               x                       £", "£     %    @@@@@@              xx                       £", "£                             xxx                -+     £", "£     zzzzzzzzz                 zzzzzzzzzzz  z      xxxx           ()     £", "!!!!!!!!!!!!!!!!!  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"]]; //level configuration
 
   var levelCfg = {
-    //every sprite has a width and height
+    //every sprite has a wdith and height
     width: 20,
     height: 20,
     // parameters 1: name of the sprite, 2: solid , 3: tag
@@ -4911,14 +4909,6 @@ scene("game", function (_ref) {
     "*": function _() {
       return [sprite("surprise"), solid(), "mushroom-surprise", area()];
     },
-    //Newly added sprites begin here
-    u: function u() {
-      return [sprite("surprise"), solid(), "BigVaccineMushroomSurprise", area()];
-    },
-    v: function v() {
-      return [sprite("surprise"), solid(), "BulletVaccineMushroomSurprise", area()];
-    },
-    //Newly added Sprites end here
     "}": function _() {
       return [sprite("unboxed"), solid(), area()];
     },
@@ -4937,14 +4927,9 @@ scene("game", function (_ref) {
     "^": function _() {
       return [sprite("covid"), solid(), "dangerous1", body(), area()];
     },
+    //body() is used for gravity
     "#": function _() {
       return [sprite("mushroom"), solid(), "mushroom", body(), area()];
-    },
-    o: function o() {
-      return [sprite("BigVaccineMushroom"), solid(), "BigVaccineMushroom", body(), area(), scale(0.1, 0.1)];
-    },
-    p: function p() {
-      return [sprite("BulletVaccineMushroom"), solid(), "BulletVaccineMushroom", body(), area(), scale(0.1, 0.1)];
     },
     "!": function _() {
       return [sprite("blue-block"), solid(), scale(0.5), area()];
@@ -4953,9 +4938,7 @@ scene("game", function (_ref) {
       return [sprite("blue-brick"), solid(), scale(0.5), area(), "brick"];
     },
     z: function z() {
-      return [sprite("blue-evil-shroom"), // solid(),
-      scale(0.5), // body(),
-      area(), "dangerous"];
+      return [sprite("blue-evil-shroom"), solid(), scale(0.5), body(), area(), "dangerous"];
     },
     "@": function _() {
       return [sprite("blue-surprise"), solid(), area(), scale(0.5), "coin-surprise"];
@@ -4965,19 +4948,17 @@ scene("game", function (_ref) {
     }
   }; // now just create a  gamelevel(JS method) and pass the map and levelCfg
 
-  var gameLevel = addLevel(_PlayableMap.playableMap[level], levelCfg); // add some text to display score and position on UI layer
+  var gameLevel = addLevel(maps[level], levelCfg); // add some text to display score and position on UI layer
   // default layer is 'obj '
   // so change layer to 'ui' for adding score
   //define this as a method so that it can be passed to other levels
 
-  add([text("Score:"), scale(0.3), pos(20, 6), fixed()]);
-  var scoreLabel = add([//text(score),
-  text(parseInt(score)), pos(115, 6), scale(0.3),, fixed(), layer("ui"), {
+  var scoreLabel = add([text(score), pos(30, 6), layer("ui"), {
     value: score
   }]); // add a text to define which level we currently are in
   // parameters for add are text, position
 
-  add([text("Level: " + parseInt(level + 1)), pos(20, 22), scale(0.3), fixed()]);
+  add([text("level " + parseInt(level + 1)), pos(40, 6)]);
 
   function big() {
     var timer = 0; // let isBig = false;
@@ -5046,44 +5027,14 @@ scene("game", function (_ref) {
     if (obj.is("brick")) {
       destroy(obj);
     }
-
-    if (obj.is("BigVaccineMushroomSurprise")) {
-      // Now spawn the mushroom and place the mushroom just above the grid 1 pos above along Y axis
-      gameLevel.spawn("o", obj.gridPos.sub(0, 1)); // Now destroy the old one
-
-      destroy(obj); // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
-
-      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
-    }
-
-    if (obj.is("BulletVaccineMushroomSurprise")) {
-      // Now spawn the mushroom and place the mushroom just above the grid 1 pos above along Y axis
-      gameLevel.spawn("p", obj.gridPos.sub(0, 1)); // Now destroy the old one
-
-      destroy(obj); // after destroying replace with an unboxed so that he cam jump onto it and collect the mushroom
-
-      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
-    }
   });
-  player.onCollide("mushroom", function (m) {
+  player.collides("mushroom", function (m) {
     // pick a mushroom and destroy the object
     destroy(m); //Now biggify for 6 seconds
 
     player.biggify(6);
   });
-  player.onCollide("BigVaccineMushroom", function (m) {
-    // pick a Big Vaccine mushroom and destroy the object
-    destroy(m); //Now biggify for 6 seconds
-
-    player.biggify(6);
-  });
-  player.onCollide("BulletVaccineMushroom", function (m) {
-    // pick a Big Vaccine mushroom and destroy the object
-    destroy(m); //Now biggify for 6 seconds
-
-    player.biggify(6);
-  });
-  player.onCollide("coin", function (c) {
+  player.collides("coin", function (c) {
     destroy(c); // increase the value of the score
 
     scoreLabel.value++; // then display the score
@@ -5113,9 +5064,10 @@ scene("game", function (_ref) {
     d.move(enemyVelocity, 0);
   });
   onUpdate("dangerous", function (d) {
-    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0);
-    if (d.pos.y < player.pos.y) d.move(-ENEMY_SPEED, ENEMY_SPEED * 3);else if (d.pos.y > player.pos.y) d.move(ENEMY_SPEED, -ENEMY_SPEED * 3); // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
-  }); // if player onCollide with anythig with dangerous
+    if (d.pos.x > player.pos.x) d.move(-ENEMY_SPEED * 3, 0);else if (d.pos.x < player.pos.x) d.move(ENEMY_SPEED * 3, 0); // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
+    // else if (d.pos.y < player.pos.y) d.move(0, -ENEMY_SPEED * 3);
+    // else if (d.pos > player.pos) d.move(-ENEMY_SPEED, -ENEMY_SPEED);
+  }); // if player collides with anythig with dangerous
   // big mario becomes small
   // small mario dies
 
@@ -5169,11 +5121,11 @@ scene("game", function (_ref) {
     if (player.grounded()) {
       isJumping = false;
     }
-  }); // if the player onCollide with any tag name pipe and presses KeyDown (for that case anykey you wish)
+  }); // if the player collides with any tag name pipe and presses KeyDown (for that case anykey you wish)
   //then he has to go to Next Level
   // or create a house and then use the key desired
 
-  player.onCollide("pipe", function () {
+  player.collides("pipe", function () {
     onKeyPress("down", function () {
       go("game", {
         level: level + 1,
@@ -5195,29 +5147,24 @@ scene("game", function (_ref) {
 
   onKeyPress("space", jumping); // timer functionality in game scene
 
-  var timer = add([text("0"), pos(240, 38), scale(0.3), layer("ui"), fixed(), {
+  var timer = add([text("0"), pos(90, 70), scale(1), layer("ui"), {
     time: TIME_LEFT
   }]);
   var bulletTimer = add([{
     time: BULLET_TIME_LEFT
-  }]);
-  add([text("Time Remaining: "), pos(20, 38), scale(0.3), fixed()]);
-  onUpdate(function () {
-    timer.time -= dt(), timer.text = timer.time.toFixed(2);
-
-    if (timer.time <= 0) {
-      go("lose", {
-        score: scoreLabel.value
-      });
-    }
-  }); // Bullet functionality
+  }]); // onUpdate(() => {
+  //   (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
+  //   if (timer.time <= 0) {
+  //     go("lose", { score: scoreLabel.value });
+  //   }
+  // });
+  // Bullet functionality
   // positon of player as parameter
 
-  function spawnBullet(position) {
+  function spawnBullet(p) {
     // define a rectangular area around the player position
     // give bullet as a tag
-    add([//rect(10, 1),
-    sprite("BulletVaccineMushroom"), pos(position), origin("center"), color(1, 500, 10), scale(0.1), "bullet", area()]);
+    add([rect(10, 1), pos(p), origin("center"), color(1, 500, 10), "bullet", area()]);
   } // Releasing bullet functionality
 
 
@@ -5239,7 +5186,7 @@ scene("game", function (_ref) {
     }
   });
   onCollide("dangerous", "bullet", function (d, b) {
-    //shake(40);
+    shake(40);
     destroy(d);
     destroy(b);
   });
@@ -5251,10 +5198,9 @@ scene("game", function (_ref) {
   //The following is for the mobile support
 
   if (isTouch()) {
-    buttonsVisible = false; //console.log(isTouch);
+    //console.log(isTouch);
     //because left and right buttons will be pressed
     //we need to keep track of them
-
     var keyDownOnMobile = {
       left: false,
       right: false // we will set them to true when these buttons are tocuhed
@@ -5281,17 +5227,10 @@ scene("game", function (_ref) {
     onKeyRelease("right", function () {
       keyDownOnMobile.right = false;
     });
-
-    if (buttonsVisible) {
-      var _leftButton = add([sprite("a"), pos(50, 450), opacity(0.5), fixed(), area()]);
-
-      var _rightButton = add([sprite("d"), pos(100, 450), opacity(0.5), fixed(), area()]);
-
-      var _actionButton = add([sprite("highjump"), pos(750, 450), opacity(0.5), fixed(), area()]);
-
-      var _shootButton = add([sprite("shoot"), pos(650, 450), opacity(0.5), fixed(), area()]);
-    } // onTouchStart gets called each time a new touch event is registered
-
+    var leftButton = add([sprite("a"), pos(50, 450), opacity(0.5), fixed(), area()]);
+    var rightButton = add([sprite("d"), pos(100, 450), opacity(0.5), fixed(), area()]);
+    var actionButton = add([sprite("highjump"), pos(750, 450), opacity(0.5), fixed(), area()]);
+    var shootButton = add([sprite("shoot"), pos(650, 450), opacity(0.5), fixed(), area()]); // onTouchStart gets called each time a new touch event is registered
 
     onTouchStart(function (id, pos) {
       // we will check if the touch overlaps with the left button
@@ -5378,14 +5317,13 @@ scene("game", function (_ref) {
 scene("lose", function (_ref2) {
   var score = _ref2.score;
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
-  console.log("Want to Play Again");
 }); //init();
 
 go("game", {
   level: 0,
   score: 0
 });
-},{"kaboom":"../node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"PlayableMap.js"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"kaboom":"../../node_modules/kaboom/dist/kaboom.mjs"}],"C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5589,5 +5527,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","game.js"], null)
+},{}]},{},["C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","game.js"], null)
 //# sourceMappingURL=/game.7bbe06d5.js.map

@@ -1,0 +1,53 @@
+Controls:
+- Computer
+    1. Holding Left and right arrows move the player in the corresponding direction. 
+    1a. Holding the A key moves the player left and holding the D key moves the player right
+    2. Pressing space makes the player jump
+    3. Pressing b makes the player perform an action (shoot projectile)
+    4. Pressing the down arrow or S while ontop of a pipe advances a player to the next level.
+    5. Pressing C reveals the controls in the top left of the screen.
+    
+- Mobile
+    1. The left and right arrows on the left side of the screen move the player accordingly, and stop moving when the button is released. 
+    2. Tapping the jump button on the far right side of the screen causes the player to jump.
+    3. Tapping the action button to the left of the jump button causes the player to perform an action (shoot projectile)
+    
+Playable Maps:
+1. Loaded Sprites for necessary game construction and then placed them accordingly to build the game scene. The Sprites work correctly
+2. The Map is initially built with less enemies and the difficulty increases as the game progresses
+3. At present there are 8 Levels and the most difficult level is Level 5 and requires severe attention while playing this level and beyond, also the player has to collect vaccines in order to spawn shots at enemies. Without getting boosters it is very difficult to cross this level.
+
+Game Scene:
+1. The game starts with a score 0 and level 1. 
+2. The score is retained as the player advances to next level and all the traits acquired also are retained
+3. The score, level are carried over the entire game
+4. The timer for each level is around 50seconds as of now and the timer resets every time a new level starts.
+5. The move speed of enemies increases as the level increases. This is similar to portraying how difficult the survival of a person becomes when the attack is severe and throws light on how careful one should be in order not to succumb to viruses by properly getting vaccines and boosters.
+
+Lose Scene:
+1. Whenever the player is counter attacked by enemies and the player cannot defend himself then the player dies 
+2. Lose scene with the score is displayed correctly.
+3. Game Selection:
+4. Open the website
+5. Verify that the user is able to see all available games and the layout is correctly formatted.
+6. Verify that when selecting a game, the user is taken to the home screen for that game.
+
+Minibosses:
+1. Upon loading the game enemies in the form of a virus appear on screen.
+2. During the game they move towards the player.
+3. If the enemy is hit by a players projectile it disappears.
+4. If the player jumps on the enemies head, then the enemy disappears.
+5. If contact is made with the player in any other way, the player is sent to the Lose Scene.
+
+Coin Collection:
+1. Player touches a coin
+2. Players score is incremented by 1
+
+Menu Scene:
+1. The game loads when the player selects the option to play game
+2. At the lose scene, once the game is over it should redirect to the menu page
+
+Info Scene:
+1. As the player advances to a new Level new info related to vaccine importance and hesitancy must be displayed
+2. The New information displayed should disappear after some time
+3. The Game should continue once the information scene disappears.
