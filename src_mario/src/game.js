@@ -15,7 +15,7 @@ let buttonsVisible = true;
 
 let hasBulletAbility = false;
 let enemyVelocity = ENEMY_SPEED * 3
-let startUp = true
+
 
 kaboom({
   global: true,
