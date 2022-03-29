@@ -56,7 +56,7 @@ scene("menu", () => {
     //rect(260, 20),
     text("Play game"),
 
-    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 80),
     color(10, 10, 155),
 
     origin("center"),
@@ -82,7 +82,7 @@ scene("menu", () => {
     "button",
     {
       clickAction: () =>
-        window.open("C:UserskaushDesktopCSCE_606_Projectindex.html"),
+        window.location = "../../index.html",
     },
     scale(0.7),
     area(),
@@ -100,6 +100,75 @@ scene("menu", () => {
   onClick("button", (b) => {
     b.clickAction();
   });
+});
+
+scene("winner", ({ score }) => {
+    var x = 10,
+        y = 10,
+        z = 155;
+    color(240, 100, 24);
+    add(
+        [
+            text("Congratulations!"),
+            pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
+            ,
+            scale(1),
+            color(10, 10, 155),
+            area(),
+            "title",
+        ],
+        origin("center")
+    );
+    add([text("Score: " + score, 32), origin("center"), pos(width() / 2 - 40, window.innerHeight / 2 - 100)]);
+    // Play game button
+    add([
+        //rect(260, 20),
+        text("Play Again"),
+
+        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+        color(10, 10, 155),
+
+        origin("center"),
+        "button",
+        {
+            clickAction: () => {
+                go("vaccineInfoScene", { level: 0, score: 0 });
+
+                //go("game", { level: 0, score: 0 });
+            },
+        },
+        scale(0.7),
+        area(),
+
+        ,
+    ]);
+
+    add([
+        //rect(260, 20),
+        text("Back to Main Menu"),
+        color(10, 10, 155),
+        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40),
+        "button",
+        {
+            clickAction: () =>
+                window.location = "../../index.html",
+        },
+        scale(0.7),
+        area(),
+
+        origin("center"),
+    ]);
+
+    action("button", (b) => {
+        onHover("button", (b) => {
+            b.use(color(240, 100, 155));
+        });
+        b.use(color(10, 10, 155));
+    });
+
+    onClick("button", (b) => {
+        b.clickAction();
+    });
 });
 
 window.addEventListener("resize", resize, false);
@@ -470,25 +539,26 @@ scene("game", ({ level, score }) => {
   });
 
   onUpdate("dangerous", (d) => {
-	let x_dist = d.pos.x - player.pos.x;
-	let y_dist = d.pos.y - (player.pos.y - 20);
-	
-	// Check how far away the guy is and if it's already moving.
-	// Bias x distance over y distance
-	d.moving = d.moving ? true : (Math.abs(x_dist) < AGRO_RANGE_X) && (Math.abs(y_dist) < AGRO_RANGE_Y);
-	if (!d.moving) return;
-	
-	let movement = 3 * ENEMY_SPEED * (level + 1);
-	let x_move = movement;
-	let y_move = movement;
-	
-	// Set movement to negative if needed.
+    let x_dist = d.pos.x - player.pos.x;
+    let y_dist = d.pos.y - (player.pos.y - 20);
+    
+    // Check how far away the guy is and if it's already moving.
+    // Bias x distance over y distance
+    d.moving = d.moving ? true : (Math.abs(x_dist) < AGRO_RANGE_X) && (Math.abs(y_dist) < AGRO_RANGE_Y);
+    if (!d.moving) return;
+
+    let level_scaling = Math.min(level + 1, 4);
+    let movement = enemyVelocity * level_scaling;
+    let x_move = movement;
+    let y_move = movement;
+    
+    // Set movement to negative if needed.
     if (x_dist > 0)
-		x_move = -1 * x_move;
+        x_move = -1 * x_move;
     if (y_dist > 0)
-		y_move = -1 * y_move;
-	
-	d.move(x_move, y_move);
+        y_move = -1 * y_move;
+    
+    d.move(x_move, y_move);
   });
   
   // if player onCollide with anythig with dangerous
@@ -558,12 +628,27 @@ scene("game", ({ level, score }) => {
   // or create a house and then use the key desired
   player.onCollide("pipe", () => {
     onKeyPress("down", () => {
-      /* Scene to display vaccine informations*/
-
-      go("vaccineInfoScene", { level: level + 1, score: score });
+        /* Scene to display vaccine informations*/
+        level = level + 1;
+        console.log("map count: " + playableMap.length);
+        if (playableMap.length > level) {
+            go("vaccineInfoScene", { level: level, score: score });
+        }
+        else {
+            level = 0;
+            go("winner", { score: scoreLabel.value });
+        }
     });
-    onKeyPress("s", () => {
-      go("game", { level: level + 1, score: scoreLabel.value });
+      onKeyPress("s", () => {
+          level = level + 1;
+          console.log("map count: " + playableMap.length);
+          if (playableMap.length > level) {
+              go("vaccineInfoScene", { level: level, score: score });
+          }
+          else {
+              level = 0;
+              go("winner", { score: scoreLabel.value });
+          }
     });
   });
 
@@ -825,7 +910,7 @@ scene("vaccineInfoScene", ({ level, score }) => {
     fixed(),
   ]);
   add([
-    text(info[level], {
+    text(info[level % info.length], {
       size: 35, // 48 pixels tall
       width: window.innerWidth,
       font: "apl386o",
