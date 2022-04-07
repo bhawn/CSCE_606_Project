@@ -63,9 +63,10 @@ scene("menu", () => {
     {
       clickAction: () => {
         go("vaccineInfoScene", { level: 0, score: 0 });
-
-        //go("game", { level: 0, score: 0 });
-      },
+        },
+        touchAction: () => {
+            go("vaccineInfoScene", { level: 0, score: 0 });
+        },
     },
     scale(0.7),
     area(),
@@ -311,7 +312,7 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), solid(), "dangerous1", body(), area()],
+    "^": () => [sprite("covid"), "dangerous", area()],
 
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
 
@@ -756,7 +757,7 @@ scene("game", ({ level, score }) => {
   // The mobile version begins
   //The following is for the mobile support
   //##############MOBILE##################
-  if (isTouch() && buttonsVisible) {
+    if (isTouch()) {// && buttonsVisible) {
     //console.log(isTouch);
 
     //because left and right buttons will be pressed
