@@ -312,7 +312,7 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), "dangerous", area()],
+    "^": () => [sprite("covid"), "dangerous", body(), area()],
 
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
 

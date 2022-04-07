@@ -5056,7 +5056,7 @@ scene("game", function (_ref2) {
       return [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()];
     },
     "^": function _() {
-      return [sprite("covid"), "dangerous", area()];
+      return [sprite("covid"), "dangerous", body(), area()];
     },
     "#": function _() {
       return [sprite("mushroom"), solid(), "mushroom", body(), area()];
@@ -5583,7 +5583,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51447" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51630" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
