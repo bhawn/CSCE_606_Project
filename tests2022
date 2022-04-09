@@ -43,11 +43,34 @@ Coin Collection:
 1. Player touches a coin
 2. Players score is incremented by 1
 
-Menu Scene:
+Menu Scene for Mario
 1. The game loads when the player selects the option to play game
 2. At the lose scene, once the game is over it should redirect to the menu page
+3. When the player presses Back to Menu, it should direct to the arcade webpage where player can select from the list of games 
 
-Info Scene:
+Info Scene for Mario
 1. As the player advances to a new Level new info related to vaccine importance and hesitancy must be displayed
 2. The New information displayed should disappear after some time
 3. The Game should continue once the information scene disappears.
+
+Enemy Shooting in Space Invaders
+1. Enemy shoot when they are in the range
+2. The Enemy bullet should get destroyed when it misses the player
+3. The Enemy bullets should not destroy other enemies
+4. The bullets must spawn after the specified duration
+5. The Player should die when the enemy bullet hits the player
+
+Menu Scene for Space Invaders
+1. The game loads when the player selects the option to play game
+2. At the lose scene, once the game is over it should redirect to the menu page
+3. When the player presses Back to Menu, it should direct to the arcade webpage where player can select from the list of games 
+
+Info Scene for Space Invaders
+1. As the player advances to a new Level new info related to vaccine importance and hesitancy must be displayed
+2. The New information displayed should disappear after some time
+3. The Game should continue once the information scene disappears
+
+Player Score:
+1. The player should be able to shoot bullets.
+2. When the player bullet hits the invaders, the invaders should be destroyed, the socre should increase and also the bullet should be destroyed
+3. The Score should be passed on as the game progresses.
