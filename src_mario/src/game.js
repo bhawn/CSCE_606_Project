@@ -16,7 +16,7 @@ let isBig = false;
 let buttonsVisible = true;
 
 let hasBulletAbility = false;
-
+let enemyVelocity = 3 * ENEMY_SPEED
 
 const k = kaboom({
   global: true,
@@ -517,26 +517,25 @@ scene("game", ({ level, score }) => {
 
   // Let us make evils move
 
-    onUpdate("dangerous1", (d) => {
-        if (d.enemyVelocity == null) { d.enemyVelocity = 3 * ENEMY_SPEED; }
-        d.onCollide("block", (d1) => {
-            console.log(d1.pos.x)
-            d.enemyVelocity *= -1;
-            let i = 1000000
-            while (i > -1) {
-                i--;
-            }
-        });
-        d.onCollide("pipe", (d1) => {
-            console.log(d1.pos.x)
-            d.enemyVelocity *= -1;
-            let i = 100000
-            while (i > -1) {
-                i--;
-            }
-        });
+  onUpdate("dangerous1", (d) => {
+    d.onCollide("block", (d1) => {
+        console.log(d1.pos.x)
+        enemyVelocity *= -1;
+        let i = 1000000
+        while (i > -1) {
+            i--;
+        }
+    });
+    // d.onCollide("pipe", (d1) => {
+    //     console.log(d1.pos.x)
+    //     enemyVelocity *= -1;
+    //     let i = 100000
+    //     while (i > -1) {
+    //         i--;
+    //     }
+    // });
 
-        d.move(d.enemyVelocity, 0);
+    d.move(enemyVelocity, 0);
   });
 
   onUpdate("dangerous", (d) => {
