@@ -25,7 +25,7 @@ const k = kaboom({
 
   scale: 1,
   background: [0, 0, 1],
-  clearColor: [51, 151, 255],
+  clearColor: [255, 255, 255],
   // for debug mode
 
   debug: true,
@@ -215,13 +215,13 @@ loadSprite("block", "M6rwarW.png");
 
 loadSprite("mario", "Wb1qfhK.png");
 
-loadSprite("mushroom", "0wMd92p.png");
+loadSprite("mushroom", "wm9BL0V.png");
 
 //BiggerMarioShor
-loadSprite("BigVaccineMushroom", "CCdLQNO.jpg");
+loadSprite("BigVaccineMushroom", "wm9BL0V.jpg"); // https://imgur.com/wm9BL0V
 
 //Mushroom for bullets
-loadSprite("BulletVaccineMushroom", "ertkPgG.jpg");
+loadSprite("BulletVaccineMushroom", "ertkPgG.jpg"); // https://imgur.com/ertkPgG
 
 loadSprite("surprise", "gesQ1KP.png");
 
@@ -265,12 +265,6 @@ scene("game", ({ level, score }) => {
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
-  const bgColor = add([
-    rect(100000000000000, 1000000000000000),
-    color(0, 10, 24),
-    layer("bg", "ui"),
-    fixed(),
-  ]);
 
   //level configuration
   const levelCfg = {
