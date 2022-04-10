@@ -253,6 +253,8 @@ loadSprite("highjump", "xfWsMOV.png");
 
 loadSprite("shoot", "mPlhKAi.png");
 
+loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
+
 //Vaccine Info Scene begins
 //loadRoot("C:UserskaushDesktopCSCE_606_Projectsrc_mariosrc/");
 
@@ -265,6 +267,17 @@ scene("game", ({ level, score }) => {
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
+  
+  add([
+    sprite("background"),
+    // Make the background centered on the screen
+    pos(width() / 2, height() / 2),
+    origin("center"),
+    // Allow the background to be scaled
+    scale(3),
+    // Keep the background position fixed even when the camera moves
+    fixed()
+  ]);
 
   //level configuration
   const levelCfg = {

@@ -113,6 +113,7 @@ loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
 loadSprite("space_ship", "Wb1qfhK.png");
+loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
 
 // loadRoot("sprites/");
 // loadSprite("space", "space.jpg");
@@ -147,6 +148,17 @@ scene("game", ({ level, score }) => {
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
+
+  add([
+    sprite("background"),
+    // Make the background centered on the screen
+    pos(width() / 2, height() / 2),
+    origin("center"),
+    // Allow the background to be scaled
+    scale(3),
+    // Keep the background position fixed even when the camera moves
+    fixed()
+  ]);
 
   //level configuration
   const levelCfg = {
