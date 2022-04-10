@@ -16,7 +16,7 @@ let isBig = false;
 let buttonsVisible = true;
 
 let hasBulletAbility = false;
-
+let enemyVelocity = 3 * ENEMY_SPEED
 
 const k = kaboom({
   global: true,
@@ -312,7 +312,7 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), scale(1), "dangerous", area()],
+    "^": () => [sprite("covid"), scale(1), "dangerous1", body(), area()],
 
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
 
