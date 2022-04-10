@@ -241,7 +241,8 @@ loadSprite("blue-brick", "3e5YRQd.png");
 
 loadSprite("blue-steel", "gqVoI2b.png");
 
-loadSprite("blue-evil-shroom", "SvV4ueD.png");
+//https://imgur.com/wDkFVQt
+loadSprite("blue-evil-shroom", "wDkFVQt.png");
 
 loadSprite("blue-surprise", "RMqCc1G.png");
 
@@ -340,7 +341,7 @@ scene("game", ({ level, score }) => {
     z: () => [
       sprite("blue-evil-shroom"),
       // solid(),
-      scale(0.5),
+      scale(1.0),
       // body(),
       area(),
       "dangerous"
