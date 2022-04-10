@@ -4848,6 +4848,7 @@ var BULLET_TIME_LEFT = 4;
 var _isBig = false;
 var buttonsVisible = true;
 var hasBulletAbility = false;
+var enemyVelocity = ENEMY_SPEED * 3;
 var k = (0, _kaboom.default)({
   global: true,
   // enable full screen
@@ -4867,47 +4868,7 @@ scene("menu", function () {
   add([text("Mario game"), pos(window.innerWidth / 2 - 240, window.innerHeight / 2 - 200),, scale(1), color(10, 10, 155), area(), "title"], origin("center")); // Play game button
 
   add([//rect(260, 20),
-  text("Play game"), pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 80), color(10, 10, 155), origin("center"), "button", {
-    clickAction: function clickAction() {
-      go("vaccineInfoScene", {
-        level: 0,
-        score: 0
-      });
-    },
-    touchAction: function touchAction() {
-      go("vaccineInfoScene", {
-        level: 0,
-        score: 0
-      });
-    }
-  }, scale(0.7), area(),,]);
-  add([//rect(260, 20),
-  text("Back to Main Menu"), color(10, 10, 155), pos(window.innerWidth / 2 - 20, window.innerHeight / 2), "button", {
-    clickAction: function clickAction() {
-      return window.location = "../../index.html";
-    }
-  }, scale(0.7), area(), origin("center")]);
-  action("button", function (b) {
-    onHover("button", function (b) {
-      b.use(color(240, 100, 155));
-    });
-    b.use(color(10, 10, 155));
-  });
-  onClick("button", function (b) {
-    b.clickAction();
-  });
-});
-scene("winner", function (_ref) {
-  var score = _ref.score;
-  var x = 10,
-      y = 10,
-      z = 155;
-  color(240, 100, 24);
-  add([text("Congratulations!"), pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),, scale(1), color(10, 10, 155), area(), "title"], origin("center"));
-  add([text("Score: " + score, 32), origin("center"), pos(width() / 2 - 40, window.innerHeight / 2 - 100)]); // Play game button
-
-  add([//rect(260, 20),
-  text("Play Again"), pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40), color(10, 10, 155), origin("center"), "button", {
+  text("Play game"), pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40), color(10, 10, 155), origin("center"), "button", {
     clickAction: function clickAction() {
       go("vaccineInfoScene", {
         level: 0,
@@ -4916,9 +4877,9 @@ scene("winner", function (_ref) {
     }
   }, scale(0.7), area(),,]);
   add([//rect(260, 20),
-  text("Back to Main Menu"), color(10, 10, 155), pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40), "button", {
+  text("Back to Main Menu"), color(10, 10, 155), pos(window.innerWidth / 2 - 20, window.innerHeight / 2), "button", {
     clickAction: function clickAction() {
-      return window.location = "../../index.html";
+      return window.open("C:UserskaushDesktopCSCE_606_Projectindex.html");
     }
   }, scale(0.7), area(), origin("center")]);
   action("button", function (b) {
@@ -5001,9 +4962,9 @@ loadSprite("shoot", "mPlhKAi.png"); //Vaccine Info Scene begins
 //Vaccine Info scene ends
 // game scene
 
-scene("game", function (_ref2) {
-  var level = _ref2.level,
-      score = _ref2.score;
+scene("game", function (_ref) {
+  var level = _ref.level,
+      score = _ref.score;
   //create layers
   //An array
   // background layer, object layer as default, UI layer
@@ -5056,7 +5017,7 @@ scene("game", function (_ref2) {
       return [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()];
     },
     "^": function _() {
-      return [sprite("covid"), scale(1), "dangerous", area()];
+      return [sprite("covid"), solid(), "dangerous1", body(), area()];
     },
     "#": function _() {
       return [sprite("mushroom"), solid(), "mushroom", body(), area()];
@@ -5213,13 +5174,9 @@ scene("game", function (_ref2) {
   }); // Let us make evils move
 
   onUpdate("dangerous1", function (d) {
-    if (d.enemyVelocity == null) {
-      d.enemyVelocity = 3 * ENEMY_SPEED;
-    }
-
     d.onCollide("block", function (d1) {
       console.log(d1.pos.x);
-      d.enemyVelocity *= -1;
+      enemyVelocity *= -1;
       var i = 1000000;
 
       while (i > -1) {
@@ -5228,14 +5185,14 @@ scene("game", function (_ref2) {
     });
     d.onCollide("pipe", function (d1) {
       console.log(d1.pos.x);
-      d.enemyVelocity *= -1;
+      enemyVelocity *= -1;
       var i = 100000;
 
       while (i > -1) {
         i--;
       }
     });
-    d.move(d.enemyVelocity, 0);
+    d.move(enemyVelocity, 0);
   });
   onUpdate("dangerous", function (d) {
     var x_dist = d.pos.x - player.pos.x;
@@ -5319,20 +5276,10 @@ scene("game", function (_ref2) {
   player.onCollide("pipe", function () {
     onKeyPress("down", function () {
       /* Scene to display vaccine informations*/
-      level = level + 1;
-      console.log("map count: " + _PlayableMap.playableMap.length);
-
-      if (_PlayableMap.playableMap.length > level) {
-        go("vaccineInfoScene", {
-          level: level,
-          score: score
-        });
-      } else {
-        level = 0;
-        go("winner", {
-          score: scoreLabel.value
-        });
-      }
+      go("vaccineInfoScene", {
+        level: level + 1,
+        score: score
+      });
     });
     onKeyPress("s", function () {
       level = level + 1;
@@ -5533,12 +5480,12 @@ scene("lose", function (_ref3) {
     go("menu");
   });
 });
-scene("vaccineInfoScene", function (_ref4) {
-  var level = _ref4.level,
-      score = _ref4.score;
+scene("vaccineInfoScene", function (_ref3) {
+  var level = _ref3.level,
+      score = _ref3.score;
   layers(["ui", "bg"], "bg");
   var infoColor = add([rect(window.innerWidth, window.innerHeight), color(10, 0, 10), layer("bg", "ui"), fixed()]);
-  add([text(_info.info[level % _info.info.length], {
+  add([text(_info.info[level], {
     size: 35,
     // 48 pixels tall
     width: window.innerWidth,
@@ -5555,7 +5502,7 @@ scene("vaccineInfoScene", function (_ref4) {
 }); //init();
 
 go("menu"); //go("game", { level: 0, score: 0 });
-},{"../../node_modules/kaboom":"node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"src_mario/src/PlayableMap.js","./info":"src_mario/src/info.js"}],"C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../../node_modules/kaboom":"node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"src_mario/src/PlayableMap.js","./info":"src_mario/src/info.js"}],"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5583,7 +5530,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52128" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44873" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -5759,5 +5706,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src_mario/src/game.js"], null)
+},{}]},{},["../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src_mario/src/game.js"], null)
 //# sourceMappingURL=/game.f6827abd.js.map
