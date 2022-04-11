@@ -137,6 +137,75 @@ loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
 // loadSound("explosion", "explosion.mp3");
 // loadSound("Steamtech-Mayhem_Looping", "Steamtech-Mayhem_Looping.mp3");
 
+scene("winner", ({ score }) => {
+    var x = 10,
+        y = 10,
+        z = 155;
+    color(240, 100, 24);
+    add(
+        [
+            text("Congratulations!"),
+            pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
+            ,
+            scale(1),
+            color(10, 10, 155),
+            area(),
+            "title",
+        ],
+        origin("center")
+    );
+    add([text("Score: " + score, 32), origin("center"), pos(width() / 2 - 40, window.innerHeight / 2 - 100)]);
+    // Play game button
+    add([
+        //rect(260, 20),
+        text("Play Again"),
+
+        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+        color(10, 10, 155),
+
+        origin("center"),
+        "button",
+        {
+            clickAction: () => {
+                go("vaccineInfoScene", { level: 0, score: 0 });
+
+                //go("game", { level: 0, score: 0 });
+            },
+        },
+        scale(0.7),
+        area(),
+
+        ,
+    ]);
+
+    add([
+        //rect(260, 20),
+        text("Back to Main Menu"),
+        color(10, 10, 155),
+        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40),
+        "button",
+        {
+            clickAction: () =>
+                window.location = "../../index.html",
+        },
+        scale(0.7),
+        area(),
+
+        origin("center"),
+    ]);
+
+    action("button", (b) => {
+        onHover("button", (b) => {
+            b.use(color(240, 100, 155));
+        });
+        b.use(color(10, 10, 155));
+    });
+
+    onClick("button", (b) => {
+        b.clickAction();
+    });
+});
+
 scene("game", ({ level, score }) => {
   // Used to decrease the enemy count on destruction
   let enemyCount = 0;
@@ -285,7 +354,16 @@ scene("game", ({ level, score }) => {
     if (enemyCount === 0) {
       //Invaders always move right at start of level
       INVADER_DIRECTION = 1;
-      go("vaccineInfoScene", { level: level + 1, score: score });
+	  
+	  level = level + 1;
+	  console.log("map count: " + playableMap.length);
+	  if (playableMap.length > level) {
+		go("vaccineInfoScene", { level: level, score: score });
+	  }
+	  else {
+		level = 0;
+		go("winner", { score: scoreLabel.value });
+	  }
     }
     scoreLabel.value++;
 
