@@ -11,7 +11,7 @@ const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 700;
 const TIME_LEFT = 50;
-const BULLET_TIME_LEFT = 4;
+const BULLET_TIME_LEFT = 8;
 let isBig = false;
 let buttonsVisible = true;
 
@@ -715,16 +715,13 @@ scene("game", ({ level, score }) => {
 
   // Bullet functionality
   // positon of player as parameter
-  function spawnBullet(position) {
-    // define a rectangular area around the player position
-    // give bullet as a tag
+  function spawnBullet(p) {
     add([
-      //rect(10, 1),
-      sprite("BulletVaccineMushroom"),
-      pos(position),
+      rect(10, 1),
+      pos(p),
       origin("center"),
-      color(1, 500, 10),
-      scale(0.1),
+      color(255, 0.5, 1),
+
       "bullet",
       area(),
     ]);
@@ -742,7 +739,7 @@ scene("game", ({ level, score }) => {
   onUpdate("bullet", (b) => {
     //destroy(b);
 
-    b.move(ENEMY_SPEED * 3, 0);
+    b.move(ENEMY_SPEED * 9, 0);
     // whenever a bullet is released decrement the time given to it.
     bulletTimer.time -= dt();
     if (bulletTimer.time <= 0) {
