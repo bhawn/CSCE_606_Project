@@ -112,8 +112,10 @@ function resize() {
 loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
-loadSprite("space_ship", "Wb1qfhK.png");
+
+loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
 loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
+
 
 // loadRoot("sprites/");
 // loadSprite("space", "space.jpg");
