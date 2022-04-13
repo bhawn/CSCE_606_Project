@@ -523,26 +523,90 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("../../node_modules/kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _playableMap = require("./PlayableMap");
+var _info = require("./info");
 //Created a new clone //
 const MOVE_SPEED = 200;
-const INVADER_SPEED = 200;
+const INVADER_SPEED = 100;
+let INVADER_DIRECTION = 1;
 let CURRENT_SPEED = INVADER_SPEED;
-const LEVEL_DOWN = 30;
+let INVADER_MOVE_COUNT = 0;
+const LEVEL_DOWN = 400;
 const BULLET_SPEED = 400;
-const TIME_LEFT = 30;
+const TIME_LEFT = 30000;
 const k = _kaboomDefault.default({
     global: true,
     // enable full screen
     fullscreen: true,
     scale: 1,
     background: [
-        0.1,
         0,
         0,
-        0
+        1
+    ],
+    clearColor: [
+        255,
+        255,
+        255
     ],
     // for debug mode
     debug: true
+});
+// Menu Scene
+scene("menu", ()=>{
+    var x = 10, y = 10, z = 155;
+    color(240, 100, 24);
+    add([
+        text("Space Invaders "),
+        pos(window.innerWidth / 2 - 300, window.innerHeight / 2 - 200),
+        ,
+        scale(1),
+        color(40, 210, 255),
+        area(),
+        "title", 
+    ], origin("center"));
+    // Play game button
+    add([
+        //rect(260, 20),
+        text("Play game"),
+        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+        color(10, 10, 155),
+        origin("center"),
+        "button",
+        {
+            clickAction: ()=>{
+                go("vaccineInfoScene", {
+                    level: 0,
+                    score: 0
+                });
+            //go("game", { level: 0, score: 0 });
+            }
+        },
+        scale(0.7),
+        area(),
+        , 
+    ]);
+    add([
+        //rect(260, 20),
+        text("Back to Main Menu"),
+        color(10, 10, 155),
+        pos(window.innerWidth / 2 - 20, window.innerHeight / 2),
+        "button",
+        {
+            clickAction: ()=>window.location = "../../index.html"
+        },
+        scale(0.7),
+        area(),
+        origin("center"), 
+    ]);
+    action("button", (b1)=>{
+        onHover("button", (b)=>{
+            b.use(color(240, 100, 155));
+        });
+        b1.use(color(10, 10, 155));
+    });
+    onClick("button", (b)=>{
+        b.clickAction();
+    });
 });
 window.addEventListener("resize", resize, false);
 function resize() {
@@ -563,8 +627,93 @@ function resize() {
 loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
-loadSprite("space_ship", "Wb1qfhK.png");
+loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
+loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
+// loadRoot("sprites/");
+// loadSprite("space", "space.jpg");
+// loadSprite("rocket1", "rocket1.png");
+// loadSprite("rocket2", "rocket2.png");
+// loadSprite("rocket3", "rocket3.png");
+// loadSprite("rocket4", "rocket4.png");
+// loadSprite("ship", "ship.png");
+// loadSprite("bullet", "bullet.png");
+// loadSprite("asteroid", "asteroid.png");
+// loadSprite("asteroid_small1", "asteroid_small1.png");
+// loadSprite("asteroid_small2", "asteroid_small2.png");
+// loadSprite("asteroid_small3", "asteroid_small3.png");
+// loadSprite("asteroid_small4", "asteroid_small4.png");
+// loadRoot("sounds/");
+// loadSound("rocket_thrust", "rocket_thrust.wav");
+// loadSound("laser", "laser.wav");
+// loadSound("explosion", "explosion.mp3");
+// loadSound("Steamtech-Mayhem_Looping", "Steamtech-Mayhem_Looping.mp3");
+scene("winner", ({ score  })=>{
+    var x = 10, y = 10, z = 155;
+    color(240, 100, 24);
+    add([
+        text("Congratulations!"),
+        pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
+        ,
+        scale(1),
+        color(10, 10, 155),
+        area(),
+        "title", 
+    ], origin("center"));
+    add([
+        text("Score: " + score, 32),
+        origin("center"),
+        pos(width() / 2 - 40, window.innerHeight / 2 - 100)
+    ]);
+    // Play game button
+    add([
+        //rect(260, 20),
+        text("Play Again"),
+        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+        color(10, 10, 155),
+        origin("center"),
+        "button",
+        {
+            clickAction: ()=>{
+                go("vaccineInfoScene", {
+                    level: 0,
+                    score: 0
+                });
+            //go("game", { level: 0, score: 0 });
+            }
+        },
+        scale(0.7),
+        area(),
+        , 
+    ]);
+    add([
+        //rect(260, 20),
+        text("Back to Main Menu"),
+        color(10, 10, 155),
+        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40),
+        "button",
+        {
+            clickAction: ()=>window.location = "../../index.html"
+        },
+        scale(0.7),
+        area(),
+        origin("center"), 
+    ]);
+    action("button", (b2)=>{
+        onHover("button", (b)=>{
+            b.use(color(240, 100, 155));
+        });
+        b2.use(color(10, 10, 155));
+    });
+    onClick("button", (b)=>{
+        b.clickAction();
+    });
+});
 scene("game", ({ level , score  })=>{
+    // Used to decrease the enemy count on destruction
+    let enemyCount = 0;
+    for(let i = 0; i < _playableMap.playableMap[level].length; i++){
+        for(let j = 0; j < _playableMap.playableMap[level][i].length; j++)if (_playableMap.playableMap[level][i][j] === "^") enemyCount++;
+    }
     //create layers
     //An array
     // background layer, object layer as default, UI layer
@@ -574,6 +723,16 @@ scene("game", ({ level , score  })=>{
         "obj",
         "ui"
     ], "obj");
+    add([
+        sprite("background"),
+        // Make the background centered on the screen
+        pos(width() / 2, height() / 2),
+        origin("center"),
+        // Allow the background to be scaled
+        scale(3),
+        // Keep the background position fixed even when the camera moves
+        fixed()
+    ]);
     //level configuration
     const levelCfg = {
         //every sprite has a width and height
@@ -583,7 +742,7 @@ scene("game", ({ level , score  })=>{
         // load in some sprites
         "^": ()=>[
                 sprite("space_invader"),
-                scale(0.7),
+                scale(0.8),
                 "space_invader",
                 area()
             ]
@@ -591,13 +750,15 @@ scene("game", ({ level , score  })=>{
         "!": ()=>[
                 sprite("wall"),
                 "left_wall",
-                area()
+                area(),
+                solid()
             ]
         ,
         "&": ()=>[
                 sprite("wall"),
                 "right_wall",
-                area()
+                area(),
+                solid()
             ]
     };
     const gameLevel = addLevel(_playableMap.playableMap[level], levelCfg);
@@ -631,29 +792,23 @@ scene("game", ({ level , score  })=>{
         scale(0.3),
         fixed(), 
     ]);
-    const timer = add([
-        text("0"),
-        pos(240, 38),
-        scale(0.3),
-        layer("ui"),
-        fixed(),
-        {
-            time: TIME_LEFT
-        }, 
-    ]);
-    add([
-        text("Time Remaining: "),
-        pos(20, 38),
-        scale(0.3),
-        fixed()
-    ]);
-    onUpdate(()=>{
-        timer.time -= dt(), timer.text = timer.time.toFixed(2);
-        if (timer.time <= 0) go("lose", {
-            score: scoreLabel.value
-        });
-    });
-    const player = add([
+    /*const timer = add([
+    text("0"),
+    pos(240, 38),
+    scale(0.3),
+    layer("ui"),
+    fixed(),
+    { time: TIME_LEFT },
+  ]);
+
+  add([text("Time Remaining: "), pos(20, 38), scale(0.3), fixed()]);
+  onUpdate(() => {
+    (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
+
+    if (timer.time <= 0) {
+      go("lose", { score: scoreLabel.value });
+    }
+  });*/ const player = add([
         sprite("space_ship"),
         pos(width() / 2 - 500, height() / 2),
         origin("center"),
@@ -671,8 +826,18 @@ scene("game", ({ level , score  })=>{
             rect(2, 10),
             pos(p),
             origin("center"),
-            color(0.5, 0.5, 1),
+            color(255, 0.5, 1),
             "bullet",
+            area(), 
+        ]);
+    }
+    function spawnEnemyBullet(p) {
+        add([
+            rect(2, 10),
+            pos(p),
+            origin("center"),
+            color(200, 50, 30),
+            "enemyBullet",
             area(), 
         ]);
     }
@@ -683,17 +848,71 @@ scene("game", ({ level , score  })=>{
         b.move(0, -BULLET_SPEED);
         if (b.pos.y < 0) destroy(b);
     });
+    onUpdate("enemyBullet", (e)=>{
+        e.move(0, BULLET_SPEED);
+    //if (e.pos.y > player.pos.y) destroy(e);
+    });
     collides("bullet", "space_invader", (b, s)=>{
         shake(4);
         destroy(b);
         destroy(s);
+        enemyCount--;
+        if (enemyCount === 0) {
+            //Invaders always move right at start of level
+            INVADER_DIRECTION = 1;
+            level = level + 1;
+            console.log("map count: " + _playableMap.playableMap.length);
+            if (_playableMap.playableMap.length > level) go("vaccineInfoScene", {
+                level: level,
+                score: score
+            });
+            else {
+                level = 0;
+                go("winner", {
+                    score: scoreLabel.value
+                });
+            }
+        }
         scoreLabel.value++;
         // then display the score
         scoreLabel.text = scoreLabel.value;
     });
+    function abs(x) {
+        return x < 0 ? -x : x;
+    }
     //Let us make the space_invader moving
-    onUpdate("space_invader", (s)=>{
-        s.move(CURRENT_SPEED, 0);
+    /*onUpdate("space_invader", (s) => {
+    s.move(CURRENT_SPEED, 0);
+    if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y)
+      wait(0.01, () => {
+        spawnEnemyBullet(s.pos.add(0, 25));
+      });
+  });*/ onUpdate(()=>{
+        every("space_invader", (s)=>{
+            s.move(INVADER_SPEED * INVADER_DIRECTION, 0);
+            if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y) wait(0.01, ()=>{
+                spawnEnemyBullet(s.pos.add(0, 25));
+            });
+        });
+        INVADER_MOVE_COUNT++;
+        if (INVADER_MOVE_COUNT >= 200) {
+            INVADER_DIRECTION *= -1;
+            INVADER_MOVE_COUNT = 0;
+            every("space_invader", (invader)=>{
+                invader.move(0, LEVEL_DOWN);
+            });
+        }
+    });
+    onCollide("space_invader", "enemyBullet", (s, e)=>{
+        destroy(e);
+    });
+    onCollide("enemyBullet", "enemyBullet", (e, f)=>{
+        destroy(f);
+    });
+    player.onCollide("enemyBullet", ()=>{
+        go("lose", {
+            score: scoreLabel.value
+        });
     });
     //On Collision with right wall
     // Space-invader has to turn around and move down on each collision
@@ -715,7 +934,7 @@ scene("game", ({ level , score  })=>{
         });
     });
     onUpdate("space_invader", (s)=>{
-        if (s.pos.y >= height() / 2) go("lose", {
+        if (s.pos.y == player.pos.y) go("lose", {
             score: scoreLabel.value
         });
     });
@@ -727,23 +946,62 @@ scene("lose", ({ score  })=>{
         pos(width() / 2, height() / 2)
     ]);
     add([
-        text('Hit "Space bar" to Play again'),
+        text("Game Over. Going Back to Main Menu in 2 seconds"),
+        color(200, 50, 10),
         scale(0.5),
-        pos(width() / 2 - 240, height() / 2 + 30), 
+        pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30), 
     ]);
-    onKeyPress("space", ()=>{
+    // start the game
+    // onKeyPress("space", () => {
+    //   go("game", { level: 0, score: 0 });
+    // });
+    wait(2, ()=>{
+        go("menu");
+    });
+});
+scene("vaccineInfoScene", ({ level , score  })=>{
+    layers([
+        "ui",
+        "bg"
+    ], "bg");
+    const infoColor = add([
+        rect(window.innerWidth, window.innerHeight),
+        color(10, 0, 10),
+        layer("bg", "ui"),
+        fixed(), 
+    ]);
+    add([
+        text(_info.info[level], {
+            size: 35,
+            width: window.innerWidth,
+            font: "apl386o"
+        }),
+        scale(1),
+        color(200, 144, 255),
+        pos(20, 70), 
+    ]), // add([
+    //   text("Loading next Level..Please Wait..."),
+    //   scale(0.5),
+    //   color(200, 3, 10),
+    //   pos(100, window.innerHeight - 100),
+    // ]);
+    add([
+        text("Loading next Level..Please Wait..."),
+        scale(0.5),
+        color(200, 3, 10),
+        pos(100, window.innerHeight - 100), 
+    ]);
+    wait(3, ()=>{
         go("game", {
-            level: 0,
-            score: 0
+            level: level,
+            score: score
         });
     });
 });
-go("game", {
-    level: 0,
-    score: 0
-});
+//init();
+go("menu");
 
-},{"../../node_modules/kaboom":"larQu","./PlayableMap":"gHyFW","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"larQu":[function(require,module,exports) {
+},{"../../node_modules/kaboom":"larQu","./PlayableMap":"gHyFW","./info":"8EidD","@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"larQu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>no
@@ -4773,19 +5031,91 @@ parcelHelpers.export(exports, "playableMap", ()=>playableMap
 );
 const playableMap = [
     [
-        "!   ^     &"
+        "                       ^   ^   ^                               ",
+        "                                                               ",
+        "                       ^   ^   ^                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ", 
     ],
     [
-        "!^^^^^^^^^^^^^^^^^^^       &",
-        "!^^^^^^^^^^^^^^^^^^^       &",
-        "!^^^^^^^^^^^^^^^^^^^       &",
-        "!                          &",
-        "!                          &",
-        "!                          &",
-        "!                          &",
-        "!                          &",
-        "!                          &",
-        "!                          &", 
+        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
+        "                                                               ",
+        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
+        "                                                               ",
+        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
+        "                                                               ",
+        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ", 
+    ]
+];
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"8EidD":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "info", ()=>info
+);
+const info = [
+    [
+        "Get Vaccinated.. Encourage Others"
+    ],
+    [
+        "Kill that hestitation regarding vaccines or that hesitation will kill you"
+    ],
+    [
+        "Don't succumb to viruses.. Make viruses succumb when they attack you. Happens only when you are fully immune. Believe in what great researchers are saying", 
+    ],
+    [
+        "Live, attenuated vaccines fight viruses and bacteria. These vaccines contain a version of the living virus or bacteria that has been weakened so that it does not cause serious disease in people with healthy immune systems. Because live, attenuated vaccines are the closest thing to a natural infection, they are good teachers for the immune system. Examples of live, attenuated vaccines include measles, mumps, and rubella vaccine (MMR) and varicella (chickenpox) vaccine. Even though they are very effective, not everyone can receive these vaccines. Children with weakened immune systems—for example, those who are undergoing chemotherapy—cannot get live vaccines.", 
+    ],
+    [
+        "It is always better to prevent a disease than to treat it after it occurs.", 
+    ],
+    [
+        "Vaccination is a highly effective, safe and easy way to help keep your family healthy.", 
+    ],
+    [
+        "Your child is exposed to thousands of germs every day in his environment. This happens through the food he eats, air he breathes, and things he puts in his mouth.", 
+    ],
+    [
+        "Babies are born with immune systems that can fight most germs, but there are some deadly diseases they can’t handle. That’s why they need vaccines to strengthen their immune system.", 
+    ],
+    [
+        "Vaccines use very small amounts of antigens to help your child’s immune system recognize and learn to fight serious diseases. Antigens are parts of germs that cause the body’s immune system to go to work.", 
+    ],
+    [
+        "Thirty years ago, vaccines used 3,000 antigens to protect against 8 diseases by age two. Today, vaccines use 305 antigens to protect against 14 diseases by age two.", 
+    ],
+    [
+        "For some vaccines (primarily inactivated vaccines), the first dose does not provide as much immunity as possible. So, more than one dose is needed to build more complete immunity. The vaccine that protects against the bacteria Hib, which causes meningitis, is a good example.", 
     ], 
 ];
 
