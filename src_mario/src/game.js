@@ -10,7 +10,7 @@ let CURRENT_JUMP_FORCE = JUMP_FORCE;
 const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 700;
-const TIME_LEFT = 500;
+const TIME_LEFT = 200;
 const BULLET_TIME_LEFT = 4;
 let isBig = false;
 let buttonsVisible = true;
@@ -736,13 +736,13 @@ scene("game", ({ level, score }) => {
     },
   ]);
   add([text("Time Remaining: "), pos(20, 38), scale(0.3), fixed()]);
-  // onUpdate(() => {
-  //   (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
+  onUpdate(() => {
+    (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
 
-  //   if (timer.time <= 0) {
-  //     go("lose", { score: scoreLabel.value });
-  //   }
-  // });
+    if (timer.time <= 0) {
+      go("lose", { score: scoreLabel.value });
+    }
+  });
 
   add([text("C - Controls"), pos(20, 54), scale(0.3), fixed()]);
 
