@@ -532,7 +532,8 @@ let CURRENT_SPEED = INVADER_SPEED;
 let INVADER_MOVE_COUNT = 0;
 const LEVEL_DOWN = 400;
 const BULLET_SPEED = 400;
-const TIME_LEFT = 30000;
+const TIME_LEFT = 45;
+const LIVES_REMAINING = 4;
 const k = _kaboomDefault.default({
     global: true,
     // enable full screen
@@ -628,7 +629,7 @@ loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
 loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
-loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
+loadSprite("background", "ddOwzPU.jpg"); //https://imgur.com/WCSitcB New One:  // https://i.imgur.com/ddOwzPU.jpg
 // loadRoot("sprites/");
 // loadSprite("space", "space.jpg");
 // loadSprite("rocket1", "rocket1.png");
@@ -662,7 +663,7 @@ scene("winner", ({ score  })=>{
     add([
         text("Score: " + score, 32),
         origin("center"),
-        pos(width() / 2 - 40, window.innerHeight / 2 - 100)
+        pos(width() / 2 - 40, window.innerHeight / 2 - 100), 
     ]);
     // Play game button
     add([
@@ -731,7 +732,7 @@ scene("game", ({ level , score  })=>{
         // Allow the background to be scaled
         scale(3),
         // Keep the background position fixed even when the camera moves
-        fixed()
+        fixed(), 
     ]);
     //level configuration
     const levelCfg = {
@@ -792,23 +793,46 @@ scene("game", ({ level , score  })=>{
         scale(0.3),
         fixed(), 
     ]);
-    /*const timer = add([
-    text("0"),
-    pos(240, 38),
-    scale(0.3),
-    layer("ui"),
-    fixed(),
-    { time: TIME_LEFT },
-  ]);
-
-  add([text("Time Remaining: "), pos(20, 38), scale(0.3), fixed()]);
-  onUpdate(() => {
-    (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
-
-    if (timer.time <= 0) {
-      go("lose", { score: scoreLabel.value });
-    }
-  });*/ const player = add([
+    const timer = add([
+        text("0"),
+        pos(240, 38),
+        scale(0.3),
+        layer("ui"),
+        fixed(),
+        {
+            time: TIME_LEFT
+        }, 
+    ]);
+    add([
+        text("Time Remaining: "),
+        pos(20, 38),
+        scale(0.3),
+        fixed()
+    ]);
+    onUpdate(()=>{
+        timer.time -= dt(), timer.text = timer.time.toFixed(2);
+        if (timer.time <= 0) go("lose", {
+            score: scoreLabel.value
+        });
+    });
+    const lives = add([
+        text(parseInt(LIVES_REMAINING)),
+        pos(115, 52),
+        scale(0.3),
+        layer("ui"),
+        fixed(),
+        color(255, 10, 40),
+        {
+            value: LIVES_REMAINING
+        }, 
+    ]);
+    add([
+        text("Lives : "),
+        pos(20, 52),
+        scale(0.3),
+        fixed()
+    ]);
+    const player = add([
         sprite("space_ship"),
         pos(width() / 2 - 500, height() / 2),
         origin("center"),
@@ -910,7 +934,9 @@ scene("game", ({ level , score  })=>{
         destroy(f);
     });
     player.onCollide("enemyBullet", ()=>{
-        go("lose", {
+        shake(10);
+        lives.value -= 1, lives.text = lives.value.toFixed(0);
+        if (lives.value == 0) go("lose", {
             score: scoreLabel.value
         });
     });
@@ -5031,9 +5057,13 @@ parcelHelpers.export(exports, "playableMap", ()=>playableMap
 );
 const playableMap = [
     [
-        "                       ^   ^   ^                               ",
+        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
         "                                                               ",
-        "                       ^   ^   ^                               ",
+        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
+        "                                                               ",
+        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
+        "                                                               ",
+        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
         "                                                               ",
         "                                                               ",
         "                                                               ",
@@ -5052,13 +5082,13 @@ const playableMap = [
         "                                                               ", 
     ],
     [
-        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
-        "                                                               ",
-        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
-        "                                                               ",
-        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
-        "                                                               ",
-        "                ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^                ",
+        "           ^    ^  ^ ^^  ^  ^  ^ ^^  ^  ^  ^  ^                ",
+        "            ^       ^ ^         ^  ^         ^ ^               ",
+        "             ^  ^  ^  ^^ ^  ^^ ^  ^^^^  ^^ ^^ ^ ^              ",
+        "              ^   ^     ^     ^      ^     ^     ^             ",
+        "               ^^^ ^  ^  ^  ^^ ^  ^  ^^ ^ ^^  ^ ^ ^            ",
+        "                ^         ^ ^          ^ ^     ^   ^           ",
+        "                ^^ ^  ^  ^ ^^  ^  ^  ^  ^  ^  ^     ^          ",
         "                                                               ",
         "                                                               ",
         "                                                               ",
@@ -5075,7 +5105,133 @@ const playableMap = [
         "                                                               ",
         "                                                               ",
         "                                                               ", 
-    ]
+    ],
+    [
+        "                       ^   ^   ^                               ",
+        "      ^                                             ^          ",
+        "        ^              ^   ^   ^                  ^            ",
+        "           ^                                    ^              ",
+        "              ^   ^   ^   ^   ^   ^   ^   ^   ^                ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ", 
+    ],
+    [
+        "       ^       ^       ^   ^   ^   ^             ^             ",
+        "                                                               ",
+        "           ^           ^   ^   ^   ^        ^         ^        ",
+        "                                                               ",
+        "       ^       ^       ^   ^   ^   ^             ^             ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ", 
+    ],
+    [
+        "        ^     ^        ^   ^   ^           ^    ^              ",
+        "                                                               ",
+        "     ^     ^    ^      ^   ^   ^         ^    ^    ^           ",
+        "                                                               ",
+        "        ^     ^                            ^    ^              ",
+        "                                                               ",
+        "                          ^ ^                                  ",
+        "                       ^       ^                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ", 
+    ],
+    [
+        "               ^       ^   ^   ^           ^                   ",
+        "                                                               ",
+        "            ^     ^    ^   ^   ^        ^     ^                ",
+        "                                                               ",
+        "               ^                           ^                   ",
+        "     ^     ^   ^  ^ ^ ^ ^ ^  ^  ^  ^  ^  ^  ^      ^  ^        ",
+        "                                                               ",
+        "        ^    ^ ^  ^  ^ ^  ^  ^  ^  ^  ^  ^  ^  ^  ^   ^        ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ", 
+    ],
+    [
+        "       ^          ^    ^   ^   ^     ^           ^     ^       ",
+        "          ^    ^    ^             ^     ^     ^     ^          ",
+        "             ^         ^   ^   ^           ^          ^        ",
+        "           ^             ^   ^               ^         ^       ",
+        "             ^   ^   ^     ^     ^  ^   ^   ^   ^   ^          ",
+        "          ^             ^         ^        ^     ^   ^         ",
+        "        ^    ^       ^     ^    ^   ^    ^   ^ ^   ^           ",
+        "          ^  ^   ^ ^ ^ ^  ^ ^ ^ ^  ^   ^  ^ ^ ^ ^ ^  ^ ^       ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ", 
+    ],
+    [
+        "                 ^     ^   ^   ^     ^                         ",
+        "                    ^      ^      ^                            ",
+        "                 ^     ^   ^   ^     ^                         ",
+        "                    ^      ^      ^                            ",
+        "                 ^     ^   ^   ^     ^                         ",
+        "             ^^  ^^ ^^ ^^ ^^ ^^ ^^ ^^ ^^  ^^                   ",
+        "          ^^     ^^       ^^       ^^      ^^                  ",
+        "              ^^   ^^   ^^  ^^   ^^  ^^  ^^   ^^               ",
+        "      ^^   ^^        ^^        ^^      ^^       ^^  ^^         ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ",
+        "                                                               ", 
+    ], 
 ];
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"c1kAu"}],"8EidD":[function(require,module,exports) {
