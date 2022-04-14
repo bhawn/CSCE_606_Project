@@ -14,6 +14,7 @@ const TIME_LEFT = 50;
 const BULLET_TIME_LEFT = 8;
 let isBig = false;
 let buttonsVisible = true;
+let loadingLevel = true;
 
 let hasBulletAbility = false;
 let enemyVelocity = 3 * ENEMY_SPEED
@@ -717,15 +718,17 @@ scene("game", ({ level, score }) => {
   // Bullet functionality
   // positon of player as parameter
   function spawnBullet(p) {
-    add([
-      rect(10, 1),
-      pos(p),
-      origin("center"),
-      color(255, 0.5, 1),
+	if(isBig){
+		add([
+		  rect(10, 1),
+		  pos(p),
+		  origin("center"),
+		  color(255, 0.5, 1),
 
-      "bullet",
-      area(),
-    ]);
+		  "bullet",
+		  area(),
+		]);
+	}
   }
 
   // Releasing bullet functionality
