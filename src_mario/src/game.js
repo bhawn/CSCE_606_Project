@@ -475,6 +475,7 @@ scene("game", ({ level, score }) => {
     origin("bot"),
   ]);
 
+  if (isBig) player.scale = vec2(2);
   //Now make the mushroom move
   // Whenever you grab anything with a tag of mushroom,
   onUpdate("mushroom", (m) => {
@@ -540,14 +541,14 @@ scene("game", ({ level, score }) => {
     // pick a Big Vaccine mushroom and destroy the object
     destroy(m);
     //Now biggify for 6 seconds
-    player.biggify(6);
+    player.biggify();
   });
 
   player.onCollide("BulletVaccineMushroom", (m) => {
     // pick a Big Vaccine mushroom and destroy the object
     destroy(m);
     //Now biggify for 6 seconds
-    player.biggify(6);
+    player.biggify();
   });
 
   player.onCollide("coin", (c) => {
@@ -610,13 +611,12 @@ scene("game", ({ level, score }) => {
   // big mario becomes small
   // small mario dies
   player.onCollide("dangerous", (d) => {
-    if (isBig) {
-      player.smallify();
-      destroy(d);
-    }
     // console.log((d.pos.y) + " " + player.pos.y)
-    else if (player.pos.y == d.pos.y || isJumping) {
+    if (player.pos.y == d.pos.y || isJumping) {
       // console.log("detect")
+      destroy(d);
+    } else if (isBig) {
+      player.smallify();
       destroy(d);
     } else {
       // go to a lose scene and display the final score
@@ -625,11 +625,11 @@ scene("game", ({ level, score }) => {
   });
   player.onCollide("dangerous1", (d) => {
     // console.log((d.pos.y) + " " + player.pos.y)
-    if (isBig) {
-      player.smallify();
-      destroy(d);
-    } else if (player.pos.y == d.pos.y || isJumping) {
+    if (player.pos.y == d.pos.y || isJumping) {
       // console.log("detect")
+      destroy(d);
+    } else if (isBig) {
+      player.smallify();
       destroy(d);
     } else {
       // go to a lose scene and display the final score
@@ -637,10 +637,12 @@ scene("game", ({ level, score }) => {
     }
   });
 
+  // //camPos(player.pos);
   onUpdate(() => {
     // Make camera Position same as player position
 
     camPos(player.pos);
+    //toScreen(player.pos);
 
     // So whenever the y coordinate of the player is greater than death value then go to lose scene
     if (player.pos.y >= FALL_DEATH) {
@@ -681,19 +683,19 @@ scene("game", ({ level, score }) => {
   player.onCollide("pipe", () => {
     onKeyPress("down", () => {
       /* Scene to display vaccine informations*/
-      level = level + 1;
-      console.log("map count: " + playableMap.length);
-      if (playableMap.length > level) {
-        go("vaccineInfoScene", { level: level, score: score });
+      //level = level + 1;
+      //console.log("map count: " + playableMap.length);
+      if (playableMap.length > level + 1) {
+        go("vaccineInfoScene", { level: level + 1, score: score });
       } else {
         level = 0;
         go("winner", { score: scoreLabel.value });
       }
     });
     onKeyPress("s", () => {
-      level = level + 1;
-      console.log("map count: " + playableMap.length);
-      if (playableMap.length > level) {
+      // level = level + 1;
+      // console.log("map count: " + playableMap.length);
+      if (playableMap.length > level + 1) {
         go("vaccineInfoScene", { level: level, score: score });
       } else {
         level = 0;

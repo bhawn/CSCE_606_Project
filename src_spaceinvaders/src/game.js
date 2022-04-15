@@ -26,6 +26,13 @@ const k = kaboom({
   debug: true,
 });
 
+let player = add([
+  sprite("space_ship"),
+  pos(width() / 2 - 500, height() / 2),
+  origin("center"),
+  area(),
+  solid(),
+]);
 // Menu Scene
 
 scene("menu", () => {
@@ -305,14 +312,6 @@ scene("game", ({ level, score }) => {
   ]);
 
   add([text("Lives : "), pos(20, 52), scale(0.3), fixed()]);
-
-  const player = add([
-    sprite("space_ship"),
-    pos(width() / 2 - 500, height() / 2),
-    origin("center"),
-    area(),
-    solid(),
-  ]);
 
   keyDown("left", () => {
     player.move(-MOVE_SPEED, 0);

@@ -552,6 +552,13 @@ const k = _kaboomDefault.default({
     // for debug mode
     debug: true
 });
+let player = add([
+    sprite("space_ship"),
+    pos(width() / 2 - 500, height() / 2),
+    origin("center"),
+    area(),
+    solid(), 
+]);
 // Menu Scene
 scene("menu", ()=>{
     var x = 10, y = 10, z = 155;
@@ -831,13 +838,6 @@ scene("game", ({ level , score  })=>{
         pos(20, 52),
         scale(0.3),
         fixed()
-    ]);
-    const player = add([
-        sprite("space_ship"),
-        pos(width() / 2 - 500, height() / 2),
-        origin("center"),
-        area(),
-        solid(), 
     ]);
     keyDown("left", ()=>{
         player.move(-MOVE_SPEED, 0);
