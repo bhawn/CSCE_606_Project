@@ -8,10 +8,9 @@ const INVADER_SPEED = 100;
 let INVADER_DIRECTION = 1;
 let CURRENT_SPEED = INVADER_SPEED;
 let INVADER_MOVE_COUNT = 0;
-
 const LEVEL_DOWN = 400;
 const BULLET_SPEED = 400;
-const TIME_LEFT = 45;
+const TIME_LEFT = 30000;
 const LIVES_REMAINING = 4;
 const k = kaboom({
   global: true,
@@ -26,13 +25,6 @@ const k = kaboom({
   debug: true,
 });
 
-let player = add([
-  sprite("space_ship"),
-  pos(width() / 2 - 500, height() / 2),
-  origin("center"),
-  area(),
-  solid(),
-]);
 // Menu Scene
 
 scene("menu", () => {
@@ -122,8 +114,8 @@ loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
 
-loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
-loadSprite("background", "ddOwzPU.jpg"); //https://imgur.com/WCSitcB New One:  // https://i.imgur.com/ddOwzPU.jpg
+loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o  https://imgur.com/GFFd15o
+loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
 
 // loadRoot("sprites/");
 // loadSprite("space", "space.jpg");
@@ -301,6 +293,13 @@ scene("game", ({ level, score }) => {
     }
   });
 
+  const player = add([
+    sprite("space_ship"),
+    pos(width() / 2 - 500, height() / 2),
+    origin("center"),
+    area(),
+    solid(),
+  ]);
   const lives = add([
     text(parseInt(LIVES_REMAINING)),
     pos(115, 52),
@@ -312,7 +311,6 @@ scene("game", ({ level, score }) => {
   ]);
 
   add([text("Lives : "), pos(20, 52), scale(0.3), fixed()]);
-
   keyDown("left", () => {
     player.move(-MOVE_SPEED, 0);
   });

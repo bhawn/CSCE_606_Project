@@ -532,7 +532,7 @@ let CURRENT_SPEED = INVADER_SPEED;
 let INVADER_MOVE_COUNT = 0;
 const LEVEL_DOWN = 400;
 const BULLET_SPEED = 400;
-const TIME_LEFT = 45;
+const TIME_LEFT = 30000;
 const LIVES_REMAINING = 4;
 const k = _kaboomDefault.default({
     global: true,
@@ -552,13 +552,6 @@ const k = _kaboomDefault.default({
     // for debug mode
     debug: true
 });
-let player = add([
-    sprite("space_ship"),
-    pos(width() / 2 - 500, height() / 2),
-    origin("center"),
-    area(),
-    solid(), 
-]);
 // Menu Scene
 scene("menu", ()=>{
     var x = 10, y = 10, z = 155;
@@ -635,8 +628,8 @@ function resize() {
 loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
-loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
-loadSprite("background", "ddOwzPU.jpg"); //https://imgur.com/WCSitcB New One:  // https://i.imgur.com/ddOwzPU.jpg
+loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o  https://imgur.com/GFFd15o
+loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
 // loadRoot("sprites/");
 // loadSprite("space", "space.jpg");
 // loadSprite("rocket1", "rocket1.png");
@@ -822,6 +815,13 @@ scene("game", ({ level , score  })=>{
             score: scoreLabel.value
         });
     });
+    const player = add([
+        sprite("space_ship"),
+        pos(width() / 2 - 500, height() / 2),
+        origin("center"),
+        area(),
+        solid(), 
+    ]);
     const lives = add([
         text(parseInt(LIVES_REMAINING)),
         pos(115, 52),
