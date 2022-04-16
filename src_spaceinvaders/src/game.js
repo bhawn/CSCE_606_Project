@@ -368,10 +368,10 @@ scene("game", ({ level, score }) => {
       //Invaders always move right at start of level
       INVADER_DIRECTION = 1;
 
-      level = level + 1;
-      console.log("map count: " + playableMap.length);
-      if (playableMap.length > level) {
-        go("vaccineInfoScene", { level: level, score: score });
+      // level = level + 1;
+      // console.log("map count: " + playableMap.length);
+      if (playableMap.length > level + 1) {
+        go("vaccineInfoScene", { level: level + 1, score: scoreLabel.value });
       } else {
         level = 0;
         go("winner", { score: scoreLabel.value });
