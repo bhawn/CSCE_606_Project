@@ -213,8 +213,8 @@ loadSprite("brick", "pogC9x5.png");
 loadSprite("block", "M6rwarW.png");
 
 //mario
-
-loadSprite("mario", "Wb1qfhK.png");
+// https://imgur.com/Rp0NvTW
+loadSprite("mario", "Rp0NvTW.png");
 
 loadSprite("mushroom", "wm9BL0V.png");
 
