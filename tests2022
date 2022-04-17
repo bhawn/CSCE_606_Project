@@ -72,5 +72,5 @@ Info Scene for Space Invaders
 
 Player Score:
 1. The player should be able to shoot bullets.
-2. When the player bullet hits the invaders, the invaders should be destroyed, the socre should increase and also the bullet should be destroyed
+2. When the player bullet hits the invaders, the invaders should be destroyed, the score should increase and also the bullet should be destroyed
 3. The Score should be passed on as the game progresses.

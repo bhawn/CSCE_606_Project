@@ -11,12 +11,13 @@ const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 700;
 const TIME_LEFT = 50;
-const BULLET_TIME_LEFT = 4;
+const BULLET_TIME_LEFT = 8;
 let isBig = false;
 let buttonsVisible = true;
 
 let hasBulletAbility = false;
 let enemyVelocity = 3 * ENEMY_SPEED
+let enemyMove = 0
 
 const k = kaboom({
   global: true,
@@ -25,7 +26,7 @@ const k = kaboom({
 
   scale: 1,
   background: [0, 0, 1],
-  clearColor: [51, 151, 255],
+  clearColor: [255, 255, 255],
   // for debug mode
 
   debug: true,
@@ -215,13 +216,13 @@ loadSprite("block", "M6rwarW.png");
 
 loadSprite("mario", "Wb1qfhK.png");
 
-loadSprite("mushroom", "0wMd92p.png");
+loadSprite("mushroom", "wm9BL0V.png");
 
 //BiggerMarioShor
-loadSprite("BigVaccineMushroom", "CCdLQNO.jpg");
+loadSprite("BigVaccineMushroom", "wm9BL0V.jpg"); // https://imgur.com/wm9BL0V
 
 //Mushroom for bullets
-loadSprite("BulletVaccineMushroom", "ertkPgG.jpg");
+loadSprite("BulletVaccineMushroom", "ertkPgG.jpg"); // https://imgur.com/ertkPgG
 
 loadSprite("surprise", "gesQ1KP.png");
 
@@ -254,6 +255,8 @@ loadSprite("highjump", "xfWsMOV.png");
 
 loadSprite("shoot", "mPlhKAi.png");
 
+loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
+
 //Vaccine Info Scene begins
 //loadRoot("C:UserskaushDesktopCSCE_606_Projectsrc_mariosrc/");
 
@@ -266,11 +269,16 @@ scene("game", ({ level, score }) => {
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
-  const bgColor = add([
-    rect(100000000000000, 1000000000000000),
-    color(0, 10, 24),
-    layer("bg", "ui"),
-    fixed(),
+  
+  add([
+    sprite("background"),
+    // Make the background centered on the screen
+    pos(width() / 2, height() / 2),
+    origin("center"),
+    // Allow the background to be scaled
+    scale(3),
+    // Keep the background position fixed even when the camera moves
+    fixed()
   ]);
 
   //level configuration
@@ -313,7 +321,7 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), scale(1), "dangerous1", body(), area()],
+    "^": () => [sprite("covid"), solid(), scale(1), body(), "dangerous1", area()],
 
     "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
 
@@ -340,9 +348,9 @@ scene("game", ({ level, score }) => {
 
     z: () => [
       sprite("blue-evil-shroom"),
-      // solid(),
+    //   solid(),
       scale(1.0),
-      // body(),
+    //   body(),
       area(),
       "dangerous"
     ],
@@ -519,14 +527,19 @@ scene("game", ({ level, score }) => {
   // Let us make evils move
 
   onUpdate("dangerous1", (d) => {
-    d.onCollide("block", (d1) => {
-        console.log(d1.pos.x)
-        enemyVelocity *= -1;
-        let i = 1000000
-        while (i > -1) {
-            i--;
-        }
-    });
+      enemyMove += 1;
+      if (enemyMove > 200) {
+          enemyVelocity *= -1;
+          enemyMove = 0;
+      }
+    // d.onCollide("block", (d1) => {
+    //     console.log(d1.pos.x)
+    //     enemyVelocity *= -1;
+    //     let i = 1000000
+    //     while (i > -1) {
+    //         i--;
+    //     }
+    // });
     // d.onCollide("pipe", (d1) => {
     //     console.log(d1.pos.x)
     //     enemyVelocity *= -1;
@@ -709,16 +722,13 @@ scene("game", ({ level, score }) => {
 
   // Bullet functionality
   // positon of player as parameter
-  function spawnBullet(position) {
-    // define a rectangular area around the player position
-    // give bullet as a tag
+  function spawnBullet(p) {
     add([
-      //rect(10, 1),
-      sprite("BulletVaccineMushroom"),
-      pos(position),
+      rect(10, 1),
+      pos(p),
       origin("center"),
-      color(1, 500, 10),
-      scale(0.1),
+      color(255, 0.5, 1),
+
       "bullet",
       area(),
     ]);
@@ -736,7 +746,7 @@ scene("game", ({ level, score }) => {
   onUpdate("bullet", (b) => {
     //destroy(b);
 
-    b.move(ENEMY_SPEED * 3, 0);
+    b.move(ENEMY_SPEED * 9, 0);
     // whenever a bullet is released decrement the time given to it.
     bulletTimer.time -= dt();
     if (bulletTimer.time <= 0) {

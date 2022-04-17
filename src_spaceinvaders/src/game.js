@@ -5,8 +5,10 @@ import { info } from "./info";
 const MOVE_SPEED = 200;
 
 const INVADER_SPEED = 100;
+let INVADER_DIRECTION = 1;
 let CURRENT_SPEED = INVADER_SPEED;
-const LEVEL_DOWN = 2;
+let INVADER_MOVE_COUNT = 0;
+const LEVEL_DOWN = 400
 const BULLET_SPEED = 400;
 const TIME_LEFT = 30000;
 const k = kaboom({
@@ -110,7 +112,10 @@ function resize() {
 loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
+
 loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
+loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
+
 
 // loadRoot("sprites/");
 // loadSprite("space", "space.jpg");
@@ -145,6 +150,17 @@ scene("game", ({ level, score }) => {
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   layers(["bg", "obj", "ui"], "obj");
+
+  add([
+    sprite("background"),
+    // Make the background centered on the screen
+    pos(width() / 2, height() / 2),
+    origin("center"),
+    // Allow the background to be scaled
+    scale(3),
+    // Keep the background position fixed even when the camera moves
+    fixed()
+  ]);
 
   //level configuration
   const levelCfg = {
@@ -187,7 +203,7 @@ scene("game", ({ level, score }) => {
     fixed(),
   ]);
 
-  const timer = add([
+  /*const timer = add([
     text("0"),
     pos(240, 38),
     scale(0.3),
@@ -203,7 +219,7 @@ scene("game", ({ level, score }) => {
     if (timer.time <= 0) {
       go("lose", { score: scoreLabel.value });
     }
-  });
+  });*/
 
   const player = add([
     sprite("space_ship"),
@@ -267,6 +283,8 @@ scene("game", ({ level, score }) => {
     destroy(s);
     enemyCount--;
     if (enemyCount === 0) {
+      //Invaders always move right at start of level
+      INVADER_DIRECTION = 1;
       go("vaccineInfoScene", { level: level + 1, score: score });
     }
     scoreLabel.value++;
@@ -278,12 +296,32 @@ scene("game", ({ level, score }) => {
     return x < 0 ? -x : x;
   }
   //Let us make the space_invader moving
-  onUpdate("space_invader", (s) => {
+  /*onUpdate("space_invader", (s) => {
     s.move(CURRENT_SPEED, 0);
     if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y)
       wait(0.01, () => {
         spawnEnemyBullet(s.pos.add(0, 25));
       });
+  });*/
+    
+  onUpdate(() => {
+     every("space_invader", (s) => {
+         s.move(INVADER_SPEED * INVADER_DIRECTION, 0);
+         if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y)
+            wait(0.01, () => {
+                spawnEnemyBullet(s.pos.add(0, 25));
+      });
+     });
+      
+      INVADER_MOVE_COUNT++;
+      if(INVADER_MOVE_COUNT >= 200){
+        INVADER_DIRECTION *= -1;
+        INVADER_MOVE_COUNT = 0;
+        every("space_invader", (invader) => {
+            invader.move(0, LEVEL_DOWN);
+        });   
+    }
+      
   });
 
   onCollide("space_invader", "enemyBullet", (s, e) => {
@@ -319,7 +357,7 @@ scene("game", ({ level, score }) => {
   });
 
   onUpdate("space_invader", (s) => {
-    if (s.pos.y >= height() / 2) {
+    if (s.pos.y == player.pos.y) {
       go("lose", { score: scoreLabel.value });
     }
   });
