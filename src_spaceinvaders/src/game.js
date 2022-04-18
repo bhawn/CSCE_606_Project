@@ -11,7 +11,7 @@ let INVADER_MOVE_COUNT = 0;
 const LEVEL_DOWN = 400
 const BULLET_SPEED = 400;
 const TIME_LEFT = 30000;
-let BUTTON_YPOS = window.innerHeight-75;
+let BUTTON_YPOS = window.innerHeight-125;
 let BUTTON_FAR_XPOS = window.innerWidth-25;
 const k = kaboom({
   global: true,
@@ -291,22 +291,25 @@ scene("game", ({ level, score }) => {
 	  pos(25, BUTTON_YPOS),
 	  opacity(0.5),
 	  fixed(),
+	  scale(1.5),
 	  area(),
 	]);
 
 	const rightButton = add([
 	  sprite("d"),
-	  pos(100, BUTTON_YPOS),
+	  pos(130, BUTTON_YPOS),
 	  opacity(0.5),
 	  fixed(),
+	  scale(1.5),
 	  area(),
 	]);
 	
     const shootButton = add([
       sprite("shoot"),
-      pos(BUTTON_FAR_XPOS-100, BUTTON_YPOS+15),
+      pos(BUTTON_FAR_XPOS-175, BUTTON_YPOS+15),
       opacity(0.5),
       fixed(),
+	  scale(1.5),
       area(),
     ]);
 	

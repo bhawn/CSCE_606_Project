@@ -7,7 +7,7 @@ const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
-let BUTTON_YPOS = window.innerHeight-75;
+let BUTTON_YPOS = window.innerHeight-125;
 let BUTTON_FAR_XPOS = window.innerWidth-25;
 const ENEMY_SPEED = 20;
 let isJumping = true;
@@ -239,7 +239,7 @@ scene("game", ({ level, score }) => {
     pos(width() / 2, height() / 2),
     origin("center"),
     // Allow the background to be scaled
-    scale(3),
+    scale(5),
     // Keep the background position fixed even when the camera moves
     fixed()
   ]);
@@ -752,30 +752,34 @@ scene("game", ({ level, score }) => {
       pos(25, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
+	  scale(1.5),
       area(),
     ]);
 
     const rightButton = add([
       sprite("d"),
-      pos(100, BUTTON_YPOS),
+      pos(130, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
+	  scale(1.5),
       area(),
     ]);
 
     const actionButton = add([
       sprite("highjump"),
-      pos(BUTTON_FAR_XPOS-50, BUTTON_YPOS),
+      pos(BUTTON_FAR_XPOS-75, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
+	  scale(1.5),
       area(),
     ]);
 
     const shootButton = add([
       sprite("shoot"),
-      pos(BUTTON_FAR_XPOS-175, BUTTON_YPOS+15),
+      pos(BUTTON_FAR_XPOS-250, BUTTON_YPOS+30),
       opacity(0.5),
       fixed(),
+	  scale(1.5),
       area(),
     ]);
 
