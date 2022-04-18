@@ -720,7 +720,9 @@ loadSprite("brick", "pogC9x5.png");
 // Old brick : "M6rwarW.png"
 loadSprite("block", "X3a5liL.png");
 //mario
-loadSprite("mario", "Wb1qfhK.png");
+// New Doctor Sprite : Rp0NvTW;
+// Old Mario : Wb1qfhK
+loadSprite("mario", "Rp0NvTW.png");
 loadSprite("mushroom", "wm9BL0V.png");
 //BiggerMarioShor
 loadSprite("BigVaccineMushroom", "wm9BL0V.jpg"); // https://imgur.com/wm9BL0V

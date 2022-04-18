@@ -231,7 +231,11 @@ loadSprite("block", "X3a5liL.png");
 
 //mario
 
-loadSprite("mario", "Wb1qfhK.png");
+// New Doctor Sprite : Rp0NvTW;
+
+// Old Mario : Wb1qfhK
+
+loadSprite("mario", "Rp0NvTW.png");
 
 loadSprite("mushroom", "wm9BL0V.png");
 
