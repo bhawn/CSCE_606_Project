@@ -7,8 +7,8 @@ const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
-let BUTTON_YPOS = window.innerHeight-125;
-let BUTTON_FAR_XPOS = window.innerWidth-25;
+let BUTTON_YPOS = window.innerHeight-175;
+let BUTTON_FAR_XPOS = window.innerWidth-50;
 const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 700;
@@ -17,6 +17,7 @@ const BULLET_TIME_LEFT = 8;
 let isBig = false;
 let buttonsVisible = true;
 let loadingLevel = true;
+let BASE_SCALE = 1;
 
 let hasBulletAbility = false;
 let enemyVelocity = 3 * ENEMY_SPEED
@@ -166,7 +167,6 @@ function resize() {
   BUTTON_YPOS = window.innerHeight-75;
 }
 
-buttonsVisible = window.mobileAndTabletCheck();
 //add scenes
 //coins
 loadRoot("https://i.imgur.com/");
@@ -231,6 +231,9 @@ scene("game", ({ level, score }) => {
   //An array
   // background layer, object layer as default, UI layer
   // initialise with obj as default
+  if(window.mobileAndTabletCheck()){
+	BASE_SCALE = 3;
+  }
   layers(["bg", "obj", "ui"], "obj");
   
   add([
@@ -276,23 +279,24 @@ scene("game", ({ level, score }) => {
     //Newly added Sprites end here
 
     "}": () => [sprite("unboxed"), solid(), area()],
-    "(": () => [sprite("pipe-bottom-left"), solid(), scale(0.5), "pipe", area()],
+    "(": () => [sprite("pipe-bottom-left"), solid(), scale(BASE_SCALE*0.5), "pipe", area()],
 
-    ")": () => [sprite("pipe-bottom-right"), solid(), scale(0.5), "pipe", area()],
+    ")": () => [sprite("pipe-bottom-right"), solid(), scale(BASE_SCALE*0.5), "pipe", area()],
 
-    "-": () => [sprite("pipe-top-left"), solid(), scale(0.5), "pipe", area()],
+    "-": () => [sprite("pipe-top-left"), solid(), scale(BASE_SCALE*0.5), "pipe", area()],
 
-    "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
+    "+": () => [sprite("pipe-top-right"), solid(), scale(BASE_SCALE*0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), scale(1), "dangerous", area()],
+    "^": () => [sprite("covid"), scale(BASE_SCALE*1), "dangerous", area()],
 
-    "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
+    "#": () => [sprite("mushroom"), solid(), scale(BASE_SCALE*1), "mushroom", body(), area()],
 
     o: () => [
       sprite("BigVaccineMushroom"),
       solid(),
       "BigVaccineMushroom",
       body(),
+	  scale(BASE_SCALE*1),
       area(),
 
       scale(0.1, 0.1),
@@ -302,17 +306,18 @@ scene("game", ({ level, score }) => {
       solid(),
       "BulletVaccineMushroom",
       body(),
+	  scale(BASE_SCALE*1),
       area(),
       scale(0.1, 0.1),
     ],
 
-    "!": () => [sprite("blue-block"), solid(), scale(0.5), area()],
-    "£": () => [sprite("blue-brick"), solid(), scale(0.5), area(), "brick"],
+    "!": () => [sprite("blue-block"), solid(), scale(BASE_SCALE*0.5), area()],
+    "£": () => [sprite("blue-brick"), solid(), scale(BASE_SCALE*0.5), area(), "brick"],
 
     z: () => [
       sprite("blue-evil-shroom"),
       // solid(),
-      scale(1.0),
+      scale(BASE_SCALE*1),
       // body(),
       area(),
       "dangerous"
@@ -321,10 +326,10 @@ scene("game", ({ level, score }) => {
       sprite("blue-surprise"),
       solid(),
       area(),
-      scale(0.5),
+      scale(BASE_SCALE*0.5),
       "coin-surprise",
     ],
-    x: () => [sprite("blue-steel"), solid(), area(), scale(0.5)],
+    x: () => [sprite("blue-steel"), solid(), area(), scale(BASE_SCALE*1)],
   };
   // now just create a  gamelevel(JS method) and pass the map and levelCfg
   const gameLevel = addLevel(playableMap[level], levelCfg);
@@ -332,13 +337,12 @@ scene("game", ({ level, score }) => {
   // default layer is 'obj '
   // so change layer to 'ui' for adding score
   //define this as a method so that it can be passed to other levels
-  add([text("Score:"), scale(0.3), pos(20, 6), fixed()]);
+  add([text("Score:"), scale(BASE_SCALE*0.3), pos(20, 6), fixed()]);
   const scoreLabel = add([
     //text(score),
     text(parseInt(score)),
     pos(115, 6),
-    scale(0.3),
-    ,
+    scale(BASE_SCALE*0.3),
     fixed(),
     layer("ui"),
     {
@@ -351,7 +355,7 @@ scene("game", ({ level, score }) => {
   add([
     text("Level: " + parseInt(level + 1)),
     pos(20, 22),
-    scale(0.3),
+    scale(BASE_SCALE*0.3),
     fixed(),
   ]);
 
@@ -399,6 +403,7 @@ scene("game", ({ level, score }) => {
     body(),
     big(),
     area(),
+	scale(BASE_SCALE*1),
     origin("bot"),
   ]);
 
@@ -687,7 +692,7 @@ scene("game", ({ level, score }) => {
 		  pos(p),
 		  origin("center"),
 		  color(255, 0.5, 1),
-
+		  scale(BASE_SCALE*1),
 		  "bullet",
 		  area(),
 		]);
@@ -752,16 +757,16 @@ scene("game", ({ level, score }) => {
       pos(25, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
-	  scale(1.5),
+	  scale(BASE_SCALE*3),
       area(),
     ]);
 
     const rightButton = add([
       sprite("d"),
-      pos(130, BUTTON_YPOS),
+      pos(25 + BASE_SCALE*175, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
-	  scale(1.5),
+	  scale(BASE_SCALE*3),
       area(),
     ]);
 
@@ -770,16 +775,16 @@ scene("game", ({ level, score }) => {
       pos(BUTTON_FAR_XPOS-75, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
-	  scale(1.5),
+	  scale(BASE_SCALE*3),
       area(),
     ]);
 
     const shootButton = add([
       sprite("shoot"),
-      pos(BUTTON_FAR_XPOS-250, BUTTON_YPOS+30),
+      pos(BUTTON_FAR_XPOS-(375*BASE_SCALE), BUTTON_YPOS+(45*BASE_SCALE)),
       opacity(0.5),
       fixed(),
-	  scale(1.5),
+	  scale(BASE_SCALE*3),
       area(),
     ]);
 
