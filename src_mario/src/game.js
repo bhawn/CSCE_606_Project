@@ -7,6 +7,8 @@ const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
+let BUTTON_YPOS = window.innerHeight-75;
+let BUTTON_FAR_XPOS = window.innerWidth-25;
 const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 700;
@@ -65,8 +67,8 @@ scene("menu", () => {
       clickAction: () => {
         go("vaccineInfoScene", { level: 0, score: 0 });
         },
-        touchAction: () => {
-            go("vaccineInfoScene", { level: 0, score: 0 });
+      touchAction: () => {
+        go("vaccineInfoScene", { level: 0, score: 0 });
         },
     },
     scale(0.7),
@@ -101,6 +103,10 @@ scene("menu", () => {
   onClick("button", (b) => {
     b.clickAction();
   });
+  
+  onTouchStart("button", (b) => {
+	  b.clickAction();
+  });
 });
 
 scene("winner", ({ score }) => {
@@ -121,55 +127,17 @@ scene("winner", ({ score }) => {
         origin("center")
     );
     add([text("Score: " + score, 32), origin("center"), pos(width() / 2 - 40, window.innerHeight / 2 - 100)]);
-    // Play game button
     add([
-        //rect(260, 20),
-        text("Play Again"),
+		text("Going Back to Main Menu in 2 seconds"),
+		color(200, 50, 10),
+		scale(0.5),
+		pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
+	  ]);
 
-        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
-        color(10, 10, 155),
-
-        origin("center"),
-        "button",
-        {
-            clickAction: () => {
-                go("vaccineInfoScene", { level: 0, score: 0 });
-
-                //go("game", { level: 0, score: 0 });
-            },
-        },
-        scale(0.7),
-        area(),
-
-        ,
-    ]);
-
-    add([
-        //rect(260, 20),
-        text("Back to Main Menu"),
-        color(10, 10, 155),
-        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40),
-        "button",
-        {
-            clickAction: () =>
-                window.location = "../../index.html",
-        },
-        scale(0.7),
-        area(),
-
-        origin("center"),
-    ]);
-
-    action("button", (b) => {
-        onHover("button", (b) => {
-            b.use(color(240, 100, 155));
-        });
-        b.use(color(10, 10, 155));
-    });
-
-    onClick("button", (b) => {
-        b.clickAction();
-    });
+	  // start the game
+	  wait(2, () => {
+		  window.location = "./mario_menu.html";
+	  });
 });
 
 window.addEventListener("resize", resize, false);
@@ -195,6 +163,7 @@ function resize() {
     canvas.style.width = windowHeight * gameRatio + "px";
     canvas.style.height = windowHeight + "px";
   }
+  BUTTON_YPOS = window.innerHeight-75;
 }
 
 buttonsVisible = window.mobileAndTabletCheck();
@@ -247,21 +216,15 @@ loadSprite("blue-evil-shroom", "wDkFVQt.png");
 
 loadSprite("blue-surprise", "RMqCc1G.png");
 
-loadSprite("a", "agdsuPW.png");
+loadSprite("a", "A34cvsW.png"); //https://imgur.com/A34cvsW
 
-loadSprite("d", "7SNgoAe.png");
+loadSprite("d", "Ne911cW.png"); //https://imgur.com/Ne911cW
 
-loadSprite("highjump", "xfWsMOV.png");
+loadSprite("highjump", "mFC6zMN.png"); //https://imgur.com/mFC6zMN
 
-loadSprite("shoot", "mPlhKAi.png");
+loadSprite("shoot", "W5W3CDL.png"); //https://imgur.com/W5W3CDL
 
 loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
-
-//Vaccine Info Scene begins
-//loadRoot("C:UserskaushDesktopCSCE_606_Projectsrc_mariosrc/");
-
-//Vaccine Info scene ends
-// game scene
 
 scene("game", ({ level, score }) => {
   //create layers
@@ -786,7 +749,7 @@ scene("game", ({ level, score }) => {
     //Mobile Buttons
     const leftButton = add([
       sprite("a"),
-      pos(50, 450),
+      pos(25, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
       area(),
@@ -794,7 +757,7 @@ scene("game", ({ level, score }) => {
 
     const rightButton = add([
       sprite("d"),
-      pos(125, 450),
+      pos(100, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
       area(),
@@ -802,7 +765,7 @@ scene("game", ({ level, score }) => {
 
     const actionButton = add([
       sprite("highjump"),
-      pos(750, 450),
+      pos(BUTTON_FAR_XPOS-50, BUTTON_YPOS),
       opacity(0.5),
       fixed(),
       area(),
@@ -810,7 +773,7 @@ scene("game", ({ level, score }) => {
 
     const shootButton = add([
       sprite("shoot"),
-      pos(650, 450),
+      pos(BUTTON_FAR_XPOS-175, BUTTON_YPOS+15),
       opacity(0.5),
       fixed(),
       area(),
@@ -860,13 +823,19 @@ scene("game", ({ level, score }) => {
 
     //Ends individual presses
     onTouchEnd((leftPress, pos) => {
-      keyDownOnMobile.left = false;
-      leftButton.opacity = 0.5;
+      if (leftButton.hasPoint(pos)) {
+		  keyDownOnMobile.left = false;
+		  leftButton.opacity = 0.5;
+		  console.log("unpressed left");
+		}
     });
 
     onTouchEnd((rightPress, pos) => {
-      keyDownOnMobile.right = false;
-      rightButton.opacity = 0.5;
+      if (rightButton.hasPoint(pos)) {
+		  keyDownOnMobile.right = false;
+		  rightButton.opacity = 0.5;
+		  console.log("unpressed right");
+		}
     });
 
     onTouchEnd((actionPress, pos) => {
@@ -899,13 +868,8 @@ scene("lose", ({ score }) => {
   ]);
 
   // start the game
-
-  // onKeyPress("space", () => {
-  //   go("game", { level: 0, score: 0 });
-  // });
-
   wait(2, () => {
-    go("menu");
+	  window.location = "./mario_menu.html";
   });
 });
 
@@ -933,7 +897,7 @@ scene("vaccineInfoScene", ({ level, score }) => {
     //area(),
   ]),
     add([
-      text("Loading next Level..Please Wait..."),
+      text("Loading next Level... Please Wait..."),
       scale(0.5),
       color(200, 3, 10),
 
@@ -945,5 +909,6 @@ scene("vaccineInfoScene", ({ level, score }) => {
   });
 });
 //init();
-go("menu");
+//go("menu");
 //go("game", { level: 0, score: 0 });
+go("vaccineInfoScene", { level: 0, score: 0 });
