@@ -12,6 +12,7 @@ const LEVEL_DOWN = 400
 const BULLET_SPEED = 400;
 const TIME_LEFT = 30000;
 let BUTTON_YPOS = window.innerHeight-125;
+let BASE_SCALE = 2;
 let BUTTON_FAR_XPOS = window.innerWidth-25;
 const k = kaboom({
   global: true,
@@ -207,7 +208,7 @@ scene("game", ({ level, score }) => {
     // parameters 1: name of the sprite, 2: solid , 3: tag
 
     // load in some sprites
-    "^": () => [sprite("space_invader"), scale(0.8), "space_invader", area()],
+    "^": () => [sprite("space_invader"), scale(0.8*BASE_SCALE), "space_invader", area()],
     "!": () => [sprite("wall"), "left_wall", area(), solid()],
     "&": () => [sprite("wall"), "right_wall", area(), solid()],
   };
@@ -264,6 +265,7 @@ scene("game", ({ level, score }) => {
     origin("center"),
     area(),
     solid(),
+	scale(BASE_SCALE),
   ]);
 
   keyDown("left", () => {
@@ -285,31 +287,34 @@ scene("game", ({ level, score }) => {
       // we will set them to true when these buttons are tocuhed
     };
 	
-	//Mobile Buttons
-	const leftButton = add([
-	  sprite("a"),
-	  pos(25, BUTTON_YPOS),
-	  opacity(0.5),
+    //Mobile Buttons
+    const leftButton = add([
+      sprite("a"),
+      pos(20, height()-25),
+      opacity(0.5),
+	  origin("botleft"),
+	  scale(BASE_SCALE),
 	  fixed(),
-	  scale(1.5),
-	  area(),
-	]);
+      area(),
+    ]);
 
-	const rightButton = add([
-	  sprite("d"),
-	  pos(130, BUTTON_YPOS),
-	  opacity(0.5),
+    const rightButton = add([
+      sprite("d"),
+      pos(120, height()-25),
+      opacity(0.5),
+	  origin("botleft"),
+	  scale(BASE_SCALE),
 	  fixed(),
-	  scale(1.5),
-	  area(),
-	]);
+      area(),
+    ]);
 	
     const shootButton = add([
       sprite("shoot"),
-      pos(BUTTON_FAR_XPOS-175, BUTTON_YPOS+15),
+      pos(width()-30, height()-25),
       opacity(0.5),
-      fixed(),
-	  scale(1.5),
+	  origin("botright"),
+	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 	
