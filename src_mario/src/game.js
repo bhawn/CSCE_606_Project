@@ -7,7 +7,7 @@ const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
-let BUTTON_YPOS = window.innerHeight-475;
+let BUTTON_YPOS = window.innerHeight;
 let BUTTON_FAR_XPOS = window.innerWidth-750;
 const ENEMY_SPEED = 20;
 let isJumping = true;
@@ -33,81 +33,6 @@ const k = kaboom({
   // for debug mode
 
   debug: true,
-});
-
-//This is for Menu
-
-scene("menu", () => {
-  var x = 10,
-    y = 10,
-    z = 155;
-  color(240, 100, 24);
-  add(
-    [
-      text("Mario game"),
-      pos(window.innerWidth / 2 - 240, window.innerHeight / 2 - 200),
-      ,
-      scale(1),
-      color(10, 10, 155),
-      area(),
-      "title",
-    ],
-    origin("center")
-  );
-  // Play game button
-  add([
-    //rect(260, 20),
-    text("Play game"),
-
-    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 80),
-    color(10, 10, 155),
-
-    origin("center"),
-    "button",
-    {
-      clickAction: () => {
-        go("vaccineInfoScene", { level: 0, score: 0 });
-        },
-      touchAction: () => {
-        go("vaccineInfoScene", { level: 0, score: 0 });
-        },
-    },
-    scale(0.7),
-    area(),
-
-    ,
-  ]);
-
-  add([
-    //rect(260, 20),
-    text("Back to Main Menu"),
-    color(10, 10, 155),
-    pos(window.innerWidth / 2 - 20, window.innerHeight / 2),
-    "button",
-    {
-      clickAction: () =>
-        window.location = "../../index.html",
-    },
-    scale(0.7),
-    area(),
-
-    origin("center"),
-  ]);
-
-  action("button", (b) => {
-    onHover("button", (b) => {
-      b.use(color(240, 100, 155));
-    });
-    b.use(color(10, 10, 155));
-  });
-
-  onClick("button", (b) => {
-    b.clickAction();
-  });
-  
-  onTouchStart("button", (b) => {
-	  b.clickAction();
-  });
 });
 
 scene("winner", ({ score }) => {
@@ -167,7 +92,7 @@ function resize() {
     canvas.style.width = windowHeight * gameRatio + "px";
     canvas.style.height = windowHeight + "px";
   }
-  BUTTON_YPOS = window.innerHeight-475;
+  BUTTON_YPOS = window.innerHeight;
   BUTTON_FAR_XPOS = window.innerWidth-750;
 }
 
@@ -236,7 +161,7 @@ scene("game", ({ level, score }) => {
   // background layer, object layer as default, UI layer
   // initialise with obj as default
   if(window.mobileAndTabletCheck()){
-	BASE_SCALE = 2;
+	BASE_SCALE = 1;
   }
   layers(["bg", "obj", "ui"], "obj");
   
@@ -758,37 +683,41 @@ scene("game", ({ level, score }) => {
     //Mobile Buttons
     const leftButton = add([
       sprite("a"),
-      pos(25, BUTTON_YPOS),
+      pos(20, height()-25),
       opacity(0.5),
-      fixed(),
+	  origin("botleft"),
 	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 
     const rightButton = add([
       sprite("d"),
-      pos(25 + BASE_SCALE*60, BUTTON_YPOS),
+      pos(80, height()-25),
       opacity(0.5),
-      fixed(),
+	  origin("botleft"),
 	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 
     const actionButton = add([
       sprite("highjump"),
-      pos(BUTTON_FAR_XPOS-100, BUTTON_YPOS),
+      pos(width()-30, height()-25),
       opacity(0.5),
-      fixed(),
+	  origin("botright"),
 	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 
     const shootButton = add([
       sprite("shoot"),
-      pos(BUTTON_FAR_XPOS-(200*BASE_SCALE), BUTTON_YPOS+(20*BASE_SCALE)),
+      pos(width()-30, height()-25),
       opacity(0.5),
-      fixed(),
+	  origin("botright"),
 	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 
