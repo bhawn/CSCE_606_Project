@@ -11,6 +11,9 @@ let INVADER_MOVE_COUNT = 0;
 const LEVEL_DOWN = 400
 const BULLET_SPEED = 400;
 const TIME_LEFT = 30000;
+let BUTTON_YPOS = window.innerHeight-125;
+let BASE_SCALE = 2;
+let BUTTON_FAR_XPOS = window.innerWidth-25;
 const k = kaboom({
   global: true,
   // enable full screen
@@ -56,8 +59,6 @@ scene("menu", () => {
     {
       clickAction: () => {
         go("vaccineInfoScene", { level: 0, score: 0 });
-
-        //go("game", { level: 0, score: 0 });
       },
     },
     scale(0.7),
@@ -116,6 +117,11 @@ loadSprite("wall", "gqVoI2b.png");
 loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
 loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
 
+loadSprite("a", "A34cvsW.png"); //https://imgur.com/A34cvsW
+
+loadSprite("d", "Ne911cW.png"); //https://imgur.com/Ne911cW
+
+loadSprite("shoot", "W5W3CDL.png"); //https://imgur.com/W5W3CDL
 
 // loadRoot("sprites/");
 // loadSprite("space", "space.jpg");
@@ -154,56 +160,19 @@ scene("winner", ({ score }) => {
         ],
         origin("center")
     );
+	
     add([text("Score: " + score, 32), origin("center"), pos(width() / 2 - 40, window.innerHeight / 2 - 100)]);
-    // Play game button
-    add([
-        //rect(260, 20),
-        text("Play Again"),
+	
+	add([
+		text("Game Over. Going Back to Main Menu in 2 seconds"),
+		color(200, 50, 10),
+		scale(0.5),
+		pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
+	  ]);
 
-        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
-        color(10, 10, 155),
-
-        origin("center"),
-        "button",
-        {
-            clickAction: () => {
-                go("vaccineInfoScene", { level: 0, score: 0 });
-
-                //go("game", { level: 0, score: 0 });
-            },
-        },
-        scale(0.7),
-        area(),
-
-        ,
-    ]);
-
-    add([
-        //rect(260, 20),
-        text("Back to Main Menu"),
-        color(10, 10, 155),
-        pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40),
-        "button",
-        {
-            clickAction: () =>
-                window.location = "../../index.html",
-        },
-        scale(0.7),
-        area(),
-
-        origin("center"),
-    ]);
-
-    action("button", (b) => {
-        onHover("button", (b) => {
-            b.use(color(240, 100, 155));
-        });
-        b.use(color(10, 10, 155));
-    });
-
-    onClick("button", (b) => {
-        b.clickAction();
-    });
+	  wait(2, () => {
+		  window.location = "./mario_menu.html";
+	  });
 });
 
 scene("game", ({ level, score }) => {
@@ -226,7 +195,7 @@ scene("game", ({ level, score }) => {
     pos(width() / 2, height() / 2),
     origin("center"),
     // Allow the background to be scaled
-    scale(3),
+    scale(5),
     // Keep the background position fixed even when the camera moves
     fixed()
   ]);
@@ -239,7 +208,7 @@ scene("game", ({ level, score }) => {
     // parameters 1: name of the sprite, 2: solid , 3: tag
 
     // load in some sprites
-    "^": () => [sprite("space_invader"), scale(0.8), "space_invader", area()],
+    "^": () => [sprite("space_invader"), scale(0.8*BASE_SCALE), "space_invader", area()],
     "!": () => [sprite("wall"), "left_wall", area(), solid()],
     "&": () => [sprite("wall"), "right_wall", area(), solid()],
   };
@@ -296,6 +265,7 @@ scene("game", ({ level, score }) => {
     origin("center"),
     area(),
     solid(),
+	scale(BASE_SCALE),
   ]);
 
   keyDown("left", () => {
@@ -305,6 +275,123 @@ scene("game", ({ level, score }) => {
   keyDown("right", () => {
     player.move(MOVE_SPEED, 0);
   });
+  
+  if (isTouch()) {// && buttonsVisible) {
+    //console.log(isTouch);
+
+    //because left and right buttons will be pressed
+    //we need to keep track of them
+    const keyDownOnMobile = {
+      left: false,
+      right: false,
+      // we will set them to true when these buttons are tocuhed
+    };
+	
+    //Mobile Buttons
+    const leftButton = add([
+      sprite("a"),
+      pos(20, height()-25),
+      opacity(0.5),
+	  origin("botleft"),
+	  scale(BASE_SCALE),
+	  fixed(),
+      area(),
+    ]);
+
+    const rightButton = add([
+      sprite("d"),
+      pos(120, height()-25),
+      opacity(0.5),
+	  origin("botleft"),
+	  scale(BASE_SCALE),
+	  fixed(),
+      area(),
+    ]);
+	
+    const shootButton = add([
+      sprite("shoot"),
+      pos(width()-30, height()-25),
+      opacity(0.5),
+	  origin("botright"),
+	  scale(BASE_SCALE),
+	  fixed(),
+      area(),
+    ]);
+	
+    //TouchStart acts similar to a key press
+    //Sperate starts allow for mulitple button presses
+    onTouchStart((leftPress, pos) => {
+      if (leftButton.hasPoint(pos)) {
+        keyDownOnMobile.left = true;
+        leftButton.opacity = 1;
+      }
+    });
+
+    onTouchStart((rightPress, pos) => {
+      if (rightButton.hasPoint(pos)) {
+        keyDownOnMobile.right = true;
+        rightButton.opacity = 1;
+      }
+    });
+
+    onTouchStart((shootPress, pos) => {
+      if (shootButton.hasPoint(pos)) {
+        spawnBullet(player.pos.add(0, -25));
+        shootButton.opacity = 1;
+      }
+    });
+
+    //Keeps movement even if screen is touched, or other button is touched
+    onTouchMove((id, pos) => {
+      if (leftButton.hasPoint(pos)) {
+        keyDownOnMobile.left = true;
+        leftButton.opacity = 1;
+      }
+      if (rightButton.hasPoint(pos)) {
+        keyDownOnMobile.right = true;
+        rightButton.opacity = 1;
+      }
+    });
+
+    //Ends individual presses
+    onTouchEnd((leftPress, pos) => {
+      if (leftButton.hasPoint(pos)) {
+		  keyDownOnMobile.left = false;
+		  leftButton.opacity = 0.5;
+		  console.log("unpressed left");
+		}
+    });
+
+    onTouchEnd((rightPress, pos) => {
+      if (rightButton.hasPoint(pos)) {
+		  keyDownOnMobile.right = false;
+		  rightButton.opacity = 0.5;
+		  console.log("unpressed right");
+		}
+    });
+
+    onTouchEnd((shootPress, pos) => {
+      if (shootButton.hasPoint(pos)) {
+		shootButton.opacity = 0.5;
+	  }
+    });
+
+    onUpdate(() => {
+      if (keyDownOnMobile.left) {
+        moveLeft();
+      } else if (keyDownOnMobile.right) {
+        moveRight();
+      }
+    });
+
+    const moveLeft = () => {
+      player.move(-MOVE_SPEED, 0);
+    };
+
+    const moveRight = () => {
+      player.move(MOVE_SPEED, 0);
+    };
+  }
 
   function spawnBullet(p) {
     add([
@@ -450,14 +537,8 @@ scene("lose", ({ score }) => {
     pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
   ]);
 
-  // start the game
-
-  // onKeyPress("space", () => {
-  //   go("game", { level: 0, score: 0 });
-  // });
-
   wait(2, () => {
-    go("menu");
+	  window.location = "./mario_menu.html";
   });
 });
 
@@ -504,5 +585,7 @@ scene("vaccineInfoScene", ({ level, score }) => {
     go("game", { level: level, score: score });
   });
 });
+
 //init();
-go("menu");
+//go("menu");
+go("vaccineInfoScene", { level: 0, score: 0 });
