@@ -21,6 +21,7 @@ let BASE_SCALE = 1;
 
 let hasBulletAbility = false;
 let enemyVelocity = 3 * ENEMY_SPEED
+let enemyMove = 0
 
 const k = kaboom({
   global: true,
@@ -111,8 +112,8 @@ loadSprite("brick", "pogC9x5.png");
 loadSprite("block", "M6rwarW.png");
 
 //mario
-
-loadSprite("mario", "Wb1qfhK.png");
+// https://imgur.com/Rp0NvTW
+loadSprite("mario", "Rp0NvTW.png");
 
 loadSprite("mushroom", "wm9BL0V.png");
 
@@ -216,7 +217,7 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), scale(1), "dangerous", area()],
+    "^": () => [sprite("covid"), solid(), scale(1), body(), "dangerous1", area()],
 
     "#": () => [sprite("mushroom"), solid(), scale(1), "mushroom", body(), area()],
 
@@ -424,14 +425,19 @@ scene("game", ({ level, score }) => {
   // Let us make evils move
 
   onUpdate("dangerous1", (d) => {
-    d.onCollide("block", (d1) => {
-        console.log(d1.pos.x)
-        enemyVelocity *= -1;
-        let i = 1000000
-        while (i > -1) {
-            i--;
-        }
-    });
+      enemyMove += 1;
+      if (enemyMove > 200) {
+          enemyVelocity *= -1;
+          enemyMove = 0;
+      }
+    // d.onCollide("block", (d1) => {
+    //     console.log(d1.pos.x)
+    //     enemyVelocity *= -1;
+    //     let i = 1000000
+    //     while (i > -1) {
+    //         i--;
+    //     }
+    // });
     // d.onCollide("pipe", (d1) => {
     //     console.log(d1.pos.x)
     //     enemyVelocity *= -1;
