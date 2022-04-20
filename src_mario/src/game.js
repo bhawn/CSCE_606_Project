@@ -7,6 +7,8 @@ const MOVE_SPEED = 150;
 const JUMP_FORCE = 560;
 const BIG_JUMP_FORCE = 750;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
+let BUTTON_YPOS = window.innerHeight;
+let BUTTON_FAR_XPOS = window.innerWidth-750;
 const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 700;
@@ -14,6 +16,8 @@ const TIME_LEFT = 200;
 const BULLET_TIME_LEFT = 4;
 let isBig = false;
 let buttonsVisible = true;
+let loadingLevel = true;
+let BASE_SCALE = 1;
 
 let hasBulletAbility = false;
 let enemyVelocity = 3 * ENEMY_SPEED;
@@ -23,7 +27,7 @@ const k = kaboom({
   // enable full screen
   fullscreen: true,
 
-  scale: 1,
+  scale: 2,
   background: [0, 0, 1],
   clearColor: [255, 255, 255],
   // for debug mode
@@ -189,7 +193,10 @@ window.mobileAndTabletCheck = function () {
       check = true;
   })(navigator.userAgent || navigator.vendor || window.opera);
   console.log("Check is " + check);
-  return check;
+  if(check) {
+	  return 3;
+  }
+  return 1;
 };
 
 function resize() {
@@ -206,9 +213,10 @@ function resize() {
     canvas.style.width = windowHeight * gameRatio + "px";
     canvas.style.height = windowHeight + "px";
   }
+  BUTTON_YPOS = window.innerHeight;
+  BUTTON_FAR_XPOS = window.innerWidth-750;
 }
 
-buttonsVisible = window.mobileAndTabletCheck();
 //add scenes
 //coins
 loadRoot("https://i.imgur.com/");
@@ -234,7 +242,6 @@ loadSprite("block", "X3a5liL.png");
 // New Doctor Sprite : Rp0NvTW;
 
 // Old Mario : Wb1qfhK
-
 loadSprite("mario", "Rp0NvTW.png");
 
 loadSprite("mushroom", "wm9BL0V.png");
@@ -268,27 +275,24 @@ loadSprite("blue-evil-shroom", "wDkFVQt.png");
 
 loadSprite("blue-surprise", "RMqCc1G.png");
 
-loadSprite("a", "agdsuPW.png");
+loadSprite("a", "A34cvsW.png"); //https://imgur.com/A34cvsW
 
-loadSprite("d", "7SNgoAe.png");
+loadSprite("d", "Ne911cW.png"); //https://imgur.com/Ne911cW
 
-loadSprite("highjump", "xfWsMOV.png");
+loadSprite("highjump", "mFC6zMN.png"); //https://imgur.com/mFC6zMN
 
-loadSprite("shoot", "mPlhKAi.png");
+loadSprite("shoot", "W5W3CDL.png"); //https://imgur.com/W5W3CDL
 
 loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
-
-//Vaccine Info Scene begins
-//loadRoot("C:UserskaushDesktopCSCE_606_Projectsrc_mariosrc/");
-
-//Vaccine Info scene ends
-// game scene
 
 scene("game", ({ level, score }) => {
   //create layers
   //An array
   // background layer, object layer as default, UI layer
   // initialise with obj as default
+  if(window.mobileAndTabletCheck()){
+	BASE_SCALE = 1;
+  }
   layers(["bg", "obj", "ui"], "obj");
 
   add([
@@ -297,7 +301,7 @@ scene("game", ({ level, score }) => {
     pos(width() / 2, height() / 2),
     origin("center"),
     // Allow the background to be scaled
-    scale(3),
+    scale(5),
     // Keep the background position fixed even when the camera moves
     fixed(),
   ]);
@@ -354,15 +358,16 @@ scene("game", ({ level, score }) => {
 
     "+": () => [sprite("pipe-top-right"), solid(), scale(0.5), "pipe", area()],
 
-    "^": () => [sprite("covid"), scale(1), "dangerous", area()],
+    "^": () => [sprite("covid"), solid(), scale(1), body(), "dangerous1", area()],
 
-    "#": () => [sprite("mushroom"), solid(), "mushroom", body(), area()],
+    "#": () => [sprite("mushroom"), solid(), scale(1), "mushroom", body(), area()],
 
     o: () => [
       sprite("BigVaccineMushroom"),
       solid(),
       "BigVaccineMushroom",
       body(),
+	  scale(1),
       area(),
 
       scale(0.1, 0.1),
@@ -372,6 +377,7 @@ scene("game", ({ level, score }) => {
       solid(),
       "BulletVaccineMushroom",
       body(),
+	  scale(1),
       area(),
       scale(0.1, 0.1),
     ],
@@ -382,7 +388,7 @@ scene("game", ({ level, score }) => {
     z: () => [
       sprite("blue-evil-shroom"),
       // solid(),
-      scale(1.0),
+      scale(1),
       // body(),
       area(),
       "dangerous",
@@ -394,7 +400,7 @@ scene("game", ({ level, score }) => {
       scale(0.5),
       "coin-surprise",
     ],
-    x: () => [sprite("blue-steel"), solid(), area(), scale(0.5)],
+    x: () => [sprite("blue-steel"), solid(), area(), scale(1)],
   };
   // now just create a  gamelevel(JS method) and pass the map and levelCfg
   const gameLevel = addLevel(playableMap[level], levelCfg);
@@ -475,6 +481,7 @@ scene("game", ({ level, score }) => {
     body(),
     big(),
     area(),
+	scale(1),
     origin("bot"),
   ]);
 
@@ -567,14 +574,19 @@ scene("game", ({ level, score }) => {
   // Let us make evils move
 
   onUpdate("dangerous1", (d) => {
-    d.onCollide("block", (d1) => {
-      console.log(d1.pos.x);
-      enemyVelocity *= -1;
-      let i = 1000000;
-      while (i > -1) {
-        i--;
+      enemyMove += 1;
+      if (enemyMove > 200) {
+          enemyVelocity *= -1;
+          enemyMove = 0;
       }
-    });
+    // d.onCollide("block", (d1) => {
+    //     console.log(d1.pos.x)
+    //     enemyVelocity *= -1;
+    //     let i = 1000000
+    //     while (i > -1) {
+    //         i--;
+    //     }
+    // });
     // d.onCollide("pipe", (d1) => {
     //     console.log(d1.pos.x)
     //     enemyVelocity *= -1;
@@ -774,15 +786,17 @@ scene("game", ({ level, score }) => {
   // Bullet functionality
   // positon of player as parameter
   function spawnBullet(p) {
-    add([
-      rect(10, 1),
-      pos(p),
-      origin("center"),
-      color(255, 0.5, 1),
-
-      "bullet",
-      area(),
-    ]);
+	if(isBig){
+		add([
+		  rect(10, 1),
+		  pos(p),
+		  origin("center"),
+		  color(255, 0.5, 1),
+		  scale(1),
+		  "bullet",
+		  area(),
+		]);
+	}
   }
 
   // Releasing bullet functionality
@@ -841,33 +855,41 @@ scene("game", ({ level, score }) => {
     //Mobile Buttons
     const leftButton = add([
       sprite("a"),
-      pos(50, 450),
+      pos(20, height()-25),
       opacity(0.5),
-      fixed(),
+	  origin("botleft"),
+	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 
     const rightButton = add([
       sprite("d"),
-      pos(125, 450),
+      pos(80, height()-25),
       opacity(0.5),
-      fixed(),
+	  origin("botleft"),
+	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 
     const actionButton = add([
       sprite("highjump"),
-      pos(750, 450),
+      pos(width()-30, height()-25),
       opacity(0.5),
-      fixed(),
+	  origin("botright"),
+	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 
     const shootButton = add([
       sprite("shoot"),
-      pos(650, 450),
+      pos(width()-30, height()-25),
       opacity(0.5),
-      fixed(),
+	  origin("botright"),
+	  scale(BASE_SCALE),
+	  fixed(),
       area(),
     ]);
 
@@ -915,13 +937,19 @@ scene("game", ({ level, score }) => {
 
     //Ends individual presses
     onTouchEnd((leftPress, pos) => {
-      keyDownOnMobile.left = false;
-      leftButton.opacity = 0.5;
+      if (leftButton.hasPoint(pos)) {
+		  keyDownOnMobile.left = false;
+		  leftButton.opacity = 0.5;
+		  console.log("unpressed left");
+		}
     });
 
     onTouchEnd((rightPress, pos) => {
-      keyDownOnMobile.right = false;
-      rightButton.opacity = 0.5;
+      if (rightButton.hasPoint(pos)) {
+		  keyDownOnMobile.right = false;
+		  rightButton.opacity = 0.5;
+		  console.log("unpressed right");
+		}
     });
 
     onTouchEnd((actionPress, pos) => {
@@ -947,20 +975,23 @@ scene("game", ({ level, score }) => {
 scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
   add([
-    text("Game Over. Going Back to Main Menu in 2 seconds"),
+    text("Game Over."),
     color(200, 50, 10),
     scale(0.5),
-    pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
+	origin("center"),
+    pos(width() / 2, height() / 2 - 120),
+  ]);
+  add([
+    text("Going Back to Main Menu"),
+    color(200, 50, 10),
+    scale(0.5),
+	origin("center"),
+    pos(width() / 2, height() / 2 - 80),
   ]);
 
   // start the game
-
-  // onKeyPress("space", () => {
-  //   go("game", { level: 0, score: 0 });
-  // });
-
   wait(2, () => {
-    go("menu");
+	  window.location = "./mario_menu.html";
   });
 });
 
@@ -988,7 +1019,7 @@ scene("vaccineInfoScene", ({ level, score }) => {
     //area(),
   ]),
     add([
-      text("Loading next Level..Please Wait..."),
+      text("Loading next Level... Please Wait..."),
       scale(0.5),
       color(200, 3, 10),
 
@@ -1000,5 +1031,6 @@ scene("vaccineInfoScene", ({ level, score }) => {
   });
 });
 //init();
-go("menu");
+//go("menu");
 //go("game", { level: 0, score: 0 });
+go("vaccineInfoScene", { level: 0, score: 0 });
