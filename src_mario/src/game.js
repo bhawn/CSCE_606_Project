@@ -21,6 +21,7 @@ let BASE_SCALE = 1;
 
 let hasBulletAbility = false;
 let enemyVelocity = 3 * ENEMY_SPEED;
+let enemyMove = 0;
 
 const k = kaboom({
   global: true,
