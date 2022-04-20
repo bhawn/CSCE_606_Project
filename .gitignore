@@ -9,6 +9,6 @@ emrun.py
 makefile
 .cache/*
 src_mario/.cache/*
-node_modules/
+node_modules/*
 .cache/*
 dist/*

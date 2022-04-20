@@ -12,16 +12,16 @@ let BUTTON_FAR_XPOS = window.innerWidth-750;
 const ENEMY_SPEED = 20;
 let isJumping = true;
 const FALL_DEATH = 700;
-const TIME_LEFT = 50;
-const BULLET_TIME_LEFT = 8;
+const TIME_LEFT = 200;
+const BULLET_TIME_LEFT = 4;
 let isBig = false;
 let buttonsVisible = true;
 let loadingLevel = true;
 let BASE_SCALE = 1;
 
 let hasBulletAbility = false;
-let enemyVelocity = 3 * ENEMY_SPEED
-let enemyMove = 0
+let enemyVelocity = 3 * ENEMY_SPEED;
+let enemyMove = 0;
 
 const k = kaboom({
   global: true,
@@ -36,42 +36,163 @@ const k = kaboom({
   debug: true,
 });
 
-scene("winner", ({ score }) => {
-    var x = 10,
-        y = 10,
-        z = 155;
-    color(240, 100, 24);
-    add(
-        [
-            text("Congratulations!"),
-            pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
-            ,
-            scale(1),
-            color(10, 10, 155),
-            area(),
-            "title",
-        ],
-        origin("center")
-    );
-    add([text("Score: " + score, 32), origin("center"), pos(width() / 2 - 40, window.innerHeight / 2 - 100)]);
-    add([
-		text("Going Back to Main Menu in 2 seconds"),
-		color(200, 50, 10),
-		scale(0.5),
-		pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
-	  ]);
+//This is for Menu
 
-	  // start the game
-	  wait(2, () => {
-		  window.location = "./mario_menu.html";
-	  });
+scene("menu", () => {
+  var x = 10,
+    y = 10,
+    z = 155;
+  color(240, 100, 24);
+  add(
+    [
+      text("Mario game"),
+      pos(window.innerWidth / 2 - 240, window.innerHeight / 2 - 200),
+      ,
+      scale(1),
+      color(10, 10, 155),
+      area(),
+      "title",
+    ],
+    origin("center")
+  );
+  // Play game button
+  add([
+    //rect(260, 20),
+    text("Play game"),
+
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 80),
+    color(10, 10, 155),
+
+    origin("center"),
+    "button",
+    {
+      clickAction: () => {
+        go("vaccineInfoScene", { level: 0, score: 0 });
+      },
+      touchAction: () => {
+        go("vaccineInfoScene", { level: 0, score: 0 });
+      },
+    },
+    scale(0.7),
+    area(),
+
+    ,
+  ]);
+
+  add([
+    //rect(260, 20),
+    text("Back to Main Menu"),
+    color(10, 10, 155),
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2),
+    "button",
+    {
+      clickAction: () => (window.location = "../../index.html"),
+    },
+    scale(0.7),
+    area(),
+
+    origin("center"),
+  ]);
+
+  action("button", (b) => {
+    onHover("button", (b) => {
+      b.use(color(240, 100, 155));
+    });
+    b.use(color(10, 10, 155));
+  });
+
+  onClick("button", (b) => {
+    b.clickAction();
+  });
+});
+
+scene("winner", ({ score }) => {
+  var x = 10,
+    y = 10,
+    z = 155;
+  color(240, 100, 24);
+  add(
+    [
+      text("Congratulations!"),
+      pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
+      ,
+      scale(1),
+      color(10, 10, 155),
+      area(),
+      "title",
+    ],
+    origin("center")
+  );
+  add([
+    text("Score: " + score, 32),
+    origin("center"),
+    pos(width() / 2 - 40, window.innerHeight / 2 - 100),
+  ]);
+  // Play game button
+  add([
+    //rect(260, 20),
+    text("Play Again"),
+
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+    color(10, 10, 155),
+
+    origin("center"),
+    "button",
+    {
+      clickAction: () => {
+        go("vaccineInfoScene", { level: 0, score: 0 });
+
+        //go("game", { level: 0, score: 0 });
+      },
+    },
+    scale(0.7),
+    area(),
+
+    ,
+  ]);
+
+  add([
+    //rect(260, 20),
+    text("Back to Main Menu"),
+    color(10, 10, 155),
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40),
+    "button",
+    {
+      clickAction: () => (window.location = "../../index.html"),
+    },
+    scale(0.7),
+    area(),
+
+    origin("center"),
+  ]);
+
+  action("button", (b) => {
+    onHover("button", (b) => {
+      b.use(color(240, 100, 155));
+    });
+    b.use(color(10, 10, 155));
+  });
+
+  onClick("button", (b) => {
+    b.clickAction();
+  });
 });
 
 window.addEventListener("resize", resize, false);
 
-window.mobileAndTabletCheck = function() {
+window.mobileAndTabletCheck = function () {
   let check = false;
-  (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+  (function (a) {
+    if (
+      /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(
+        a
+      ) ||
+      /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(
+        a.substr(0, 4)
+      )
+    )
+      check = true;
+  })(navigator.userAgent || navigator.vendor || window.opera);
   console.log("Check is " + check);
   if(check) {
 	  return 3;
@@ -106,13 +227,22 @@ loadSprite("coin", "O0rwU31.png"); //https://imgur.com/O0rwU31
 
 loadSprite("evil-shroom", "KPO3fR9.png");
 loadSprite("covid", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
-//bricks
+
 loadSprite("brick", "pogC9x5.png");
 //blocks
-loadSprite("block", "M6rwarW.png");
+
+//bricks
+// New brick:
+//https://i.imgur.com/X3a5liL.png
+
+// Old brick : "M6rwarW.png"
+loadSprite("block", "X3a5liL.png");
 
 //mario
-// https://imgur.com/Rp0NvTW
+
+// New Doctor Sprite : Rp0NvTW;
+
+// Old Mario : Wb1qfhK
 loadSprite("mario", "Rp0NvTW.png");
 
 loadSprite("mushroom", "wm9BL0V.png");
@@ -165,7 +295,7 @@ scene("game", ({ level, score }) => {
 	BASE_SCALE = 1;
   }
   layers(["bg", "obj", "ui"], "obj");
-  
+
   add([
     sprite("background"),
     // Make the background centered on the screen
@@ -174,7 +304,7 @@ scene("game", ({ level, score }) => {
     // Allow the background to be scaled
     scale(5),
     // Keep the background position fixed even when the camera moves
-    fixed()
+    fixed(),
   ]);
 
   //level configuration
@@ -186,7 +316,7 @@ scene("game", ({ level, score }) => {
 
     // load in some sprites
     "=": () => [sprite("block"), solid(), area(), "brick"],
-    "_": () => [sprite("block"), solid(), area(), "block"],
+    _: () => [sprite("block"), solid(), area(), "block"],
     $: () => [sprite("coin"), "coin", area()],
     "%": () => [sprite("surprise"), solid(), "coin-surprise", area()],
     "*": () => [sprite("surprise"), solid(), "mushroom-surprise", area()],
@@ -209,9 +339,21 @@ scene("game", ({ level, score }) => {
     //Newly added Sprites end here
 
     "}": () => [sprite("unboxed"), solid(), area()],
-    "(": () => [sprite("pipe-bottom-left"), solid(), scale(0.5), "pipe", area()],
+    "(": () => [
+      sprite("pipe-bottom-left"),
+      solid(),
+      scale(0.5),
+      "pipe",
+      area(),
+    ],
 
-    ")": () => [sprite("pipe-bottom-right"), solid(), scale(0.5), "pipe", area()],
+    ")": () => [
+      sprite("pipe-bottom-right"),
+      solid(),
+      scale(0.5),
+      "pipe",
+      area(),
+    ],
 
     "-": () => [sprite("pipe-top-left"), solid(), scale(0.5), "pipe", area()],
 
@@ -250,7 +392,7 @@ scene("game", ({ level, score }) => {
       scale(1),
       // body(),
       area(),
-      "dangerous"
+      "dangerous",
     ],
     "@": () => [
       sprite("blue-surprise"),
@@ -299,11 +441,11 @@ scene("game", ({ level, score }) => {
           CURRENT_JUMP_FORCE = BIG_JUMP_FORCE;
 
           //delta time is a JS method ""time since last frame"
-          timer -= dt();
-          if (timer <= 0) {
-            //if time <0 then we have to make mario small
-            this.smallify();
-          }
+          // timer -= dt();
+          // if (timer <= 0) {
+          //   //if time <0 then we have to make mario small
+          //   this.smallify();
+          // }
         }
       },
       isBig() {
@@ -323,6 +465,13 @@ scene("game", ({ level, score }) => {
         timer = time;
         isBig = true;
       },
+
+      biggify() {
+        this.scale = vec2(2);
+
+        // timer = time;
+        isBig = true;
+      },
     };
   }
   // create mario
@@ -337,6 +486,7 @@ scene("game", ({ level, score }) => {
     origin("bot"),
   ]);
 
+  if (isBig) player.scale = vec2(2);
   //Now make the mushroom move
   // Whenever you grab anything with a tag of mushroom,
   onUpdate("mushroom", (m) => {
@@ -395,21 +545,21 @@ scene("game", ({ level, score }) => {
     // pick a mushroom and destroy the object
     destroy(m);
     //Now biggify for 6 seconds
-    player.biggify(6);
+    player.biggify();
   });
 
   player.onCollide("BigVaccineMushroom", (m) => {
     // pick a Big Vaccine mushroom and destroy the object
     destroy(m);
     //Now biggify for 6 seconds
-    player.biggify(6);
+    player.biggify();
   });
 
   player.onCollide("BulletVaccineMushroom", (m) => {
     // pick a Big Vaccine mushroom and destroy the object
     destroy(m);
     //Now biggify for 6 seconds
-    player.biggify(6);
+    player.biggify();
   });
 
   player.onCollide("coin", (c) => {
@@ -453,54 +603,62 @@ scene("game", ({ level, score }) => {
   onUpdate("dangerous", (d) => {
     let x_dist = d.pos.x - player.pos.x;
     let y_dist = d.pos.y - (player.pos.y - 20);
-    
+
     // Check how far away the guy is and if it's already moving.
     // Bias x distance over y distance
-    d.moving = d.moving ? true : (Math.abs(x_dist) < AGRO_RANGE_X) && (Math.abs(y_dist) < AGRO_RANGE_Y);
+    d.moving = d.moving
+      ? true
+      : Math.abs(x_dist) < AGRO_RANGE_X && Math.abs(y_dist) < AGRO_RANGE_Y;
     if (!d.moving) return;
 
     let level_scaling = Math.min(level + 1, 4);
     let movement = 3 * ENEMY_SPEED * level_scaling;
     let x_move = movement;
     let y_move = movement;
-    
+
     // Set movement to negative if needed.
-    if (x_dist > 0)
-        x_move = -1 * x_move;
-    if (y_dist > 0)
-        y_move = -1 * y_move;
-    
+    if (x_dist > 0) x_move = -1 * x_move;
+    if (y_dist > 0) y_move = -1 * y_move;
+
     d.move(x_move, y_move);
   });
-  
+
   // if player onCollide with anythig with dangerous
   // big mario becomes small
   // small mario dies
   player.onCollide("dangerous", (d) => {
     // console.log((d.pos.y) + " " + player.pos.y)
-    if ((player.pos.y == d.pos.y) || isJumping) {
-        // console.log("detect")
-        destroy(d);
+    if (player.pos.y == d.pos.y || isJumping) {
+      // console.log("detect")
+      destroy(d);
+    } else if (isBig) {
+      player.smallify();
+      destroy(d);
     } else {
-    // go to a lose scene and display the final score
-    go("lose", { score: scoreLabel.value });
+      // go to a lose scene and display the final score
+      go("lose", { score: scoreLabel.value });
     }
   });
   player.onCollide("dangerous1", (d) => {
     // console.log((d.pos.y) + " " + player.pos.y)
-    if ((player.pos.y == d.pos.y) || isJumping) {
-        // console.log("detect")
-        destroy(d);
+    if (player.pos.y == d.pos.y || isJumping) {
+      // console.log("detect")
+      destroy(d);
+    } else if (isBig) {
+      player.smallify();
+      destroy(d);
     } else {
-    // go to a lose scene and display the final score
-    go("lose", { score: scoreLabel.value });
+      // go to a lose scene and display the final score
+      go("lose", { score: scoreLabel.value });
     }
-});
+  });
 
+  // //camPos(player.pos);
   onUpdate(() => {
     // Make camera Position same as player position
 
     camPos(player.pos);
+    //toScreen(player.pos);
 
     // So whenever the y coordinate of the player is greater than death value then go to lose scene
     if (player.pos.y >= FALL_DEATH) {
@@ -515,16 +673,16 @@ scene("game", ({ level, score }) => {
     // left we need to have minus direction
     player.move(-MOVE_SPEED, 0);
   });
-    
+
   onKeyDown("a", () => {
-      player.move(-MOVE_SPEED, 0);
+    player.move(-MOVE_SPEED, 0);
   });
 
   onKeyDown("right", () => {
     // right we need to have plus direction
     player.move(MOVE_SPEED, 0);
   });
-    
+
   onKeyDown("d", () => {
     player.move(MOVE_SPEED, 0);
   });
@@ -540,27 +698,25 @@ scene("game", ({ level, score }) => {
   // or create a house and then use the key desired
   player.onCollide("pipe", () => {
     onKeyPress("down", () => {
-        /* Scene to display vaccine informations*/
-        level = level + 1;
-        console.log("map count: " + playableMap.length);
-        if (playableMap.length > level) {
-            go("vaccineInfoScene", { level: level, score: score });
-        }
-        else {
-            level = 0;
-            go("winner", { score: scoreLabel.value });
-        }
+      /* Scene to display vaccine informations*/
+      //level = level + 1;
+      //console.log("map count: " + playableMap.length);
+      if (playableMap.length > level + 1) {
+        go("vaccineInfoScene", { level: level + 1, score: scoreLabel.value });
+      } else {
+        level = 0;
+        go("winner", { score: scoreLabel.value });
+      }
     });
-      onKeyPress("s", () => {
-          level = level + 1;
-          console.log("map count: " + playableMap.length);
-          if (playableMap.length > level) {
-              go("vaccineInfoScene", { level: level, score: score });
-          }
-          else {
-              level = 0;
-              go("winner", { score: scoreLabel.value });
-          }
+    onKeyPress("s", () => {
+      // level = level + 1;
+      // console.log("map count: " + playableMap.length);
+      if (playableMap.length > level + 1) {
+        go("vaccineInfoScene", { level: level + 1, score: scoreLabel.value });
+      } else {
+        level = 0;
+        go("winner", { score: scoreLabel.value });
+      }
     });
   });
 
@@ -605,17 +761,27 @@ scene("game", ({ level, score }) => {
       go("lose", { score: scoreLabel.value });
     }
   });
-    
-  add([text("C - Controls"), pos (20, 54), scale(0.3), fixed()]);
-    
+
+  add([text("C - Controls"), pos(20, 54), scale(0.3), fixed()]);
+
   const controlsInfo = () => {
     add([text("Left - A or Left Arrow Key"), pos(20, 70), scale(0.3), fixed()]);
-    add([text("Right - D or Right Arrow Key"), pos(20, 86), scale(0.3), fixed()]);
+    add([
+      text("Right - D or Right Arrow Key"),
+      pos(20, 86),
+      scale(0.3),
+      fixed(),
+    ]);
     add([text("Jump - Space"), pos(20, 102), scale(0.3), fixed()]);
     add([text("Shoot - B"), pos(20, 118), scale(0.3), fixed()]);
-    add([text("Use Pipe - S or Down Arrow"), pos(20, 134), scale(0.3), fixed()]);
+    add([
+      text("Use Pipe - S or Down Arrow"),
+      pos(20, 134),
+      scale(0.3),
+      fixed(),
+    ]);
   };
-    
+
   onKeyPress("c", controlsInfo);
 
   // Bullet functionality
@@ -639,7 +805,7 @@ scene("game", ({ level, score }) => {
     //if (isBig)
     // set the bullet time
     bulletTimer.time = BULLET_TIME_LEFT;
-    spawnBullet(player.pos.add(25, -10));
+    if (isBig) spawnBullet(player.pos.add(25, -10));
   });
 
   //move the bullets
@@ -655,19 +821,20 @@ scene("game", ({ level, score }) => {
   });
   onCollide("dangerous", "bullet", (d, b) => {
     //shake(40);
-    destroy(d);
     destroy(b);
+    destroy(d);
   });
   onCollide("dangerous1", "bullet", (d, b) => {
     //shake(40);
-    destroy(d);
     destroy(b);
+    destroy(d);
   });
 
   // The mobile version begins
   //The following is for the mobile support
   //##############MOBILE##################
-    if (isTouch()) {// && buttonsVisible) {
+  if (isTouch()) {
+    // && buttonsVisible) {
     //console.log(isTouch);
 
     //because left and right buttons will be pressed

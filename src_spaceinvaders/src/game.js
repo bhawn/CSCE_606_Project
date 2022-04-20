@@ -8,9 +8,10 @@ const INVADER_SPEED = 100;
 let INVADER_DIRECTION = 1;
 let CURRENT_SPEED = INVADER_SPEED;
 let INVADER_MOVE_COUNT = 0;
-const LEVEL_DOWN = 400
+const LEVEL_DOWN = 400;
 const BULLET_SPEED = 400;
 const TIME_LEFT = 30000;
+const LIVES_REMAINING = 4;
 let BUTTON_YPOS = window.innerHeight-125;
 let BASE_SCALE = 2;
 let BUTTON_FAR_XPOS = window.innerWidth-25;
@@ -114,7 +115,7 @@ loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
 
-loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
+loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o  https://imgur.com/GFFd15o
 loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
 
 loadSprite("a", "A34cvsW.png"); //https://imgur.com/A34cvsW
@@ -144,35 +145,75 @@ loadSprite("shoot", "W5W3CDL.png"); //https://imgur.com/W5W3CDL
 // loadSound("Steamtech-Mayhem_Looping", "Steamtech-Mayhem_Looping.mp3");
 
 scene("winner", ({ score }) => {
-    var x = 10,
-        y = 10,
-        z = 155;
-    color(240, 100, 24);
-    add(
-        [
-            text("Congratulations!"),
-            pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
-            ,
-            scale(1),
-            color(10, 10, 155),
-            area(),
-            "title",
-        ],
-        origin("center")
-    );
-	
-    add([text("Score: " + score, 32), origin("center"), pos(width() / 2 - 40, window.innerHeight / 2 - 100)]);
-	
-	add([
-		text("Game Over. Going Back to Main Menu in 2 seconds"),
-		color(200, 50, 10),
-		scale(0.5),
-		pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
-	  ]);
+  var x = 10,
+    y = 10,
+    z = 155;
+  color(240, 100, 24);
+  add(
+    [
+      text("Congratulations!"),
+      pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
+      ,
+      scale(1),
+      color(10, 10, 155),
+      area(),
+      "title",
+    ],
+    origin("center")
+  );
+  add([
+    text("Score: " + score, 32),
+    origin("center"),
+    pos(width() / 2 - 40, window.innerHeight / 2 - 100),
+  ]);
+  // Play game button
+  add([
+    //rect(260, 20),
+    text("Play Again"),
 
-	  wait(2, () => {
-		  window.location = "./mario_menu.html";
-	  });
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+    color(10, 10, 155),
+
+    origin("center"),
+    "button",
+    {
+      clickAction: () => {
+        go("vaccineInfoScene", { level: 0, score: 0 });
+
+        //go("game", { level: 0, score: 0 });
+      },
+    },
+    scale(0.7),
+    area(),
+
+    ,
+  ]);
+
+  add([
+    //rect(260, 20),
+    text("Back to Main Menu"),
+    color(10, 10, 155),
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40),
+    "button",
+    {
+      clickAction: () => (window.location = "../../index.html"),
+    },
+    scale(0.7),
+    area(),
+
+    origin("center"),
+  ]);
+
+  action("button", (b) => {
+    onHover("button", (b) => {
+      b.use(color(240, 100, 155));
+    });
+    b.use(color(10, 10, 155));
+  });
+
+  onClick("button", (b) => {
+    b.clickAction();
+  });
 });
 
 scene("game", ({ level, score }) => {
@@ -197,7 +238,7 @@ scene("game", ({ level, score }) => {
     // Allow the background to be scaled
     scale(5),
     // Keep the background position fixed even when the camera moves
-    fixed()
+    fixed(),
   ]);
 
   //level configuration
@@ -241,7 +282,7 @@ scene("game", ({ level, score }) => {
     fixed(),
   ]);
 
-  /*const timer = add([
+  const timer = add([
     text("0"),
     pos(240, 38),
     scale(0.3),
@@ -257,7 +298,7 @@ scene("game", ({ level, score }) => {
     if (timer.time <= 0) {
       go("lose", { score: scoreLabel.value });
     }
-  });*/
+  });
 
   const player = add([
     sprite("space_ship"),
@@ -267,7 +308,17 @@ scene("game", ({ level, score }) => {
     solid(),
 	scale(BASE_SCALE),
   ]);
+  const lives = add([
+    text(parseInt(LIVES_REMAINING)),
+    pos(115, 52),
+    scale(0.3),
+    layer("ui"),
+    fixed(),
+    color(255, 10, 40),
+    { value: LIVES_REMAINING },
+  ]);
 
+  add([text("Lives : "), pos(20, 52), scale(0.3), fixed()]);
   keyDown("left", () => {
     player.move(-MOVE_SPEED, 0);
   });
@@ -441,16 +492,15 @@ scene("game", ({ level, score }) => {
     if (enemyCount === 0) {
       //Invaders always move right at start of level
       INVADER_DIRECTION = 1;
-	  
-	  level = level + 1;
-	  console.log("map count: " + playableMap.length);
-	  if (playableMap.length > level) {
-		go("vaccineInfoScene", { level: level, score: score });
-	  }
-	  else {
-		level = 0;
-		go("winner", { score: scoreLabel.value });
-	  }
+
+      // level = level + 1;
+      // console.log("map count: " + playableMap.length);
+      if (playableMap.length > level + 1) {
+        go("vaccineInfoScene", { level: level + 1, score: scoreLabel.value });
+      } else {
+        level = 0;
+        go("winner", { score: scoreLabel.value });
+      }
     }
     scoreLabel.value++;
 
@@ -468,25 +518,24 @@ scene("game", ({ level, score }) => {
         spawnEnemyBullet(s.pos.add(0, 25));
       });
   });*/
-    
+
   onUpdate(() => {
-     every("space_invader", (s) => {
-         s.move(INVADER_SPEED * INVADER_DIRECTION, 0);
-         if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y)
-            wait(0.01, () => {
-                spawnEnemyBullet(s.pos.add(0, 25));
+    every("space_invader", (s) => {
+      s.move(INVADER_SPEED * INVADER_DIRECTION, 0);
+      if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y)
+        wait(0.01, () => {
+          spawnEnemyBullet(s.pos.add(0, 25));
+        });
+    });
+
+    INVADER_MOVE_COUNT++;
+    if (INVADER_MOVE_COUNT >= 200) {
+      INVADER_DIRECTION *= -1;
+      INVADER_MOVE_COUNT = 0;
+      every("space_invader", (invader) => {
+        invader.move(0, LEVEL_DOWN);
       });
-     });
-      
-      INVADER_MOVE_COUNT++;
-      if(INVADER_MOVE_COUNT >= 200){
-        INVADER_DIRECTION *= -1;
-        INVADER_MOVE_COUNT = 0;
-        every("space_invader", (invader) => {
-            invader.move(0, LEVEL_DOWN);
-        });   
     }
-      
   });
 
   onCollide("space_invader", "enemyBullet", (s, e) => {
@@ -498,7 +547,10 @@ scene("game", ({ level, score }) => {
   });
 
   player.onCollide("enemyBullet", () => {
-    go("lose", { score: scoreLabel.value });
+    shake(10);
+    (lives.value -= 1), (lives.text = lives.value.toFixed(0));
+
+    if (lives.value == 0) go("lose", { score: scoreLabel.value });
   });
   //On Collision with right wall
   // Space-invader has to turn around and move down on each collision
