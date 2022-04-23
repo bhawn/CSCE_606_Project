@@ -12,9 +12,9 @@ const LEVEL_DOWN = 400;
 const BULLET_SPEED = 400;
 const TIME_LEFT = 30000;
 const LIVES_REMAINING = 4;
-let BUTTON_YPOS = window.innerHeight-125;
+let BUTTON_YPOS = window.innerHeight - 125;
 let BASE_SCALE = 2;
-let BUTTON_FAR_XPOS = window.innerWidth-25;
+let BUTTON_FAR_XPOS = window.innerWidth - 25;
 const k = kaboom({
   global: true,
   // enable full screen
@@ -94,6 +94,8 @@ scene("menu", () => {
     b.clickAction();
   });
 });
+
+// Resize functionality
 window.addEventListener("resize", resize, false);
 function resize() {
   // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
@@ -144,6 +146,7 @@ loadSprite("shoot", "W5W3CDL.png"); //https://imgur.com/W5W3CDL
 // loadSound("explosion", "explosion.mp3");
 // loadSound("Steamtech-Mayhem_Looping", "Steamtech-Mayhem_Looping.mp3");
 
+// Winner Scene
 scene("winner", ({ score }) => {
   var x = 10,
     y = 10,
@@ -216,6 +219,8 @@ scene("winner", ({ score }) => {
   });
 });
 
+// Game Scene
+// Contains Most of the functionality
 scene("game", ({ level, score }) => {
   // Used to decrease the enemy count on destruction
   let enemyCount = 0;
@@ -249,7 +254,12 @@ scene("game", ({ level, score }) => {
     // parameters 1: name of the sprite, 2: solid , 3: tag
 
     // load in some sprites
-    "^": () => [sprite("space_invader"), scale(0.8*BASE_SCALE), "space_invader", area()],
+    "^": () => [
+      sprite("space_invader"),
+      scale(0.8 * BASE_SCALE),
+      "space_invader",
+      area(),
+    ],
     "!": () => [sprite("wall"), "left_wall", area(), solid()],
     "&": () => [sprite("wall"), "right_wall", area(), solid()],
   };
@@ -282,6 +292,8 @@ scene("game", ({ level, score }) => {
     fixed(),
   ]);
 
+  // Timer for each level
+
   const timer = add([
     text("0"),
     pos(240, 38),
@@ -306,8 +318,11 @@ scene("game", ({ level, score }) => {
     origin("center"),
     area(),
     solid(),
-	scale(BASE_SCALE),
+    scale(BASE_SCALE),
   ]);
+
+  // Lives Remaining
+  // Assigned 4 lives for each level
   const lives = add([
     text(parseInt(LIVES_REMAINING)),
     pos(115, 52),
@@ -326,8 +341,9 @@ scene("game", ({ level, score }) => {
   keyDown("right", () => {
     player.move(MOVE_SPEED, 0);
   });
-  
-  if (isTouch()) {// && buttonsVisible) {
+
+  if (isTouch()) {
+    // && buttonsVisible) {
     //console.log(isTouch);
 
     //because left and right buttons will be pressed
@@ -337,38 +353,38 @@ scene("game", ({ level, score }) => {
       right: false,
       // we will set them to true when these buttons are tocuhed
     };
-	
+
     //Mobile Buttons
     const leftButton = add([
       sprite("a"),
-      pos(20, height()-25),
+      pos(20, height() - 25),
       opacity(0.5),
-	  origin("botleft"),
-	  scale(BASE_SCALE),
-	  fixed(),
+      origin("botleft"),
+      scale(BASE_SCALE),
+      fixed(),
       area(),
     ]);
 
     const rightButton = add([
       sprite("d"),
-      pos(120, height()-25),
+      pos(120, height() - 25),
       opacity(0.5),
-	  origin("botleft"),
-	  scale(BASE_SCALE),
-	  fixed(),
+      origin("botleft"),
+      scale(BASE_SCALE),
+      fixed(),
       area(),
     ]);
-	
+
     const shootButton = add([
       sprite("shoot"),
-      pos(width()-30, height()-25),
+      pos(width() - 30, height() - 25),
       opacity(0.5),
-	  origin("botright"),
-	  scale(BASE_SCALE),
-	  fixed(),
+      origin("botright"),
+      scale(BASE_SCALE),
+      fixed(),
       area(),
     ]);
-	
+
     //TouchStart acts similar to a key press
     //Sperate starts allow for mulitple button presses
     onTouchStart((leftPress, pos) => {
@@ -407,24 +423,24 @@ scene("game", ({ level, score }) => {
     //Ends individual presses
     onTouchEnd((leftPress, pos) => {
       if (leftButton.hasPoint(pos)) {
-		  keyDownOnMobile.left = false;
-		  leftButton.opacity = 0.5;
-		  console.log("unpressed left");
-		}
+        keyDownOnMobile.left = false;
+        leftButton.opacity = 0.5;
+        console.log("unpressed left");
+      }
     });
 
     onTouchEnd((rightPress, pos) => {
       if (rightButton.hasPoint(pos)) {
-		  keyDownOnMobile.right = false;
-		  rightButton.opacity = 0.5;
-		  console.log("unpressed right");
-		}
+        keyDownOnMobile.right = false;
+        rightButton.opacity = 0.5;
+        console.log("unpressed right");
+      }
     });
 
     onTouchEnd((shootPress, pos) => {
       if (shootButton.hasPoint(pos)) {
-		shootButton.opacity = 0.5;
-	  }
+        shootButton.opacity = 0.5;
+      }
     });
 
     onUpdate(() => {
@@ -444,6 +460,8 @@ scene("game", ({ level, score }) => {
     };
   }
 
+  // Spawns bullet
+  // This is for player
   function spawnBullet(p) {
     add([
       rect(2, 10),
@@ -456,6 +474,8 @@ scene("game", ({ level, score }) => {
     ]);
   }
 
+  // Spawns Enemy Bullet
+  // This is for space invaders
   function spawnEnemyBullet(p) {
     add([
       rect(2, 10),
@@ -468,6 +488,7 @@ scene("game", ({ level, score }) => {
     ]);
   }
 
+  // key "b" to shoot
   keyPress("b", () => {
     spawnBullet(player.pos.add(0, -25));
   });
@@ -496,8 +517,10 @@ scene("game", ({ level, score }) => {
       // level = level + 1;
       // console.log("map count: " + playableMap.length);
       if (playableMap.length > level + 1) {
+        // Go to a new level if all the enemies are killed and if a new level exists
         go("vaccineInfoScene", { level: level + 1, score: scoreLabel.value });
       } else {
+        // Else go to Win Screen
         level = 0;
         go("winner", { score: scoreLabel.value });
       }
@@ -518,7 +541,9 @@ scene("game", ({ level, score }) => {
         spawnEnemyBullet(s.pos.add(0, 25));
       });
   });*/
-
+  // This is used to make indefinite movement of Space invaders
+  // Also they spawn bullets when the player is in the range specified
+  // That is they shoot only when player is at their aimed position
   onUpdate(() => {
     every("space_invader", (s) => {
       s.move(INVADER_SPEED * INVADER_DIRECTION, 0);
@@ -528,6 +553,8 @@ scene("game", ({ level, score }) => {
         });
     });
 
+    // Used to control the movement of Invaders
+    // Reverse direction and Invaders Move down when the move count exceeds limit
     INVADER_MOVE_COUNT++;
     if (INVADER_MOVE_COUNT >= 200) {
       INVADER_DIRECTION *= -1;
@@ -548,6 +575,7 @@ scene("game", ({ level, score }) => {
 
   player.onCollide("enemyBullet", () => {
     shake(10);
+    // Decrement Lives upon hit by enemey bullet
     (lives.value -= 1), (lives.text = lives.value.toFixed(0));
 
     if (lives.value == 0) go("lose", { score: scoreLabel.value });
@@ -573,6 +601,8 @@ scene("game", ({ level, score }) => {
     go("lose", { score: scoreLabel.value });
   });
 
+  // When invaders keep moving down and when they eventually reach the level of player
+  // Player cannot shoot them and has to eventually lose because he cannot make any progress
   onUpdate("space_invader", (s) => {
     if (s.pos.y == player.pos.y) {
       go("lose", { score: scoreLabel.value });
@@ -580,6 +610,7 @@ scene("game", ({ level, score }) => {
   });
 });
 
+// Lose Scene
 scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
   add([
@@ -590,10 +621,11 @@ scene("lose", ({ score }) => {
   ]);
 
   wait(2, () => {
-	  window.location = "./mario_menu.html";
+    window.location = "./mario_menu.html";
   });
 });
 
+// Vaccine Info Scene to display awareness related to vaccination at the end of each level
 scene("vaccineInfoScene", ({ level, score }) => {
   layers(["ui", "bg"], "bg");
   const infoColor = add([

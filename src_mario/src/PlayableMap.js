@@ -1,3 +1,5 @@
+// Custom designed maps using sprites defined
+
 export const playableMap = [
   [
     "                                                                                                                                             ",
