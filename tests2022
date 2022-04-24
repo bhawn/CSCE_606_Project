@@ -1,0 +1,125 @@
+Controls:
+- Computer
+    1. Holding Left and right arrows move the player in the corresponding direction. 
+    1a. Holding the A key moves the player left and holding the D key moves the player right
+    2. Pressing space makes the player jump
+    3. Pressing b makes the player perform an action (shoot projectile)
+    4. Pressing the down arrow or S while ontop of a pipe advances a player to the next level.
+    5. Pressing C reveals the controls in the top left of the screen.
+    
+- Mobile
+    1. The left and right arrows on the left side of the screen move the player accordingly, and stop moving when the button is released. 
+    2. Tapping the jump button on the far right side of the screen causes the player to jump.
+    3. Tapping the action button to the left of the jump button causes the player to perform an action (shoot projectile)
+    
+Playable Maps:
+1. Loaded Sprites for necessary game construction and then placed them accordingly to build the game scene. The Sprites work correctly
+2. The Map is initially built with less enemies and the difficulty increases as the game progresses
+3. At present there are 8 Levels and the most difficult level is Level 5 and requires severe attention while playing this level and beyond, also the player has to collect vaccines in order to spawn shots at enemies. Without getting boosters it is very difficult to cross this level.
+
+Game Scene:
+1. The game starts with a score 0 and level 1. 
+2. The score is retained as the player advances to next level and all the traits acquired also are retained
+3. The score, level are carried over the entire game
+4. The timer for each level is around 50seconds as of now and the timer resets every time a new level starts.
+5. The move speed of enemies increases as the level increases. This is similar to portraying how difficult the survival of a person becomes when the attack is severe and throws light on how careful one should be in order not to succumb to viruses by properly getting vaccines and boosters.
+
+Lose Scene:
+1. Whenever the player is counter attacked by enemies and the player cannot defend himself then the player dies 
+2. Lose scene with the score is displayed correctly.
+3. Game Selection:
+4. Open the website
+5. Verify that the user is able to see all available games and the layout is correctly formatted.
+6. Verify that when selecting a game, the user is taken to the home screen for that game.
+
+Minibosses:
+1. Upon loading the game enemies in the form of a virus appear on screen.
+2. During the game they move towards the player.
+3. If the enemy is hit by a players projectile it disappears.
+4. If the player jumps on the enemies head, then the enemy disappears.
+5. If contact is made with the player in any other way, the player is sent to the Lose Scene.
+
+Coin Collection:
+1. Player touches a coin
+2. Players score is incremented by 1
+
+Menu Scene for Mario
+1. The game loads when the player selects the option to play game
+2. At the lose scene, once the game is over it should redirect to the menu page
+3. When the player presses Back to Menu, it should direct to the arcade webpage where player can select from the list of games 
+
+Info Scene for Mario
+1. As the player advances to a new Level new info related to vaccine importance and hesitancy must be displayed
+2. The New information displayed should disappear after some time
+3. The Game should continue once the information scene disappears.
+
+Enemy Shooting in Space Invaders
+1. Enemy shoot when they are in the range
+2. The Enemy bullet should get destroyed when it misses the player
+3. The Enemy bullets should not destroy other enemies
+4. The bullets must spawn after the specified duration
+5. The Player should die when the enemy bullet hits the player
+
+Menu Scene for Space Invaders
+1. The game loads when the player selects the option to play game
+2. At the lose scene, once the game is over it should redirect to the menu page
+3. When the player presses Back to Menu, it should direct to the arcade webpage where player can select from the list of games 
+
+Info Scene for Space Invaders
+1. As the player advances to a new Level new info related to vaccine importance and hesitancy must be displayed
+2. The New information displayed should disappear after some time
+3. The Game should continue once the information scene disappears
+
+Player Score:
+1. The player should be able to shoot bullets.
+2. When the player bullet hits the invaders, the invaders should be destroyed, the score should increase and also the bullet should be destroyed
+3. The Score should be passed on as the game progresses.
+
+Negative Test Case - JavaScript Error: Show an informative error screen when the browser does not have JavaScript enabled.
+1. In the browser settings, disable JavaScript on the arcade website
+2. Go to the home screen. Press either the Mario or Space Invaders option
+3. Verify that an error page is displayed showing that Javascript is not available and there is a link to return to the home page.
+4. Return to the homepage. Enable JavaScript
+5. Navigate back to the game.
+6. Verify that the game is displayed and playable on the screen.
+
+Test Case - Congratulations Screen (Mario):
+1. Enter the Mario game
+2. Progress through the levels, collecting points
+3. When the last level is reached, make a note of the point count.
+4. After completing the last level, verify that a congratulations screen is displayed with the score and buttons to go back to the main screen or to play again
+
+Music On Game Screens Positive/Negative Cases
+Positive:
+1. Open the arcade. No music should play
+2. Select Mario
+3. Upon game selection, music should be head in the background
+4. Verify game plays as normal with music
+5. Repeat steps 2-4 for Space Invaders
+Negative:
+1. Disable music in the browser settings or use a browser that does not support mp3 files (Firefox)
+2. Open the arcade. No music should play
+3. Select Mario
+4. Upon game selection, no music should be heard and there shouldn’t be an error on the screen.
+5. Verify game plays as normal
+6. Repeat steps 3-5 for Space Invaders
+
+Bullet Upgrade:
+1. Enter the Mario Game
+2. Play through level 1 until a surprise block reveals a vaccine upgrade
+3. Verify that the upgrade is floating and looks like a shot
+4. Move the player to collide with the upgrade
+5. Verify that the shot disappears and the player grows in size.
+6. Press the ‘b’ key
+7. Verify that bullets shoot from the character
+8. Verify that when the bullets reach an enemy, the enemy disappears
+9. Wait for up to 8 seconds
+10. Verify that the character shrinks in size
+11. Verify that when the ‘b’ key is pressed, no bullets appear
+
+Space Invader Enemy Movement
+1. Load into space invaders game
+2. Enemies begin moving toward the right
+3. After a number of steps they change direction and move closer to the player.
+4. 3 is repeated until enemies reach the player, or player destroys all enemies.
+
