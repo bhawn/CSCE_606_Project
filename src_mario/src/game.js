@@ -738,27 +738,15 @@ scene("game", ({ level, score }) => {
   //then he has to go to Next Level
   // or create a house and then use the key desired
   player.onCollide("pipe", () => {
-    onKeyPress("down", () => {
-      /* Scene to display vaccine informations*/
-      //level = level + 1;
-      //console.log("map count: " + playableMap.length);
-      if (playableMap.length > level + 1) {
-        go("vaccineInfoScene", { level: level + 1, score: scoreLabel.value });
-      } else {
-        level = 0;
-        go("winner", { score: scoreLabel.value });
-      }
-    });
-    onKeyPress("s", () => {
-      // level = level + 1;
-      // console.log("map count: " + playableMap.length);
-      if (playableMap.length > level + 1) {
-        go("vaccineInfoScene", { level: level + 1, score: scoreLabel.value });
-      } else {
-        level = 0;
-        go("winner", { score: scoreLabel.value });
-      }
-    });
+	  level = level + 1;
+	  console.log("map count: " + playableMap.length);
+	  if (playableMap.length > level) {
+		  go("vaccineInfoScene", { level: level, score: score });
+	  }
+	  else {
+		  level = 0;
+		  go("winner", { score: scoreLabel.value });
+	  }
   });
 
   // we will define a function jump so that it can be reused both by touch and keyboard
@@ -1065,7 +1053,7 @@ scene("vaccineInfoScene", ({ level, score }) => {
       // it'll wrap to next line when width exceeds this value
     }),
 
-    scale(1),
+    scale(0.5),
     color(200, 144, 255),
     pos(20, 70),
 
