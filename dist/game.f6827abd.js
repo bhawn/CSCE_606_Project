@@ -4858,6 +4858,7 @@ var BASE_SCALE = 1;
 var hasBulletAbility = false;
 var enemyVelocity = 3 * ENEMY_SPEED;
 var enemyMove = 0;
+var CONTROL_OPACITY = 0;
 var k = (0, _kaboom.default)({
   global: true,
   // enable full screen
@@ -4998,12 +4999,11 @@ loadSprite("brick", "pogC9x5.png"); //blocks
 //https://i.imgur.com/X3a5liL.png
 // Old brick : "M6rwarW.png"
 
-loadSprite("block", "M6rwarW.png"); //mario
+loadSprite("block", "X3a5liL.png"); //mario
 // New Doctor Sprite : Rp0NvTW;
 // Old Mario : Wb1qfhK
 
-loadSprite("mario", "LON98VQ.png"); //https://imgur.com/LON98VQ
-
+loadSprite("mario", "Rp0NvTW.png");
 loadSprite("mushroom", "wm9BL0V.png"); //BiggerMushroom
 
 loadSprite("BigVaccineMushroom", "wm9BL0V.jpg"); // https://imgur.com/wm9BL0V
@@ -5459,13 +5459,19 @@ scene("game", function (_ref2) {
   }); // Controls to assist players
 
   add([text("C - Controls"), pos(20, 54), scale(0.3), fixed()]);
+  var left_control = add([text("Left - A or Left Arrow Key"), pos(20, 70), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  var right_control = add([text("Right - D or Right Arrow Key"), pos(20, 86), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  var jump_control = add([text("Jump - Space"), pos(20, 102), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  var jumpinfo_control = add([text("   *Jump on enemies to kill them"), pos(20, 118), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  var shoot_control = add([text("Shoot - B"), pos(20, 136), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
 
   var controlsInfo = function controlsInfo() {
-    add([text("Left - A or Left Arrow Key"), pos(20, 70), scale(0.3), fixed()]);
-    add([text("Right - D or Right Arrow Key"), pos(20, 86), scale(0.3), fixed()]);
-    add([text("Jump - Space"), pos(20, 102), scale(0.3), fixed()]);
-    add([text("Shoot - B"), pos(20, 118), scale(0.3), fixed()]);
-    add([text("Use Pipe - S or Down Arrow"), pos(20, 134), scale(0.3), fixed()]);
+    CONTROL_OPACITY = Math.pow(CONTROL_OPACITY - 1, 2);
+    left_control.opacity = CONTROL_OPACITY;
+    right_control.opacity = CONTROL_OPACITY;
+    jump_control.opacity = CONTROL_OPACITY;
+    jumpinfo_control.opacity = CONTROL_OPACITY;
+    shoot_control.opacity = CONTROL_OPACITY;
   };
 
   onKeyPress("c", controlsInfo); // Bullet functionality
@@ -5627,7 +5633,7 @@ scene("vaccineInfoScene", function (_ref5) {
     width: window.innerWidth,
     font: "apl386o" // it'll wrap to next line when width exceeds this value
 
-  }), scale(1), color(200, 144, 255), pos(20, 70) //area(),
+  }), scale(0.5), color(200, 144, 255), pos(20, 70) //area(),
   ]), add([text("Loading next Level... Please Wait..."), scale(0.5), color(200, 3, 10), pos(100, window.innerHeight - 100)]);
   wait(3, function () {
     go("game", {
@@ -5643,7 +5649,8 @@ go("vaccineInfoScene", {
   level: 0,
   score: 0
 });
-},{"../../node_modules/kaboom":"node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"src_mario/src/PlayableMap.js","./info":"src_mario/src/info.js"}],"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../../node_modules/kaboom":"node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"src_mario/src/PlayableMap.js","./info":"src_mario/src/info.js"}],"C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5671,7 +5678,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36475" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60074" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -5847,5 +5854,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src_mario/src/game.js"], null)
+},{}]},{},["C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src_mario/src/game.js"], null)
 //# sourceMappingURL=/game.f6827abd.js.map

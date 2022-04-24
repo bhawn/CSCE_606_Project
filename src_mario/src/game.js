@@ -22,6 +22,7 @@ let BASE_SCALE = 1;
 let hasBulletAbility = false;
 let enemyVelocity = 3 * ENEMY_SPEED;
 let enemyMove = 0;
+let CONTROL_OPACITY = 0;
 
 const k = kaboom({
   global: true,
@@ -797,23 +798,20 @@ scene("game", ({ level, score }) => {
 
   // Controls to assist players
   add([text("C - Controls"), pos(20, 54), scale(0.3), fixed()]);
+  
+  const left_control = add([text("Left - A or Left Arrow Key"), pos(20, 70), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  const right_control = add([text("Right - D or Right Arrow Key"), pos(20, 86), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  const jump_control = add([text("Jump - Space"), pos(20, 102), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  const jumpinfo_control = add([text("   *Jump on enemies to kill them"), pos(20, 118), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  const shoot_control = add([text("Shoot - B"), pos(20, 136), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
 
   const controlsInfo = () => {
-    add([text("Left - A or Left Arrow Key"), pos(20, 70), scale(0.3), fixed()]);
-    add([
-      text("Right - D or Right Arrow Key"),
-      pos(20, 86),
-      scale(0.3),
-      fixed(),
-    ]);
-    add([text("Jump - Space"), pos(20, 102), scale(0.3), fixed()]);
-    add([text("Shoot - B"), pos(20, 118), scale(0.3), fixed()]);
-    add([
-      text("Use Pipe - S or Down Arrow"),
-      pos(20, 134),
-      scale(0.3),
-      fixed(),
-    ]);
+	  CONTROL_OPACITY = (CONTROL_OPACITY - 1)**2;
+	  left_control.opacity = CONTROL_OPACITY;
+	  right_control.opacity = CONTROL_OPACITY;
+	  jump_control.opacity = CONTROL_OPACITY;
+	  jumpinfo_control.opacity = CONTROL_OPACITY;
+	  shoot_control.opacity = CONTROL_OPACITY;
   };
 
   onKeyPress("c", controlsInfo);
