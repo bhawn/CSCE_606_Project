@@ -72,5 +72,54 @@ Info Scene for Space Invaders
 
 Player Score:
 1. The player should be able to shoot bullets.
-2. When the player bullet hits the invaders, the invaders should be destroyed, the socre should increase and also the bullet should be destroyed
+2. When the player bullet hits the invaders, the invaders should be destroyed, the score should increase and also the bullet should be destroyed
 3. The Score should be passed on as the game progresses.
+
+Negative Test Case - JavaScript Error: Show an informative error screen when the browser does not have JavaScript enabled.
+1. In the browser settings, disable JavaScript on the arcade website
+2. Go to the home screen. Press either the Mario or Space Invaders option
+3. Verify that an error page is displayed showing that Javascript is not available and there is a link to return to the home page.
+4. Return to the homepage. Enable JavaScript
+5. Navigate back to the game.
+6. Verify that the game is displayed and playable on the screen.
+
+Test Case - Congratulations Screen (Mario):
+1. Enter the Mario game
+2. Progress through the levels, collecting points
+3. When the last level is reached, make a note of the point count.
+4. After completing the last level, verify that a congratulations screen is displayed with the score and buttons to go back to the main screen or to play again
+
+Music On Game Screens Positive/Negative Cases
+Positive:
+1. Open the arcade. No music should play
+2. Select Mario
+3. Upon game selection, music should be head in the background
+4. Verify game plays as normal with music
+5. Repeat steps 2-4 for Space Invaders
+Negative:
+1. Disable music in the browser settings or use a browser that does not support mp3 files (Firefox)
+2. Open the arcade. No music should play
+3. Select Mario
+4. Upon game selection, no music should be heard and there shouldn’t be an error on the screen.
+5. Verify game plays as normal
+6. Repeat steps 3-5 for Space Invaders
+
+Bullet Upgrade:
+1. Enter the Mario Game
+2. Play through level 1 until a surprise block reveals a vaccine upgrade
+3. Verify that the upgrade is floating and looks like a shot
+4. Move the player to collide with the upgrade
+5. Verify that the shot disappears and the player grows in size.
+6. Press the ‘b’ key
+7. Verify that bullets shoot from the character
+8. Verify that when the bullets reach an enemy, the enemy disappears
+9. Wait for up to 8 seconds
+10. Verify that the character shrinks in size
+11. Verify that when the ‘b’ key is pressed, no bullets appear
+
+Space Invader Enemy Movement
+1. Load into space invaders game
+2. Enemies begin moving toward the right
+3. After a number of steps they change direction and move closer to the player.
+4. 3 is repeated until enemies reach the player, or player destroys all enemies.
+
