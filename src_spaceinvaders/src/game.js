@@ -8,12 +8,13 @@ const INVADER_SPEED = 100;
 let INVADER_DIRECTION = 1;
 let CURRENT_SPEED = INVADER_SPEED;
 let INVADER_MOVE_COUNT = 0;
-const LEVEL_DOWN = 400
+const LEVEL_DOWN = 400;
 const BULLET_SPEED = 400;
 const TIME_LEFT = 30000;
-let BUTTON_YPOS = window.innerHeight-125;
+const LIVES_REMAINING = 4;
+let BUTTON_YPOS = window.innerHeight - 125;
 let BASE_SCALE = 2;
-let BUTTON_FAR_XPOS = window.innerWidth-25;
+let BUTTON_FAR_XPOS = window.innerWidth - 25;
 const k = kaboom({
   global: true,
   // enable full screen
@@ -93,6 +94,8 @@ scene("menu", () => {
     b.clickAction();
   });
 });
+
+// Resize functionality
 window.addEventListener("resize", resize, false);
 function resize() {
   // https://stackoverflow.com/questions/49716741/how-do-i-scale-the-scene-to-fullscreen
@@ -114,7 +117,7 @@ loadRoot("https://i.imgur.com/");
 loadSprite("space_invader", "m2A06Eg.png"); // https://imgur.com/m2A06Eg
 loadSprite("wall", "gqVoI2b.png");
 
-loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o
+loadSprite("space_ship", "GFFd15o.png"); // https://imgur.com/GFFd15o  https://imgur.com/GFFd15o
 loadSprite("background", "WCSitcB.jpeg"); //https://imgur.com/WCSitcB
 
 loadSprite("a", "A34cvsW.png"); //https://imgur.com/A34cvsW
@@ -143,38 +146,81 @@ loadSprite("shoot", "W5W3CDL.png"); //https://imgur.com/W5W3CDL
 // loadSound("explosion", "explosion.mp3");
 // loadSound("Steamtech-Mayhem_Looping", "Steamtech-Mayhem_Looping.mp3");
 
+// Winner Scene
 scene("winner", ({ score }) => {
-    var x = 10,
-        y = 10,
-        z = 155;
-    color(240, 100, 24);
-    add(
-        [
-            text("Congratulations!"),
-            pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
-            ,
-            scale(1),
-            color(10, 10, 155),
-            area(),
-            "title",
-        ],
-        origin("center")
-    );
-	
-    add([text("Score: " + score, 32), origin("center"), pos(width() / 2 - 40, window.innerHeight / 2 - 100)]);
-	
-	add([
-		text("Game Over. Going Back to Main Menu in 2 seconds"),
-		color(200, 50, 10),
-		scale(0.5),
-		pos(window.innerWidth / 3 - 300, window.innerHeight / 2 + 30),
-	  ]);
+  var x = 10,
+    y = 10,
+    z = 155;
+  color(240, 100, 24);
+  add(
+    [
+      text("Congratulations!"),
+      pos(window.innerWidth / 2 - 350, window.innerHeight / 2 - 200),
+      ,
+      scale(1),
+      color(10, 10, 155),
+      area(),
+      "title",
+    ],
+    origin("center")
+  );
+  add([
+    text("Score: " + score, 32),
+    origin("center"),
+    pos(width() / 2 - 40, window.innerHeight / 2 - 100),
+  ]);
+  // Play game button
+  add([
+    //rect(260, 20),
+    text("Play Again"),
 
-	  wait(2, () => {
-		  window.location = "./mario_menu.html";
-	  });
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 - 40),
+    color(10, 10, 155),
+
+    origin("center"),
+    "button",
+    {
+      clickAction: () => {
+        go("vaccineInfoScene", { level: 0, score: 0 });
+
+        //go("game", { level: 0, score: 0 });
+      },
+    },
+    scale(0.7),
+    area(),
+
+    ,
+  ]);
+
+  add([
+    //rect(260, 20),
+    text("Back to Main Menu"),
+    color(10, 10, 155),
+    pos(window.innerWidth / 2 - 20, window.innerHeight / 2 + 40),
+    "button",
+    {
+      clickAction: () => (window.location = "../../index.html"),
+    },
+    scale(0.7),
+    area(),
+
+    origin("center"),
+  ]);
+
+  action("button", (b) => {
+    onHover("button", (b) => {
+      b.use(color(240, 100, 155));
+    });
+    b.use(color(10, 10, 155));
+  });
+
+  onClick("button", (b) => {
+    b.clickAction();
+  });
 });
 
+// Game Scene
+// Contains Most of the functionality
 scene("game", ({ level, score }) => {
   // Used to decrease the enemy count on destruction
   let enemyCount = 0;
@@ -197,7 +243,7 @@ scene("game", ({ level, score }) => {
     // Allow the background to be scaled
     scale(5),
     // Keep the background position fixed even when the camera moves
-    fixed()
+    fixed(),
   ]);
 
   //level configuration
@@ -208,7 +254,12 @@ scene("game", ({ level, score }) => {
     // parameters 1: name of the sprite, 2: solid , 3: tag
 
     // load in some sprites
-    "^": () => [sprite("space_invader"), scale(0.8*BASE_SCALE), "space_invader", area()],
+    "^": () => [
+      sprite("space_invader"),
+      scale(0.8 * BASE_SCALE),
+      "space_invader",
+      area(),
+    ],
     "!": () => [sprite("wall"), "left_wall", area(), solid()],
     "&": () => [sprite("wall"), "right_wall", area(), solid()],
   };
@@ -241,7 +292,9 @@ scene("game", ({ level, score }) => {
     fixed(),
   ]);
 
-  /*const timer = add([
+  // Timer for each level
+
+  const timer = add([
     text("0"),
     pos(240, 38),
     scale(0.3),
@@ -257,7 +310,7 @@ scene("game", ({ level, score }) => {
     if (timer.time <= 0) {
       go("lose", { score: scoreLabel.value });
     }
-  });*/
+  });
 
   const player = add([
     sprite("space_ship"),
@@ -265,9 +318,22 @@ scene("game", ({ level, score }) => {
     origin("center"),
     area(),
     solid(),
-	scale(BASE_SCALE),
+    scale(BASE_SCALE),
   ]);
 
+  // Lives Remaining
+  // Assigned 4 lives for each level
+  const lives = add([
+    text(parseInt(LIVES_REMAINING)),
+    pos(115, 52),
+    scale(0.3),
+    layer("ui"),
+    fixed(),
+    color(255, 10, 40),
+    { value: LIVES_REMAINING },
+  ]);
+
+  add([text("Lives : "), pos(20, 52), scale(0.3), fixed()]);
   keyDown("left", () => {
     player.move(-MOVE_SPEED, 0);
   });
@@ -275,8 +341,9 @@ scene("game", ({ level, score }) => {
   keyDown("right", () => {
     player.move(MOVE_SPEED, 0);
   });
-  
-  if (isTouch()) {// && buttonsVisible) {
+
+  if (isTouch()) {
+    // && buttonsVisible) {
     //console.log(isTouch);
 
     //because left and right buttons will be pressed
@@ -286,38 +353,38 @@ scene("game", ({ level, score }) => {
       right: false,
       // we will set them to true when these buttons are tocuhed
     };
-	
+
     //Mobile Buttons
     const leftButton = add([
       sprite("a"),
-      pos(20, height()-25),
+      pos(20, height() - 25),
       opacity(0.5),
-	  origin("botleft"),
-	  scale(BASE_SCALE),
-	  fixed(),
+      origin("botleft"),
+      scale(BASE_SCALE),
+      fixed(),
       area(),
     ]);
 
     const rightButton = add([
       sprite("d"),
-      pos(120, height()-25),
+      pos(120, height() - 25),
       opacity(0.5),
-	  origin("botleft"),
-	  scale(BASE_SCALE),
-	  fixed(),
+      origin("botleft"),
+      scale(BASE_SCALE),
+      fixed(),
       area(),
     ]);
-	
+
     const shootButton = add([
       sprite("shoot"),
-      pos(width()-30, height()-25),
+      pos(width() - 30, height() - 25),
       opacity(0.5),
-	  origin("botright"),
-	  scale(BASE_SCALE),
-	  fixed(),
+      origin("botright"),
+      scale(BASE_SCALE),
+      fixed(),
       area(),
     ]);
-	
+
     //TouchStart acts similar to a key press
     //Sperate starts allow for mulitple button presses
     onTouchStart((leftPress, pos) => {
@@ -356,24 +423,24 @@ scene("game", ({ level, score }) => {
     //Ends individual presses
     onTouchEnd((leftPress, pos) => {
       if (leftButton.hasPoint(pos)) {
-		  keyDownOnMobile.left = false;
-		  leftButton.opacity = 0.5;
-		  console.log("unpressed left");
-		}
+        keyDownOnMobile.left = false;
+        leftButton.opacity = 0.5;
+        console.log("unpressed left");
+      }
     });
 
     onTouchEnd((rightPress, pos) => {
       if (rightButton.hasPoint(pos)) {
-		  keyDownOnMobile.right = false;
-		  rightButton.opacity = 0.5;
-		  console.log("unpressed right");
-		}
+        keyDownOnMobile.right = false;
+        rightButton.opacity = 0.5;
+        console.log("unpressed right");
+      }
     });
 
     onTouchEnd((shootPress, pos) => {
       if (shootButton.hasPoint(pos)) {
-		shootButton.opacity = 0.5;
-	  }
+        shootButton.opacity = 0.5;
+      }
     });
 
     onUpdate(() => {
@@ -393,6 +460,8 @@ scene("game", ({ level, score }) => {
     };
   }
 
+  // Spawns bullet
+  // This is for player
   function spawnBullet(p) {
     add([
       rect(2, 10),
@@ -405,6 +474,8 @@ scene("game", ({ level, score }) => {
     ]);
   }
 
+  // Spawns Enemy Bullet
+  // This is for space invaders
   function spawnEnemyBullet(p) {
     add([
       rect(2, 10),
@@ -417,6 +488,7 @@ scene("game", ({ level, score }) => {
     ]);
   }
 
+  // key "b" to shoot
   keyPress("b", () => {
     spawnBullet(player.pos.add(0, -25));
   });
@@ -441,16 +513,17 @@ scene("game", ({ level, score }) => {
     if (enemyCount === 0) {
       //Invaders always move right at start of level
       INVADER_DIRECTION = 1;
-	  
-	  level = level + 1;
-	  console.log("map count: " + playableMap.length);
-	  if (playableMap.length > level) {
-		go("vaccineInfoScene", { level: level, score: score });
-	  }
-	  else {
-		level = 0;
-		go("winner", { score: scoreLabel.value });
-	  }
+
+      // level = level + 1;
+      // console.log("map count: " + playableMap.length);
+      if (playableMap.length > level + 1) {
+        // Go to a new level if all the enemies are killed and if a new level exists
+        go("vaccineInfoScene", { level: level + 1, score: scoreLabel.value });
+      } else {
+        // Else go to Win Screen
+        level = 0;
+        go("winner", { score: scoreLabel.value });
+      }
     }
     scoreLabel.value++;
 
@@ -468,25 +541,28 @@ scene("game", ({ level, score }) => {
         spawnEnemyBullet(s.pos.add(0, 25));
       });
   });*/
-    
+  // This is used to make indefinite movement of Space invaders
+  // Also they spawn bullets when the player is in the range specified
+  // That is they shoot only when player is at their aimed position
   onUpdate(() => {
-     every("space_invader", (s) => {
-         s.move(INVADER_SPEED * INVADER_DIRECTION, 0);
-         if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y)
-            wait(0.01, () => {
-                spawnEnemyBullet(s.pos.add(0, 25));
+    every("space_invader", (s) => {
+      s.move(INVADER_SPEED * INVADER_DIRECTION, 0);
+      if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y)
+        wait(0.01, () => {
+          spawnEnemyBullet(s.pos.add(0, 25));
+        });
+    });
+
+    // Used to control the movement of Invaders
+    // Reverse direction and Invaders Move down when the move count exceeds limit
+    INVADER_MOVE_COUNT++;
+    if (INVADER_MOVE_COUNT >= 200) {
+      INVADER_DIRECTION *= -1;
+      INVADER_MOVE_COUNT = 0;
+      every("space_invader", (invader) => {
+        invader.move(0, LEVEL_DOWN);
       });
-     });
-      
-      INVADER_MOVE_COUNT++;
-      if(INVADER_MOVE_COUNT >= 200){
-        INVADER_DIRECTION *= -1;
-        INVADER_MOVE_COUNT = 0;
-        every("space_invader", (invader) => {
-            invader.move(0, LEVEL_DOWN);
-        });   
     }
-      
   });
 
   onCollide("space_invader", "enemyBullet", (s, e) => {
@@ -498,7 +574,11 @@ scene("game", ({ level, score }) => {
   });
 
   player.onCollide("enemyBullet", () => {
-    go("lose", { score: scoreLabel.value });
+    shake(10);
+    // Decrement Lives upon hit by enemey bullet
+    (lives.value -= 1), (lives.text = lives.value.toFixed(0));
+
+    if (lives.value == 0) go("lose", { score: scoreLabel.value });
   });
   //On Collision with right wall
   // Space-invader has to turn around and move down on each collision
@@ -521,6 +601,8 @@ scene("game", ({ level, score }) => {
     go("lose", { score: scoreLabel.value });
   });
 
+  // When invaders keep moving down and when they eventually reach the level of player
+  // Player cannot shoot them and has to eventually lose because he cannot make any progress
   onUpdate("space_invader", (s) => {
     if (s.pos.y == player.pos.y) {
       go("lose", { score: scoreLabel.value });
@@ -528,6 +610,7 @@ scene("game", ({ level, score }) => {
   });
 });
 
+// Lose Scene
 scene("lose", ({ score }) => {
   add([text(score, 32), origin("center"), pos(width() / 2, height() / 2)]);
   add([
@@ -538,10 +621,11 @@ scene("lose", ({ score }) => {
   ]);
 
   wait(2, () => {
-	  window.location = "./mario_menu.html";
+    window.location = "./mario_menu.html";
   });
 });
 
+// Vaccine Info Scene to display awareness related to vaccination at the end of each level
 scene("vaccineInfoScene", ({ level, score }) => {
   layers(["ui", "bg"], "bg");
   const infoColor = add([

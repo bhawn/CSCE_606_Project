@@ -1,3 +1,5 @@
+// Contains a list of vaccine related information
+
 export const info = [
   ["Get Vaccinated.. Encourage Others"],
   ["Kill that hestitation regarding vaccines or that hesitation will kill you"],
