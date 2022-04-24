@@ -5390,20 +5390,37 @@ scene("game", function (_ref2) {
   // or create a house and then use the key desired
 
   player.onCollide("pipe", function () {
-    level = level + 1;
-    console.log("map count: " + _PlayableMap.playableMap.length);
-
-    if (_PlayableMap.playableMap.length > level) {
-      go("vaccineInfoScene", {
-        level: level,
-        score: score
-      });
-    } else {
-      level = 0;
-      go("winner", {
-        score: scoreLabel.value
-      });
-    }
+    onKeyPress("down", function () {
+      /* Scene to display vaccine informations*/
+      //level = level + 1;
+      //console.log("map count: " + playableMap.length);
+      if (_PlayableMap.playableMap.length > level + 1) {
+        go("vaccineInfoScene", {
+          level: level + 1,
+          score: scoreLabel.value
+        });
+      } else {
+        level = 0;
+        go("winner", {
+          score: scoreLabel.value
+        });
+      }
+    });
+    onKeyPress("s", function () {
+      // level = level + 1;
+      // console.log("map count: " + playableMap.length);
+      if (_PlayableMap.playableMap.length > level + 1) {
+        go("vaccineInfoScene", {
+          level: level + 1,
+          score: scoreLabel.value
+        });
+      } else {
+        level = 0;
+        go("winner", {
+          score: scoreLabel.value
+        });
+      }
+    });
   }); // we will define a function jump so that it can be reused both by touch and keyboard
 
   var jumping = function jumping() {
@@ -5633,6 +5650,7 @@ go("vaccineInfoScene", {
   score: 0
 });
 },{"../../node_modules/kaboom":"node_modules/kaboom/dist/kaboom.mjs","./PlayableMap":"src_mario/src/PlayableMap.js","./info":"src_mario/src/info.js"}],"C:/Users/maryj/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

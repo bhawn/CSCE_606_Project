@@ -8,9 +8,8 @@ const INVADER_SPEED = 100;
 let INVADER_DIRECTION = 1;
 let CURRENT_SPEED = INVADER_SPEED;
 let INVADER_MOVE_COUNT = 0;
-const LEVEL_DOWN = 400;
+const LEVEL_DOWN = 1000;
 const BULLET_SPEED = 400;
-const TIME_LEFT = 30000;
 const LIVES_REMAINING = 4;
 let BUTTON_YPOS = window.innerHeight - 125;
 let BASE_SCALE = 2;
@@ -531,7 +530,7 @@ scene("game", ({ level, score }) => {
     if (enemyCount === 0) {
       //Invaders always move right at start of level
       INVADER_DIRECTION = 1;
-
+      INVADER_MOVE_COUNT = 0;
       // level = level + 1;
       // console.log("map count: " + playableMap.length);
       if (playableMap.length > level + 1) {

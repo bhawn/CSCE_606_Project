@@ -239,14 +239,14 @@ loadSprite("brick", "pogC9x5.png");
 //https://i.imgur.com/X3a5liL.png
 
 // Old brick : "M6rwarW.png"
-loadSprite("block", "X3a5liL.png");
+loadSprite("block", "M6rwarW.png");
 
 //mario
 
 // New Doctor Sprite : Rp0NvTW;
 
 // Old Mario : Wb1qfhK
-loadSprite("mario", "Rp0NvTW.png");
+loadSprite("mario", "LON98VQ.png"); //https://imgur.com/LON98VQ
 
 loadSprite("mushroom", "wm9BL0V.png");
 
