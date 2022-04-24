@@ -15,6 +15,8 @@ const LIVES_REMAINING = 4;
 let BUTTON_YPOS = window.innerHeight - 125;
 let BASE_SCALE = 2;
 let BUTTON_FAR_XPOS = window.innerWidth - 25;
+let CONTROL_OPACITY = 0;
+
 const k = kaboom({
   global: true,
   // enable full screen
@@ -311,6 +313,22 @@ scene("game", ({ level, score }) => {
       go("lose", { score: scoreLabel.value });
     }
   });
+  
+  // Controls to assist players
+  add([text("C - Controls"), pos(20, 68), scale(0.3), fixed()]);
+  
+  const left_control = add([text("Left - A or Left Arrow Key"), pos(20, 84), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  const right_control = add([text("Right - D or Right Arrow Key"), pos(20, 100), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+  const shoot_control = add([text("Shoot - B"), pos(20, 116), scale(0.3), fixed(), opacity(CONTROL_OPACITY)]);
+
+  const controlsInfo = () => {
+	  CONTROL_OPACITY = (CONTROL_OPACITY - 1)**2;
+	  left_control.opacity = CONTROL_OPACITY;
+	  right_control.opacity = CONTROL_OPACITY;
+	  shoot_control.opacity = CONTROL_OPACITY;
+  };
+  
+  onKeyPress("c", controlsInfo);
 
   const player = add([
     sprite("space_ship"),
