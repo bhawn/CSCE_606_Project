@@ -493,13 +493,6 @@ scene("game", ({ level, score }) => {
         isBig = false;
       },
 
-      biggify(time) {
-        this.scale = vec2(2);
-
-        timer = time;
-        isBig = true;
-      },
-
       biggify() {
         this.scale = vec2(2);
 
@@ -643,9 +636,7 @@ scene("game", ({ level, score }) => {
 
     // Check how far away the guy is and if it's already moving.
     // Bias x distance over y distance
-    d.moving = d.moving
-      ? true
-      : Math.abs(x_dist) < AGRO_RANGE_X && Math.abs(y_dist) < AGRO_RANGE_Y;
+    d.moving = d.moving ? true : Math.abs(x_dist) < AGRO_RANGE_X && Math.abs(y_dist) < AGRO_RANGE_Y;
     if (!d.moving) return;
 
     let level_scaling = Math.min(level + 1, 4);
@@ -788,8 +779,7 @@ scene("game", ({ level, score }) => {
 
   // Text on UI screen to display time
   add([text("Time Remaining: "), pos(20, 38), scale(0.3), fixed()]);
-  onUpdate(() => {
-    (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
+  onUpdate(() => { (timer.time -= dt()), (timer.text = timer.time.toFixed(2));
 
     if (timer.time <= 0) {
       go("lose", { score: scoreLabel.value });
