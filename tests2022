@@ -8,9 +8,16 @@ Controls:
     5. Pressing C reveals the controls in the top left of the screen.
     
 - Mobile
-    1. The left and right arrows on the left side of the screen move the player accordingly, and stop moving when the button is released. 
-    2. Tapping the jump button on the far right side of the screen causes the player to jump.
-    3. Tapping the action button to the left of the jump button causes the player to perform an action (shoot projectile)
+    1. On a mobile device (a smartphone or tablet), start the Mario game.
+    2. Verify that the user is able to press the play and main menu buttons.
+    3. Verify that the left, right, shoot, and jump controls are visible on the screen.
+    4. Verify that when the user presses each button, the expected action occurs.
+        a. When left or right is pressed on the left side of the screen, the character should move the corresponding direction.
+        b. When the shoot button is pressed while the character is large, a bullet should spawn.
+        c. When the jump button is pressed, the character should jump away from the ground blocks.
+    5. Verify that the player is able to complete level 1 and progress to level 2.
+    6. Repeat steps 1-5 with the Space invaders game, with the exception of the jump button.
+
     
 Playable Maps:
 1. Loaded Sprites for necessary game construction and then placed them accordingly to build the game scene. The Sprites work correctly
@@ -123,3 +130,20 @@ Space Invader Enemy Movement
 3. After a number of steps they change direction and move closer to the player.
 4. 3 is repeated until enemies reach the player, or player destroys all enemies.
 
+Invaders - Make enemies centered:
+1. Verify that the enemies appear centered on the screen
+2. Verify that they do not off the screen while moving left and right
+3. Verify that they are always visible for the player to shoot
+
+Invaders Level Progression
+1. Verify that new levels are playable
+2. Verify that every time a new level is loaded player’s lives are reinstantiated
+3. Verify that enemies are positioned well above the player to allow the player sufficient time to attack them
+4. Verify that the game goes into a lose scene when the enemies reach the level of the player.
+
+When Mario is Big, only reduce the size on collide with dangerous
+1. When the Mario is initially small, verify that he appears small in size
+2. When vaccine is collected, his size should change
+3. Verify that he can shoot when he is big
+4. Verify that he doesn’t die when he collides with enemies instead becomes small and loses shooting ability
+5. Verify that the size is carried forward from one level to another 
