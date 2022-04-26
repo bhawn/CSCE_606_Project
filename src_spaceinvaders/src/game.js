@@ -3,12 +3,12 @@ import { playableMap } from "./PlayableMap";
 import { info } from "./info";
 //Created a new clone //
 const MOVE_SPEED = 200;
-const TIME_LEFT = 50;
+const TIME_LEFT = 5000;
 const INVADER_SPEED = 100;
 let INVADER_DIRECTION = 1;
 let CURRENT_SPEED = INVADER_SPEED;
 let INVADER_MOVE_COUNT = 0;
-const LEVEL_DOWN = 1000;
+// const LEVEL_DOWN = 200;
 const BULLET_SPEED = 400;
 const LIVES_REMAINING = 4;
 let BUTTON_YPOS = window.innerHeight - 125;
@@ -352,7 +352,7 @@ scene("game", ({ level, score }) => {
     pos(width() / 2 - 500, height() / 2),
     origin("center"),
     area(),
-    solid(),
+    //solid(),
     scale(BASE_SCALE),
   ]);
 
@@ -502,7 +502,7 @@ scene("game", ({ level, score }) => {
       rect(2, 10),
       pos(p),
       origin("center"),
-      color(255, 0.5, 1),
+      color(0, 128, 0),
 
       "bullet",
       area(),
@@ -582,9 +582,10 @@ scene("game", ({ level, score }) => {
   onUpdate(() => {
     every("space_invader", (s) => {
       s.move(INVADER_SPEED * INVADER_DIRECTION, 0);
-      if (abs(s.pos.x - player.pos.x) <= 0.2 && s.pos.y < player.pos.y)
+
+      if (abs(s.pos.x - player.pos.x) <= 0.5 && s.pos.y < player.pos.y)
         wait(0.01, () => {
-          spawnEnemyBullet(s.pos.add(0, 25));
+          spawnEnemyBullet(s.pos.add(18, 45));
         });
     });
 
@@ -592,11 +593,20 @@ scene("game", ({ level, score }) => {
     // Reverse direction and Invaders Move down when the move count exceeds limit
     INVADER_MOVE_COUNT++;
     if (INVADER_MOVE_COUNT >= 200) {
-      INVADER_DIRECTION *= -1;
+      //INVADER_DIRECTION *= -1;
       INVADER_MOVE_COUNT = 0;
       every("space_invader", (invader) => {
         invader.move(0, LEVEL_DOWN);
       });
+    }
+  });
+
+  const LEVEL_DOWN = 700;
+
+  onUpdate("space_invader", (s) => {
+    if (s.pos.x >= window.innerWidth) INVADER_DIRECTION = -1;
+    else if (s.pos.x <= 0) {
+      INVADER_DIRECTION = 1;
     }
   });
 
@@ -608,13 +618,13 @@ scene("game", ({ level, score }) => {
     destroy(f);
   });
 
-  player.onCollide("enemyBullet", () => {
-    shake(10);
-    // Decrement Lives upon hit by enemey bullet
-    (lives.value -= 1), (lives.text = lives.value.toFixed(0));
+  // player.onCollide("enemyBullet", () => {
+  //   shake(10);
+  //   // Decrement Lives upon hit by enemey bullet
+  //   (lives.value -= 1), (lives.text = lives.value.toFixed(0));
 
-    if (lives.value == 0) go("lose", { score: scoreLabel.value });
-  });
+  //   if (lives.value == 0) go("lose", { score: scoreLabel.value });
+  // });
   //On Collision with right wall
   // Space-invader has to turn around and move down on each collision
   collides("space_invader", "right_wall", () => {
@@ -639,7 +649,7 @@ scene("game", ({ level, score }) => {
   // When invaders keep moving down and when they eventually reach the level of player
   // Player cannot shoot them and has to eventually lose because he cannot make any progress
   onUpdate("space_invader", (s) => {
-    if (s.pos.y == player.pos.y) {
+    if (s.pos.y * BASE_SCALE >= player.pos.y * BASE_SCALE) {
       go("lose", { score: scoreLabel.value });
     }
   });
