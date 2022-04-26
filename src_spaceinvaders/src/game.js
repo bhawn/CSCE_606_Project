@@ -3,7 +3,7 @@ import { playableMap } from "./PlayableMap";
 import { info } from "./info";
 //Created a new clone //
 const MOVE_SPEED = 200;
-const TIME_LEFT = 5000;
+const TIME_LEFT = 50;
 const INVADER_SPEED = 100;
 let INVADER_DIRECTION = 1;
 let CURRENT_SPEED = INVADER_SPEED;
@@ -618,13 +618,13 @@ scene("game", ({ level, score }) => {
     destroy(f);
   });
 
-  // player.onCollide("enemyBullet", () => {
-  //   shake(10);
-  //   // Decrement Lives upon hit by enemey bullet
-  //   (lives.value -= 1), (lives.text = lives.value.toFixed(0));
+  player.onCollide("enemyBullet", () => {
+    shake(10);
+    // Decrement Lives upon hit by enemey bullet
+    (lives.value -= 1), (lives.text = lives.value.toFixed(0));
 
-  //   if (lives.value == 0) go("lose", { score: scoreLabel.value });
-  // });
+    if (lives.value == 0) go("lose", { score: scoreLabel.value });
+  });
   //On Collision with right wall
   // Space-invader has to turn around and move down on each collision
   collides("space_invader", "right_wall", () => {
