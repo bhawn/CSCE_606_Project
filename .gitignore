@@ -1,3 +1,4 @@
+.parcel-cache/*
 examples/*
 _other/*
 .c9/*
@@ -6,3 +7,8 @@ src/.DS_Store
 src/data/.DS_Store
 emrun.py
 makefile
+.cache/*
+src_mario/.cache/*
+node_modules/*
+.cache/*
+dist/*
